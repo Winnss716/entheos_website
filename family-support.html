@@ -1,0 +1,486 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Family Support — Entheos Veteran Project</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    :root { --olive: #3b4a2f; --olive-dark: #232d1a; --gold: #c9921a; --gold-light: #e8b84b; --cream: #f5f0e8; --white: #ffffff; --charcoal: #1a1e14; --mid: #5a6645; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Barlow', sans-serif; background: var(--charcoal); color: var(--cream); overflow-x: hidden; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 18px 5%; background: rgba(26,30,20,0.92); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(201,146,26,0.25); }
+    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-logo img { height: 52px; width: auto; }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a { color: var(--cream); text-decoration: none; font-weight: 600; font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.85; transition: opacity 0.2s, color 0.2s; }
+    .nav-links a:hover { opacity: 1; color: var(--gold-light); }
+    .nav-cta { background: var(--gold); color: var(--charcoal); padding: 10px 24px; border-radius: 2px; font-weight: 700; letter-spacing: 0.08em; text-decoration: none; font-size: 0.82rem; text-transform: uppercase; transition: background 0.2s; }
+    .nav-cta:hover { background: var(--gold-light); }
+    .page-header { padding: 160px 5% 90px; text-align: center; background: linear-gradient(to bottom, rgba(26,30,20,0.5) 0%, rgba(26,30,20,0.88) 60%, var(--charcoal) 100%), url('https://images.unsplash.com/photo-1511895426328-dc8714191011?w=1600&q=80') center/cover no-repeat; }
+    .page-header .eyebrow { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 16px; }
+    .page-header h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3.5rem, 9vw, 7rem); line-height: 0.92; letter-spacing: 0.04em; color: var(--white); }
+    .page-header h1 span { color: var(--gold); }
+    .page-header p { max-width: 580px; margin: 24px auto 0; font-size: 1.08rem; font-weight: 300; line-height: 1.8; color: rgba(245,240,232,0.78); }
+    .stat-strip { background: var(--olive-dark); border-top: 1px solid rgba(201,146,26,0.2); border-bottom: 1px solid rgba(201,146,26,0.2); padding: 40px 5%; }
+    .stat-strip-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; text-align: center; }
+    .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.4rem, 4vw, 3.4rem); color: var(--gold); line-height: 1; letter-spacing: 0.04em; }
+    .stat-label { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(245,240,232,0.55); margin-top: 6px; line-height: 1.4; }
+    .section { padding: 90px 5%; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-eyebrow { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+    .section-heading { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.4rem, 5vw, 4rem); letter-spacing: 0.04em; color: var(--white); line-height: 1; margin-bottom: 20px; }
+    .section-heading span { color: var(--gold); }
+    .section-body { font-size: 1rem; font-weight: 300; line-height: 1.85; color: rgba(245,240,232,0.7); max-width: 700px; }
+    .what-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; margin-top: 50px; }
+    .what-text p { font-size: 1rem; font-weight: 300; line-height: 1.9; color: rgba(245,240,232,0.72); margin-bottom: 18px; }
+    .what-text p strong { color: var(--cream); font-weight: 600; }
+    .what-callout { background: rgba(201,146,26,0.07); border-left: 3px solid var(--gold); padding: 28px 30px; border-radius: 0 4px 4px 0; }
+    .what-callout p { font-size: 1.05rem; font-style: italic; font-weight: 300; line-height: 1.8; color: rgba(245,240,232,0.8); }
+    .what-callout cite { display: block; margin-top: 14px; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); font-style: normal; }
+    .challenges-section { background: var(--olive-dark); }
+    .challenge-clusters { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 50px; }
+    .cluster-card { background: rgba(245,240,232,0.04); border: 1px solid rgba(201,146,26,0.18); border-top: 3px solid var(--gold); border-radius: 4px; padding: 28px 24px; transition: background 0.2s; }
+    .cluster-card:hover { background: rgba(245,240,232,0.07); }
+    .cluster-icon { font-size: 1.8rem; margin-bottom: 14px; }
+    .cluster-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 0.06em; color: var(--white); margin-bottom: 14px; }
+    .cluster-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .cluster-list li { font-size: 0.88rem; font-weight: 300; line-height: 1.55; color: rgba(245,240,232,0.65); padding-left: 14px; position: relative; }
+    .cluster-list li::before { content: '—'; position: absolute; left: 0; color: var(--gold); font-size: 0.75rem; }
+    .veteran-context-section { background: var(--charcoal); }
+    .context-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; margin-top: 50px; }
+    .context-facts { display: flex; flex-direction: column; gap: 22px; }
+    .fact-item { display: flex; gap: 18px; align-items: flex-start; padding: 22px 24px; background: rgba(245,240,232,0.03); border: 1px solid rgba(201,146,26,0.15); border-radius: 4px; }
+    .fact-num { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--gold); flex-shrink: 0; line-height: 1; }
+    .fact-text { font-size: 0.93rem; font-weight: 300; line-height: 1.65; color: rgba(245,240,232,0.7); }
+    .fact-text strong { color: var(--cream); font-weight: 600; }
+    .context-image { background: linear-gradient(to bottom right, rgba(26,30,20,0.3), rgba(26,30,20,0.6)), url('https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=900&q=80') center/cover no-repeat; border-radius: 4px; min-height: 420px; border: 1px solid rgba(201,146,26,0.15); }
+    .support-section { background: var(--olive-dark); }
+    .support-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 50px; }
+    .support-card { background: rgba(245,240,232,0.04); border: 1px solid rgba(201,146,26,0.18); border-radius: 4px; padding: 32px 28px; transition: border-color 0.2s, background 0.2s; }
+    .support-card:hover { border-color: rgba(201,146,26,0.45); background: rgba(245,240,232,0.07); }
+    .support-tag { display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 9px; border-radius: 2px; background: rgba(201,146,26,0.15); color: var(--gold-light); margin-bottom: 14px; }
+    .support-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 0.05em; color: var(--white); margin-bottom: 10px; line-height: 1.1; }
+    .support-desc { font-size: 0.9rem; font-weight: 300; line-height: 1.75; color: rgba(245,240,232,0.65); }
+    .support-divider { height: 1px; background: rgba(201,146,26,0.15); margin: 18px 0; }
+    .support-who-label { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(245,240,232,0.4); margin-bottom: 8px; }
+    .support-who { font-size: 0.88rem; font-weight: 300; line-height: 1.65; color: rgba(245,240,232,0.6); }
+    .myths-section { background: var(--charcoal); }
+    .myth-list { display: flex; flex-direction: column; gap: 20px; margin-top: 50px; max-width: 820px; }
+    .myth-item { border: 1px solid rgba(201,146,26,0.18); border-radius: 4px; overflow: hidden; }
+    .myth-header { display: flex; justify-content: space-between; align-items: center; padding: 22px 28px; cursor: pointer; background: rgba(245,240,232,0.03); transition: background 0.2s; gap: 16px; }
+    .myth-header:hover { background: rgba(245,240,232,0.06); }
+    .myth-label { display: flex; gap: 16px; align-items: flex-start; }
+    .myth-badge { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 9px; border-radius: 2px; background: rgba(192,57,43,0.2); color: #e87c6e; flex-shrink: 0; margin-top: 2px; }
+    .myth-q { font-size: 0.97rem; font-weight: 600; color: var(--cream); line-height: 1.45; }
+    .myth-arrow { font-size: 0.9rem; color: var(--gold); flex-shrink: 0; transition: transform 0.25s; }
+    .myth-item.open .myth-arrow { transform: rotate(180deg); }
+    .myth-body { display: none; padding: 0 28px 24px; border-top: 1px solid rgba(201,146,26,0.12); }
+    .myth-item.open .myth-body { display: block; }
+    .myth-truth { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #7dba84; margin: 16px 0 8px; }
+    .myth-body p { font-size: 0.93rem; font-weight: 300; line-height: 1.75; color: rgba(245,240,232,0.68); }
+    .help-section { background: var(--olive-dark); }
+    .help-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; margin-top: 50px; }
+    .help-steps { display: flex; flex-direction: column; }
+    .help-step { display: flex; gap: 20px; padding-bottom: 32px; position: relative; }
+    .help-step:not(:last-child)::after { content: ''; position: absolute; left: 19px; top: 42px; bottom: 0; width: 1px; background: rgba(201,146,26,0.25); }
+    .help-num { width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; background: rgba(201,146,26,0.12); border: 1.5px solid rgba(201,146,26,0.4); display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; color: var(--gold); z-index: 1; }
+    .help-content h4 { font-size: 1rem; font-weight: 700; color: var(--cream); margin-bottom: 6px; padding-top: 7px; }
+    .help-content p { font-size: 0.9rem; font-weight: 300; line-height: 1.75; color: rgba(245,240,232,0.62); }
+    .help-aside { background: rgba(245,240,232,0.04); border: 1px solid rgba(201,146,26,0.2); border-radius: 4px; padding: 36px 32px; position: sticky; top: 110px; }
+    .help-aside h3 { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.05em; color: var(--white); margin-bottom: 6px; }
+    .help-aside h3 span { color: var(--gold); }
+    .help-aside p { font-size: 0.92rem; font-weight: 300; line-height: 1.75; color: rgba(245,240,232,0.6); margin-bottom: 24px; }
+    .aside-perks { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+    .aside-perks li { display: flex; gap: 10px; font-size: 0.88rem; font-weight: 300; color: rgba(245,240,232,0.68); align-items: flex-start; }
+    .aside-perks li::before { content: '✓'; color: var(--gold); font-weight: 700; flex-shrink: 0; }
+    .btn-gold { display: block; text-align: center; background: var(--gold); color: var(--charcoal); padding: 15px 28px; border-radius: 2px; font-family: 'Barlow', sans-serif; font-weight: 700; font-size: 0.88rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; margin-bottom: 12px; transition: background 0.2s, transform 0.15s; }
+    .btn-gold:hover { background: var(--gold-light); transform: translateY(-1px); }
+    .btn-outline-sm { display: block; text-align: center; background: transparent; color: var(--cream); padding: 13px 28px; border-radius: 2px; border: 1.5px solid rgba(245,240,232,0.25); font-family: 'Barlow', sans-serif; font-weight: 700; font-size: 0.88rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; transition: border-color 0.2s, color 0.2s; }
+    .btn-outline-sm:hover { border-color: var(--gold-light); color: var(--gold-light); }
+    .cta-banner { background: linear-gradient(to right, rgba(35,45,26,0.97) 0%, rgba(35,45,26,0.85) 100%), url('https://images.unsplash.com/photo-1531058020387-3be344556be6?w=1600&q=80') center/cover no-repeat; padding: 90px 5%; text-align: center; }
+    .cta-banner h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 6vw, 4.5rem); letter-spacing: 0.04em; color: var(--white); line-height: 1.05; margin-bottom: 14px; }
+    .cta-banner h2 span { color: var(--gold); }
+    .cta-banner p { max-width: 520px; margin: 0 auto 36px; font-size: 1rem; font-weight: 300; line-height: 1.8; color: rgba(245,240,232,0.72); }
+    .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-cta-primary { background: var(--gold); color: var(--charcoal); padding: 15px 40px; border-radius: 2px; font-family: 'Barlow', sans-serif; font-weight: 700; font-size: 0.88rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; transition: background 0.2s, transform 0.15s; }
+    .btn-cta-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+    .btn-cta-outline { background: transparent; color: var(--cream); padding: 15px 40px; border-radius: 2px; border: 1.5px solid rgba(245,240,232,0.35); font-family: 'Barlow', sans-serif; font-weight: 700; font-size: 0.88rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; transition: border-color 0.2s, color 0.2s; }
+    .btn-cta-outline:hover { border-color: var(--gold-light); color: var(--gold-light); }
+    footer { background: var(--olive-dark); border-top: 1px solid rgba(201,146,26,0.2); padding: 60px 5% 36px; }
+    .footer-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 60px; }
+    .footer-brand p { font-size: 0.92rem; font-weight: 300; line-height: 1.75; color: rgba(245,240,232,0.55); margin-top: 14px; max-width: 320px; }
+    .footer-brand img { height: 60px; }
+    .footer-col h4 { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col a { color: rgba(245,240,232,0.6); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+    .footer-col a:hover { color: var(--gold-light); }
+    .footer-bottom { max-width: 1200px; margin: 48px auto 0; padding-top: 24px; border-top: 1px solid rgba(245,240,232,0.1); display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: rgba(245,240,232,0.35); }
+    @media (max-width: 900px) { .what-grid, .context-grid, .help-grid { grid-template-columns: 1fr; gap: 36px; } .challenge-clusters { grid-template-columns: 1fr 1fr; } .support-grid { grid-template-columns: 1fr 1fr; } .stat-strip-inner { grid-template-columns: 1fr 1fr; gap: 28px; } .context-image { min-height: 260px; } .help-aside { position: static; } }
+    @media (max-width: 600px) { .challenge-clusters, .support-grid { grid-template-columns: 1fr; } .stat-strip-inner { grid-template-columns: 1fr 1fr; } .footer-inner { grid-template-columns: 1fr; gap: 36px; } .nav-links { display: none; } }
+  </style>
+</head>
+<body>
+
+  <!-- Crisis Bar -->
+  <div id="crisis-bar" style="background:#7a1f1f;color:#fff;text-align:center;padding:9px 48px 9px 16px;font-size:0.8rem;letter-spacing:0.03em;line-height:1.5;position:relative;z-index:2000;">
+    If you're in crisis — <strong style="color:#ffd080;">Call or text 988, then press 1</strong> — Veterans Crisis Line — Available 24/7 — <a href="https://www.veteranscrisisline.net" target="_blank" rel="noopener" style="color:#ffd080;">Chat online</a>
+    <button onclick="dismissCrisisBar()" aria-label="Dismiss" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,0.55);font-size:1rem;cursor:pointer;padding:4px 6px;">✕</button>
+  </div>
+
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <img src="413212FE-ACE0-4643-9C94-3C2A5F1B4848.PNG" alt="Entheos Veteran Project Logo" onerror="this.style.display='none'"/>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#mission">Mission</a></li>
+      <li><a href="index.html#focus">Who We Help</a></li>
+      <li><a href="scholarship.html">Scholarships</a></li>
+      <li><a href="our-team.html">Our Team</a></li>
+      <li><a href="donate.html">Donate</a></li>
+    </ul>
+    <a href="apply.html" class="nav-cta">Apply Now</a>
+  </nav>
+
+  <div class="page-header">
+    <p class="eyebrow">Supporting the Whole Family</p>
+    <h1>Family<br/><span>Support</span></h1>
+    <p>Healing doesn't happen in isolation. The families of veterans carry invisible wounds of their own — and supporting them is an essential part of supporting the veteran. We are here for the whole family.</p>
+  </div>
+
+  <div class="stat-strip">
+    <div class="stat-strip-inner">
+      <div class="stat-item">
+        <div class="stat-num">5.5M</div>
+        <div class="stat-label">Americans serve as<br/>military caregivers</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">40%</div>
+        <div class="stat-label">of veteran caregivers report<br/>their own health declining</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">2M+</div>
+        <div class="stat-label">children with a parent<br/>from post-9/11 wars</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">3x</div>
+        <div class="stat-label">higher divorce rate for<br/>veterans with PTSD</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section veteran-context-section">
+    <div class="section-inner">
+      <p class="section-eyebrow">The Invisible Secondary Burden</p>
+      <h2 class="section-heading">When Service Comes <span>Home</span></h2>
+      <div class="what-grid">
+        <div class="what-text">
+          <p>The public conversation about veteran mental health almost always focuses on the veteran. But the families who live alongside them — spouses who absorb the nightmares, the rage, and the withdrawal; children who grow up in households shaped by trauma; parents who watch their child come home fundamentally changed — carry wounds of their own.</p>
+          <p><strong>Secondary traumatic stress is real and documented.</strong> Spouses of veterans with PTSD experience their own anxiety, depression, hypervigilance, and emotional exhaustion at significantly higher rates than the general population. Children of veterans with untreated PTSD show higher rates of behavioral problems, depression, and anxiety.</p>
+          <p>And yet family members are almost universally left out of the veteran support system. They are expected to be strong, to hold things together, and to do it without any dedicated support of their own. <strong>Entheos exists to change that.</strong> Healing the family heals the veteran. It is not charity — it is strategy.</p>
+        </div>
+        <div>
+          <div class="what-callout">
+            <p>"Caregiver burnout is not a personal failure — it is a predictable outcome of providing intensive, sustained care without adequate support. Military caregivers need services designed specifically for them, not as an afterthought."</p>
+            <cite>— RAND Corporation, Military Caregivers Report</cite>
+          </div>
+          <div class="what-callout" style="margin-top:20px; border-left-color: rgba(201,146,26,0.4);">
+            <p>"The research is unambiguous: veterans in stable, supportive family relationships have dramatically better mental health outcomes. Supporting the family is one of the highest-ROI interventions in veteran wellness."</p>
+            <cite>— VA National Center for PTSD</cite>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section challenges-section">
+    <div class="section-inner">
+      <p class="section-eyebrow">What Families Carry</p>
+      <h2 class="section-heading">The Four Burdens <span>No One Talks About</span></h2>
+      <p class="section-body">Military families face a unique set of challenges that civilian support systems are rarely equipped to address.</p>
+      <div class="challenge-clusters">
+        <div class="cluster-card">
+          <div class="cluster-icon">🔁</div>
+          <div class="cluster-name">Secondary Trauma</div>
+          <ul class="cluster-list">
+            <li>Absorbing a partner's trauma responses</li>
+            <li>Hypervigilance and anxiety in spouses</li>
+            <li>Walking on eggshells in the home</li>
+            <li>Children modeling parent's fear responses</li>
+            <li>Emotional exhaustion without a name</li>
+          </ul>
+        </div>
+        <div class="cluster-card">
+          <div class="cluster-icon">🔥</div>
+          <div class="cluster-name">Caregiver Burnout</div>
+          <ul class="cluster-list">
+            <li>Physical and emotional exhaustion</li>
+            <li>Neglect of caregiver's own health</li>
+            <li>No time or space for personal recovery</li>
+            <li>Social isolation from outside world</li>
+            <li>Resentment, guilt, and grief</li>
+          </ul>
+        </div>
+        <div class="cluster-card">
+          <div class="cluster-icon">🔗</div>
+          <div class="cluster-name">Reintegration Strain</div>
+          <ul class="cluster-list">
+            <li>Rebuilding intimacy after deployment</li>
+            <li>Role conflicts when the veteran returns</li>
+            <li>Communication breakdowns post-service</li>
+            <li>Loss of independence for the spouse</li>
+            <li>Children adjusting to a changed parent</li>
+          </ul>
+        </div>
+        <div class="cluster-card">
+          <div class="cluster-icon">💰</div>
+          <div class="cluster-name">Financial Impact</div>
+          <ul class="cluster-list">
+            <li>Loss of income during intensive treatment</li>
+            <li>Out-of-pocket care costs not covered by VA</li>
+            <li>Career disruption for caregiving spouses</li>
+            <li>Childcare costs during treatment periods</li>
+            <li>Legal, housing, or transportation expenses</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section veteran-context-section">
+    <div class="section-inner">
+      <p class="section-eyebrow">Why Family Support Matters</p>
+      <h2 class="section-heading">The Family Is Part of <span>The Treatment</span></h2>
+      <div class="context-grid">
+        <div class="context-facts">
+          <div class="fact-item">
+            <div class="fact-num">01</div>
+            <div class="fact-text"><strong>A healthy home environment accelerates veteran recovery.</strong> Veterans who have stable, supportive family relationships during treatment show dramatically better outcomes — lower relapse rates, faster PTSD recovery, and higher treatment completion. The home environment is not separate from treatment; it is part of it.</div>
+          </div>
+          <div class="fact-item">
+            <div class="fact-num">02</div>
+            <div class="fact-text"><strong>Untreated family trauma becomes generational.</strong> Children who grow up in households with untreated veteran trauma are at significantly higher risk of developing their own mental health challenges, relationship difficulties, and even their own trauma responses. Intervening now protects the next generation.</div>
+          </div>
+          <div class="fact-item">
+            <div class="fact-num">03</div>
+            <div class="fact-text"><strong>Caregiver health is a veteran welfare issue.</strong> When a primary caregiver burns out or breaks down, the veteran loses their most important support system. <strong>Caring for the caregiver is an investment in the veteran's recovery</strong> — not a diversion of resources away from it.</div>
+          </div>
+          <div class="fact-item">
+            <div class="fact-num">04</div>
+            <div class="fact-text"><strong>Financial stability during treatment changes outcomes.</strong> Veterans are significantly less likely to complete intensive treatment programs when their family is facing financial crisis at home. Stabilizing the family's finances during a veteran's recovery removes one of the most common reasons veterans abandon treatment.</div>
+          </div>
+        </div>
+        <div class="context-image"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section support-section">
+    <div class="section-inner">
+      <p class="section-eyebrow">Evidence-Based Support</p>
+      <h2 class="section-heading">Support We <span>Fund for Families</span></h2>
+      <p class="section-body">Every family's needs are different. These are the programs and services Entheos scholarships can fund to support the families behind the veterans we serve.</p>
+      <div class="support-grid">
+        <div class="support-card">
+          <div class="support-tag">Relationship</div>
+          <div class="support-name">Family &amp; Couples Therapy</div>
+          <p class="support-desc">Structured therapy sessions that address the relationship strain caused by deployment, PTSD, TBI, and substance use — rebuilding communication, trust, and intimacy in a safe clinical environment.</p>
+          <div class="support-divider"></div>
+          <div class="support-who-label">Best For</div>
+          <p class="support-who">Couples and families experiencing relationship conflict, emotional distance, communication breakdown, or reintegration struggles after service.</p>
+        </div>
+        <div class="support-card">
+          <div class="support-tag">Caregiver</div>
+          <div class="support-name">Caregiver Respite</div>
+          <p class="support-desc">Temporary relief services that give primary caregivers scheduled time away from caregiving responsibilities — allowing rest, personal appointments, and recovery from caregiver burnout.</p>
+          <div class="support-divider"></div>
+          <div class="support-who-label">Best For</div>
+          <p class="support-who">Spouses and family members who serve as primary caregivers for veterans with severe PTSD, TBI, or physical disabilities who require ongoing daily support.</p>
+        </div>
+        <div class="support-card">
+          <div class="support-tag">Children</div>
+          <div class="support-name">Child Therapy</div>
+          <p class="support-desc">Specialized therapeutic support for children experiencing anxiety, behavioral changes, depression, or secondary trauma related to a parent's military service, combat trauma, or mental health challenges.</p>
+          <div class="support-divider"></div>
+          <div class="support-who-label">Best For</div>
+          <p class="support-who">Children ages 3–18 in households affected by veteran PTSD, TBI, substance use, or the grief associated with combat loss.</p>
+        </div>
+        <div class="support-card">
+          <div class="support-tag">Community</div>
+          <div class="support-name">Military Family Support Groups</div>
+          <p class="support-desc">Peer-led support groups connecting military spouses, parents, and siblings with others who understand the unique challenges of loving a veteran — reducing isolation and building community.</p>
+          <div class="support-divider"></div>
+          <div class="support-who-label">Best For</div>
+          <p class="support-who">Spouses, parents, and siblings who feel isolated, misunderstood by civilian peers, or overwhelmed by the unique demands of supporting a veteran in recovery.</p>
+        </div>
+        <div class="support-card">
+          <div class="support-tag">Skills</div>
+          <div class="support-name">Caregiver Training Programs</div>
+          <p class="support-desc">Evidence-based education programs that equip family members with practical tools for supporting a veteran with PTSD, TBI, or substance use — including de-escalation, communication strategies, and boundary-setting.</p>
+          <div class="support-divider"></div>
+          <div class="support-who-label">Best For</div>
+          <p class="support-who">Family members who want to better support their veteran but feel untrained, overwhelmed, or unsure how to respond to trauma-related behaviors.</p>
+        </div>
+        <div class="support-card">
+          <div class="support-tag">Financial</div>
+          <div class="support-name">Financial Assistance During Treatment</div>
+          <p class="support-desc">Direct financial support for families navigating the economic strain of a veteran's intensive treatment — covering childcare, transportation, household bills, and other costs that can derail recovery.</p>
+          <div class="support-divider"></div>
+          <div class="support-who-label">Best For</div>
+          <p class="support-who">Families facing financial hardship while a veteran undergoes residential treatment, IOP, or other intensive programs that reduce the veteran's ability to work.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section myths-section">
+    <div class="section-inner">
+      <p class="section-eyebrow">Clearing the Record</p>
+      <h2 class="section-heading">Myths About <span>Military Families</span></h2>
+      <p class="section-body">Misconceptions about military families prevent them from seeking the support they need and deserve.</p>
+      <div class="myth-list">
+        <div class="myth-item">
+          <div class="myth-header" onclick="toggleMyth(this)">
+            <div class="myth-label"><span class="myth-badge">Myth</span><span class="myth-q">"The veteran's trauma is the veteran's problem — family members just need to be supportive."</span></div>
+            <span class="myth-arrow">▼</span>
+          </div>
+          <div class="myth-body">
+            <div class="myth-truth">The Truth</div>
+            <p>Living with a person experiencing PTSD, TBI, or substance use disorder creates real, documented psychological harm in family members — regardless of how supportive or resilient they are. Secondary traumatic stress is as neurologically real as primary trauma. Family members are not passive bystanders in the veteran's experience; they are co-survivors who deserve their own care and support.</p>
+          </div>
+        </div>
+        <div class="myth-item">
+          <div class="myth-header" onclick="toggleMyth(this)">
+            <div class="myth-label"><span class="myth-badge">Myth</span><span class="myth-q">"Military families are built for this — they're tough enough to handle it."</span></div>
+            <span class="myth-arrow">▼</span>
+          </div>
+          <div class="myth-body">
+            <div class="myth-truth">The Truth</div>
+            <p>Military families demonstrate extraordinary resilience — and that resilience has limits. Resilience is not the same as immunity. No amount of toughness prevents the psychological impact of sustained stress, isolation, or secondary trauma. The belief that military families should be able to handle anything without help is not a compliment — it is the denial of their humanity and a barrier to care.</p>
+          </div>
+        </div>
+        <div class="myth-item">
+          <div class="myth-header" onclick="toggleMyth(this)">
+            <div class="myth-label"><span class="myth-badge">Myth</span><span class="myth-q">"Therapy can't fix problems caused by war — families just have to learn to live with it."</span></div>
+            <span class="myth-arrow">▼</span>
+          </div>
+          <div class="myth-body">
+            <div class="myth-truth">The Truth</div>
+            <p>Evidence-based family therapy — including Structural Family Therapy, Behavioral Couples Therapy, and trauma-informed family approaches — has strong research support for improving relationships strained by veteran PTSD and reintegration challenges. Families do not have to simply endure. With the right clinical support, families heal, relationships are rebuilt, and children's outcomes dramatically improve.</p>
+          </div>
+        </div>
+        <div class="myth-item">
+          <div class="myth-header" onclick="toggleMyth(this)">
+            <div class="myth-label"><span class="myth-badge">Myth</span><span class="myth-q">"Seeking family therapy means the veteran failed at coming home."</span></div>
+            <span class="myth-arrow">▼</span>
+          </div>
+          <div class="myth-body">
+            <div class="myth-truth">The Truth</div>
+            <p>Seeking family therapy is not an admission of failure — it is one of the most proactive, courageous things a veteran and their family can do. Coming home from war and rebuilding a family relationship is a skill that has to be learned and practiced. The families who thrive are almost never the ones who handled it alone; they are the ones who asked for help early and used it well.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section help-section">
+    <div class="section-inner">
+      <p class="section-eyebrow">Entheos Veteran Project</p>
+      <h2 class="section-heading">How We <span>Help Families</span></h2>
+      <p class="section-body">The family behind the veteran deserves support. Here is how we provide it.</p>
+      <div class="help-grid">
+        <div class="help-steps">
+          <div class="help-step">
+            <div class="help-num">1</div>
+            <div class="help-content">
+              <h4>Apply on Behalf of Your Family</h4>
+              <p>Family members can apply directly — you do not need the veteran to initiate. Our application is free, online, and takes about 10 minutes.</p>
+            </div>
+          </div>
+          <div class="help-step">
+            <div class="help-num">2</div>
+            <div class="help-content">
+              <h4>We Review Your Situation</h4>
+              <p>Our team reviews every application personally within 7–10 business days. We consider the full family picture, not just the veteran's diagnosis.</p>
+            </div>
+          </div>
+          <div class="help-step">
+            <div class="help-num">3</div>
+            <div class="help-content">
+              <h4>Funds Go Directly to Your Provider</h4>
+              <p>Approved scholarships go directly to therapists, counseling programs, or support services. You get the help; we handle the payment.</p>
+            </div>
+          </div>
+          <div class="help-step">
+            <div class="help-num">4</div>
+            <div class="help-content">
+              <h4>No Repayment. Ever.</h4>
+              <p>This is a scholarship — not a loan. Your family will never be asked to pay it back. Our only ask is that you take the step toward healing together.</p>
+            </div>
+          </div>
+        </div>
+        <div class="help-aside">
+          <h3>The <span>Scholarship</span></h3>
+          <p>We fund the family support services that create stable homes — and stable homes are where veteran recovery happens.</p>
+          <ul class="aside-perks">
+            <li>Family therapy, couples counseling, child therapy covered</li>
+            <li>Caregiver support programs eligible</li>
+            <li>Average award: $2,500</li>
+            <li>Rolling applications — no deadline</li>
+            <li>Funds disbursed directly to your provider</li>
+            <li>100% of donations fund veteran and family care</li>
+          </ul>
+          <a href="apply.html" class="btn-gold">Apply for Support</a>
+          <a href="donate.html" class="btn-outline-sm">Support a Veteran's Family</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-banner">
+    <h2>The Whole Family Served.<br/><span>The Whole Family Deserves Support.</span></h2>
+    <p>You don't have to carry this alone. Apply today — no cost, no deadline, no repayment required.</p>
+    <div class="cta-buttons">
+      <a href="apply.html" class="btn-cta-primary">Apply for Support</a>
+      <a href="donate.html" class="btn-cta-outline">Support a Veteran Family</a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="413212FE-ACE0-4643-9C94-3C2A5F1B4848.PNG" alt="Entheos Veteran Project" onerror="this.style.display='none'"/>
+        <p>The Entheos Veteran Project raises and distributes scholarship funds for veterans battling PTSD, TBI, substance abuse, and the invisible wounds of war.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="index.html#mission">Mission</a></li>
+          <li><a href="index.html#focus">Who We Serve</a></li>
+          <li><a href="scholarship.html">Scholarships</a></li>
+          <li><a href="our-team.html">Our Team</a></li>
+          <li><a href="donate.html">Donate</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@entheosveteranproject.org">info@entheosveteranproject.org</a></li>
+          <li><a href="apply.html">Apply for Scholarship</a></li>
+          <li><a href="donate.html">Make a Donation</a></li>
+          <li><a href="our-team.html">Meet the Team</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2025 Entheos Veteran Project. All rights reserved.</span>
+      <span>501(c)(3) Nonprofit · EIN: XX-XXXXXXX · Healing Minds. Restoring Lives. Reclaiming Purpose.</span>
+    </div>
+  </footer>
+
+  <script>
+    function toggleMyth(header) { header.parentElement.classList.toggle('open'); }
+  </script>
+</body>
+</html>

@@ -1,0 +1,447 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Check Application Status — Entheos Veteran Project</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --olive:      #4a5240;
+      --olive-dark: #2e3328;
+      --gold:       #c8aa5a;
+      --gold-light: #e2c97e;
+      --cream:      #f5f0e8;
+      --white:      #ffffff;
+      --charcoal:   #1c1e1a;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--charcoal); color: var(--cream); font-family: 'Barlow', sans-serif; min-height: 100vh; }
+
+    /* ── Crisis Bar ── */
+    #crisis-bar {
+      background: #7a1f1f; color: #fff; text-align: center;
+      padding: 9px 48px 9px 16px; font-size: 0.8rem; letter-spacing: 0.03em;
+      line-height: 1.5; position: relative; z-index: 2000;
+    }
+    #crisis-bar strong { color: #ffd080; }
+    #crisis-bar a { color: #ffd080; text-underline-offset: 3px; }
+    #crisis-bar button {
+      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; color: rgba(255,255,255,0.55); font-size: 1rem;
+      cursor: pointer; padding: 4px 6px; transition: color 0.2s;
+    }
+    #crisis-bar button:hover { color: #fff; }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky; top: 0; z-index: 1000; display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center; padding: 0 5%; height: 64px;
+      background: rgba(28,30,26,0.96); backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(200,170,90,0.25);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .nav-logo img { height: 38px; width: auto; }
+    .nav-logo-text { font-family: 'Bebas Neue', sans-serif; font-size: 1.35rem; letter-spacing: 0.12em; color: var(--gold); }
+    .nav-links { display: flex; align-items: center; justify-content: center; gap: 28px; }
+    .nav-links a {
+      color: var(--cream); text-decoration: none; font-weight: 600;
+      font-size: 0.82rem; letter-spacing: 0.1em; text-transform: uppercase;
+      opacity: 0.8; transition: opacity 0.2s, color 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; color: var(--gold-light); }
+    .nav-right { display: flex; align-items: center; justify-content: flex-end; gap: 16px; }
+    .nav-cta {
+      background: var(--gold); color: var(--charcoal) !important; opacity: 1 !important;
+      padding: 9px 22px; border-radius: 2px; font-weight: 700 !important;
+      letter-spacing: 0.08em; font-size: 0.8rem !important; text-transform: uppercase;
+      transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--gold-light) !important; }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(160deg, #1c2018 0%, #2a3024 60%, #1c1e1a 100%);
+      padding: 80px 5% 72px; text-align: center; border-bottom: 1px solid rgba(200,170,90,0.12);
+    }
+    .hero-eyebrow {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 18px;
+    }
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.8rem, 6vw, 5rem);
+      letter-spacing: 0.06em; color: var(--cream); line-height: 1; margin-bottom: 16px;
+    }
+    .hero h1 span { color: var(--gold); }
+    .hero p { max-width: 520px; margin: 0 auto 40px; font-size: 1rem; font-weight: 300;
+      color: rgba(245,240,232,0.65); line-height: 1.7; }
+
+    /* ── Search box ── */
+    .search-wrap { max-width: 560px; margin: 0 auto; }
+    .search-row {
+      display: flex; gap: 0; background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(200,170,90,0.3); border-radius: 4px; overflow: hidden;
+    }
+    .search-row input {
+      flex: 1; background: none; border: none; outline: none;
+      padding: 16px 20px; color: var(--cream); font-family: 'Barlow', sans-serif;
+      font-size: 1rem; letter-spacing: 0.06em;
+    }
+    .search-row input::placeholder { color: rgba(245,240,232,0.28); }
+    .search-row button {
+      background: var(--gold); color: var(--charcoal); border: none;
+      padding: 16px 28px; font-family: 'Barlow', sans-serif; font-size: 0.85rem;
+      font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+      transition: background 0.2s; white-space: nowrap;
+    }
+    .search-row button:hover { background: var(--gold-light); }
+    .search-hint { font-size: 0.76rem; color: rgba(245,240,232,0.35); margin-top: 10px; text-align: center; }
+
+    /* ── Result area ── */
+    .result-section { max-width: 640px; margin: 60px auto; padding: 0 24px; }
+
+    /* Status card */
+    .status-card {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(200,170,90,0.22);
+      border-radius: 8px; overflow: hidden;
+    }
+    .sc-head {
+      background: rgba(200,170,90,0.1); border-bottom: 1px solid rgba(200,170,90,0.2);
+      padding: 24px 28px;
+    }
+    .sc-ref { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 0.12em; color: var(--gold); margin-bottom: 4px; }
+    .sc-date { font-size: 0.78rem; color: rgba(245,240,232,0.45); letter-spacing: 0.06em; }
+    .sc-body { padding: 32px 28px; }
+
+    /* Timeline */
+    .timeline { display: flex; flex-direction: column; gap: 0; margin-bottom: 32px; }
+    .tl-step { display: flex; gap: 18px; align-items: flex-start; padding: 16px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .tl-step:last-child { border-bottom: none; }
+    .tl-icon {
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 1rem;
+      margin-top: 2px;
+    }
+    .tl-icon.done { background: rgba(200,170,90,0.18); color: var(--gold); border: 1.5px solid rgba(200,170,90,0.5); }
+    .tl-icon.active { background: rgba(200,170,90,0.08); color: rgba(200,170,90,0.6); border: 1.5px dashed rgba(200,170,90,0.35); }
+    .tl-icon.pending { background: rgba(255,255,255,0.04); color: rgba(245,240,232,0.2); border: 1.5px solid rgba(255,255,255,0.08); }
+    .tl-text { flex: 1; }
+    .tl-label { font-size: 0.92rem; font-weight: 600; color: var(--cream); margin-bottom: 3px; }
+    .tl-label.pending-text { color: rgba(245,240,232,0.35); }
+    .tl-sub { font-size: 0.78rem; color: rgba(245,240,232,0.4); line-height: 1.5; }
+
+    /* Under review badge */
+    .review-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(200,130,40,0.12); border: 1px solid rgba(200,130,40,0.35);
+      border-radius: 20px; padding: 6px 14px; font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase; color: #e8a84b; margin-bottom: 20px;
+    }
+    .review-badge .dot {
+      width: 7px; height: 7px; border-radius: 50%; background: #e8a84b;
+      animation: pulse 1.6s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* Contact nudge */
+    .contact-nudge {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 5px; padding: 20px 22px; font-size: 0.84rem;
+      color: rgba(245,240,232,0.6); line-height: 1.7;
+    }
+    .contact-nudge strong { color: var(--cream); }
+    .contact-nudge a { color: var(--gold); text-decoration: none; }
+    .contact-nudge a:hover { text-decoration: underline; }
+
+    /* Error / empty states */
+    .state-msg { text-align: center; padding: 52px 20px; }
+    .state-icon { font-size: 2.6rem; display: block; margin-bottom: 14px; }
+    .state-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 0.1em;
+      color: var(--cream); margin-bottom: 8px; }
+    .state-sub { font-size: 0.85rem; color: rgba(245,240,232,0.45); line-height: 1.6; }
+    .state-msg.err .state-title { color: #e07070; }
+
+    /* CTA strip */
+    .cta-strip { text-align: center; margin-top: 64px; padding: 48px 24px;
+      border-top: 1px solid rgba(200,170,90,0.1); }
+    .cta-strip p { font-size: 0.88rem; color: rgba(245,240,232,0.45); margin-bottom: 20px; }
+    .cta-strip a {
+      display: inline-block; background: var(--gold); color: var(--charcoal);
+      text-decoration: none; padding: 13px 32px; border-radius: 3px; font-weight: 700;
+      font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; transition: background 0.2s;
+    }
+    .cta-strip a:hover { background: var(--gold-light); }
+
+    /* Footer */
+    footer { background: var(--olive-dark); border-top: 1px solid rgba(200,170,90,0.15);
+      padding: 32px 5%; text-align: center; }
+    footer p { font-size: 0.78rem; color: rgba(245,240,232,0.3); }
+    footer a { color: rgba(200,170,90,0.6); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<!-- Crisis Bar -->
+<div id="crisis-bar">
+  If you're in crisis — <strong>Call or text 988, then press 1</strong> — Veterans Crisis Line — Available 24/7 —
+  <a href="https://www.veteranscrisisline.net" target="_blank" rel="noopener">Chat online</a>
+  <button onclick="dismissCrisisBar()" aria-label="Dismiss">✕</button>
+  </div>
+<script>
+    (function() {
+      if ((performance.getEntriesByType('navigation')[0] || {}).type === 'reload') {
+        sessionStorage.removeItem('crisisBarDismissed');
+      }
+      if (sessionStorage.getItem('crisisBarDismissed')) {
+        document.getElementById('crisis-bar').style.display = 'none';
+      }
+    })();
+    function dismissCrisisBar() {
+      document.getElementById('crisis-bar').style.display = 'none';
+      sessionStorage.setItem('crisisBarDismissed', '1');
+    }
+  </script>
+  <!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="413212FE-ACE0-4643-9C94-3C2A5F1B4848.PNG" alt="Entheos Veteran Project" onerror="this.style.display='none'"/>
+    <span class="nav-logo-text">ENTHEOS</span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="scholarship.html">Scholarships</a>
+    <a href="our-team.html">Our Team</a>
+    <a href="donate.html">Donate</a>
+  </div>
+  <div class="nav-right">
+    <a href="apply.html" class="nav-cta">Apply Now</a>
+    <a href="account.html" id="nav-account-link" style="font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;color:rgba(245,240,232,0.6);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(245,240,232,0.6)'">My Account</a>
+  </div>
+</nav>
+
+<!-- Logged-in banner -->
+<div id="auth-banner" style="display:none; background:rgba(200,170,90,0.08); border-bottom:1px solid rgba(200,170,90,0.2); padding:12px 32px; display:none; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+  <span style="font-size:0.82rem; color:rgba(245,240,232,0.6);">Signed in as <strong id="banner-email" style="color:var(--gold);"></strong></span>
+  <button onclick="doSignOut()" style="background:none; border:1px solid rgba(245,240,232,0.2); color:rgba(245,240,232,0.5); border-radius:3px; padding:4px 14px; font-size:0.72rem; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; font-family:'Barlow',sans-serif;">Sign Out</button>
+</div>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-eyebrow">Application Portal</div>
+  <h1>Check Your <span>Status</span></h1>
+  <p id="hero-sub">Enter the reference code from your confirmation screen to see where your application stands.</p>
+
+  <div class="search-wrap" id="ref-form">
+    <div class="search-row">
+      <input type="text" id="ref-input" placeholder="EVP-YYYYMMDD-XXXX"
+        oninput="this.value = this.value.toUpperCase()"
+        onkeydown="if(event.key==='Enter') checkStatus()"/>
+      <button onclick="checkStatus()">Check Status</button>
+    </div>
+    <div class="search-hint">Your reference code was shown on your confirmation screen after submitting. &nbsp;|&nbsp; <a href="account.html" style="color:var(--gold);">Sign in</a> to load automatically.</div>
+  </div>
+</div>
+
+<!-- Result -->
+<div class="result-section" id="result"></div>
+
+<!-- CTA -->
+<div class="cta-strip">
+  <p>Haven't applied yet? Our grants cover treatment, education, housing, and more — at no cost to you.</p>
+  <a href="apply.html">Start Your Application</a>
+</div>
+
+<!-- Footer -->
+<footer>
+  <p>&copy; 2026 Entheos Veteran Project &nbsp;|&nbsp; <a href="index.html">Home</a> &nbsp;|&nbsp; <a href="apply.html">Apply</a> &nbsp;|&nbsp; <a href="donate.html">Donate</a></p>
+</footer>
+
+<script>
+  const REF_REGEX = /^EVP-(\d{4})(\d{2})(\d{2})-[A-Z0-9]{1}$/;
+  const SB_URL  = 'https://afdybbbeukqnqlxlojmu.supabase.co';
+  const SB_ANON = 'sb_publishable_5YQFAeRNG64IYbPTRwtZCg_1BZooKWx';
+
+  /* ── Auth: check localStorage on load, auto-fetch if logged in ── */
+  window.addEventListener('DOMContentLoaded', () => {
+    const email = localStorage.getItem('ev_user');
+    if (email) {
+      document.getElementById('auth-banner').style.display = 'flex';
+      document.getElementById('banner-email').textContent = email;
+      document.getElementById('hero-sub').textContent = 'Loading your application…';
+      document.getElementById('ref-form').style.display = 'none';
+      autoLoadByEmail(email);
+    }
+
+    // URL param ?ref= still works for non-logged-in
+    const params = new URLSearchParams(window.location.search);
+    const refParam = params.get('ref');
+    if (refParam && !email) {
+      document.getElementById('ref-input').value = refParam.toUpperCase();
+      checkStatus();
+    }
+  });
+
+  async function autoLoadByEmail(email) {
+    const area = document.getElementById('result');
+    area.innerHTML = `<div class="state-msg"><span class="state-icon">⏳</span><div class="state-title">Loading Your Application…</div></div>`;
+    try {
+      const res  = await fetch(
+        SB_URL + '/rest/v1/applications?email=eq.' + encodeURIComponent(email) + '&select=reference_code,status,status_note,submitted_at&order=submitted_at.desc&limit=1',
+        { headers: { 'apikey': SB_ANON, 'Authorization': 'Bearer ' + SB_ANON } }
+      );
+      const rows = await res.json();
+      if (rows && rows.length > 0) {
+        const r = rows[0];
+        const submitted = new Date(r.submitted_at);
+        const submittedStr = submitted.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+        const daysSince = Math.floor((new Date() - submitted) / 86400000);
+        renderStatus(r.reference_code, r.status || 'received', r.status_note || '', submittedStr, daysSince, area);
+      } else {
+        area.innerHTML = `<div class="state-msg err"><span class="state-icon">🔍</span><div class="state-title">No Application Found</div><div class="state-sub">We couldn't find an application linked to <strong style="color:var(--gold)">${email}</strong>.<br>Make sure you used the same email when applying, or <a href="apply.html" style="color:var(--gold)">submit an application</a>.</div></div>`;
+      }
+    } catch(e) {
+      area.innerHTML = `<div class="state-msg err"><span class="state-icon">⚠️</span><div class="state-title">Connection Error</div><div class="state-sub">Could not reach the database. Please try again.</div></div>`;
+    }
+  }
+
+  function doSignOut() {
+    localStorage.removeItem('ev_user');
+    location.reload();
+  }
+
+  const STATUS_CONFIG = {
+    received:         { badge: 'Application Received',       step: 1, color: 'var(--gold)' },
+    under_review:     { badge: 'Under Review',               step: 2, color: 'var(--gold)' },
+    extended_review:  { badge: 'Extended Review',            step: 2, color: '#e8a84b' },
+    awaiting_docs:    { badge: 'Awaiting Documents From You',step: 2, color: '#e8a84b' },
+    approved:         { badge: 'Approved',                   step: 4, color: '#5aaa6e' },
+    denied:           { badge: 'Not Selected',               step: 3, color: '#e07070' },
+  };
+
+  async function checkStatus() {
+    const raw  = document.getElementById('ref-input').value.trim().toUpperCase();
+    const area = document.getElementById('result');
+    if (!raw) return;
+
+    const match = raw.match(REF_REGEX);
+    if (!match) {
+      area.innerHTML = `<div class="state-msg err"><span class="state-icon">⚠️</span><div class="state-title">Code Not Recognized</div><div class="state-sub">That doesn't match our format (EVP-YYYYMMDD-XXXX).<br>Check your confirmation screen and try again.<br><br>Need help? Email <a href="mailto:Entheosveteranproject@gmail.com" style="color:var(--gold)">Entheosveteranproject@gmail.com</a> with your name and submission date.</div></div>`;
+      return;
+    }
+
+    area.innerHTML = `<div class="state-msg"><span class="state-icon">⏳</span><div class="state-title">Looking Up Your Application…</div></div>`;
+
+    const year = match[1], month = parseInt(match[2]) - 1, day = parseInt(match[3]);
+    const submitted    = new Date(parseInt(year), month, day);
+    const submittedStr = submitted.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+    const daysSince    = Math.floor((new Date() - submitted) / 86400000);
+
+    let status = 'under_review', note = '';
+
+    if (SB_URL !== 'PASTE_YOUR_SUPABASE_URL') {
+      try {
+        const res  = await fetch(
+          SB_URL + '/rest/v1/applications?reference_code=eq.' + encodeURIComponent(raw) + '&select=status,status_note,submitted_at',
+          { headers: { 'apikey': SB_ANON, 'Authorization': 'Bearer ' + SB_ANON } }
+        );
+        const rows = await res.json();
+        if (rows.length > 0) {
+          status = rows[0].status || 'received';
+          note   = rows[0].status_note || '';
+        } else {
+          area.innerHTML = `<div class="state-msg err"><span class="state-icon">🔍</span><div class="state-title">Application Not Found</div><div class="state-sub">We couldn't find an application with that reference code.<br>Double-check the code or email <a href="mailto:Entheosveteranproject@gmail.com" style="color:var(--gold)">Entheosveteranproject@gmail.com</a>.</div></div>`;
+          return;
+        }
+      } catch(e) {
+        status = 'under_review'; // fallback if DB unreachable
+      }
+    }
+
+    renderStatus(raw, status, note, submittedStr, daysSince, area);
+  }
+
+  function renderStatus(ref, status, note, submittedStr, daysSince, area) {
+    const cfg  = STATUS_CONFIG[status] || STATUS_CONFIG.under_review;
+    const step = cfg.step;
+
+    if (status === 'approved') {
+      area.innerHTML = `
+        <div class="status-card">
+          <div class="sc-head" style="background:rgba(90,170,110,0.12);border-color:rgba(90,170,110,0.3);">
+            <div class="sc-ref" style="color:#5aaa6e;">${ref}</div>
+            <div class="sc-date">Submitted ${submittedStr}</div>
+          </div>
+          <div class="sc-body" style="text-align:center;padding:40px 28px;">
+            <div style="font-size:3rem;margin-bottom:16px;">🎖️</div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:0.1em;color:#5aaa6e;margin-bottom:12px;">Application Approved</div>
+            <p style="color:rgba(245,240,232,0.7);max-width:460px;margin:0 auto 20px;line-height:1.7;">Your application has been approved. Our team will be in contact with you directly to finalize the details and coordinate fund disbursement.</p>
+            ${note ? `<div style="background:rgba(90,170,110,0.1);border:1px solid rgba(90,170,110,0.25);border-radius:5px;padding:14px 20px;font-size:0.88rem;color:rgba(245,240,232,0.75);margin:0 auto;max-width:460px;text-align:left;"><strong style="color:#5aaa6e;">Message from our team:</strong><br>${note}</div>` : ''}
+          </div>
+        </div>`;
+      area.scrollIntoView({ behavior:'smooth', block:'start' });
+      return;
+    }
+
+    if (status === 'denied') {
+      area.innerHTML = `
+        <div class="status-card">
+          <div class="sc-head">
+            <div class="sc-ref">${ref}</div>
+            <div class="sc-date">Submitted ${submittedStr}</div>
+          </div>
+          <div class="sc-body" style="text-align:center;padding:40px 28px;">
+            <div style="font-size:2.6rem;margin-bottom:16px;">📋</div>
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:0.1em;color:var(--cream);margin-bottom:12px;">Decision Made</div>
+            <p style="color:rgba(245,240,232,0.65);max-width:480px;margin:0 auto 20px;line-height:1.7;">After careful review, we were unable to fund this application at this time. This does not reflect on your service or your need — funding is limited and decisions are always difficult.</p>
+            ${note ? `<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:5px;padding:14px 20px;font-size:0.88rem;color:rgba(245,240,232,0.65);margin:0 auto 20px;max-width:460px;text-align:left;"><strong style="color:var(--cream);">Message from our team:</strong><br>${note}</div>` : ''}
+            <p style="font-size:0.84rem;color:rgba(245,240,232,0.4);">You are welcome to reapply in the future. Email <a href="mailto:Entheosveteranproject@gmail.com" style="color:var(--gold)">Entheosveteranproject@gmail.com</a> with any questions.</p>
+          </div>
+        </div>`;
+      area.scrollIntoView({ behavior:'smooth', block:'start' });
+      return;
+    }
+
+    const tl = (iconClass, icon, label, sub, labelClass) => `
+      <div class="tl-step">
+        <div class="tl-icon ${iconClass}">${icon}</div>
+        <div class="tl-text">
+          <div class="tl-label ${labelClass||''}">${label}</div>
+          <div class="tl-sub">${sub}</div>
+        </div>
+      </div>`;
+
+    const awaitingNote = status === 'awaiting_docs'
+      ? `<div style="background:rgba(232,168,75,0.1);border:1px solid rgba(232,168,75,0.3);border-radius:5px;padding:14px 20px;font-size:0.86rem;color:rgba(245,240,232,0.8);margin-bottom:20px;"><strong style="color:#e8a84b;">Action Required:</strong> Our team needs additional documents from you. ${note ? note : 'Please check your email or contact us.'}</div>` : '';
+
+    area.innerHTML = `
+      <div class="status-card">
+        <div class="sc-head">
+          <div class="sc-ref">${ref}</div>
+          <div class="sc-date">Submitted ${submittedStr} &nbsp;·&nbsp; ${daysSince} day${daysSince!==1?'s':''} ago</div>
+        </div>
+        <div class="sc-body">
+          <div class="review-badge" style="border-color:rgba(200,170,90,0.4);"><span class="dot"></span> ${cfg.badge}</div>
+          ${awaitingNote}
+          ${note && status !== 'awaiting_docs' ? `<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:5px;padding:12px 18px;font-size:0.84rem;color:rgba(245,240,232,0.65);margin-bottom:20px;"><strong style="color:var(--cream);">Note from our team:</strong> ${note}</div>` : ''}
+          <div class="timeline">
+            ${tl('done','✓','Application Received',`${submittedStr} — Your application is in our system.`)}
+            ${tl(step>=2?'done':'active', step>=2?'✓':'⏳', 'Under Review', step===2&&status==='extended_review'?'Your request exceeds $5,000 and requires extended review (14–21 business days).':'Our team is reviewing your submission and verifying your service history.')}
+            ${tl(step>=3?'done':'pending', step>=3?'✓':'○', 'Decision Made', 'You will be notified by email and phone once a decision is reached.', step<3?'pending-text':'')}
+            ${tl(step>=4?'done':'pending', step>=4?'✓':'○', 'Funds Disbursed', 'If approved, funds go directly to your provider, school, or program.', step<4?'pending-text':'')}
+          </div>
+          <div class="contact-nudge">
+            <strong>Questions about your application?</strong><br>
+            Email <a href="mailto:Entheosveteranproject@gmail.com">Entheosveteranproject@gmail.com</a> or
+            <a href="mailto:winn.rebecca.d@gmail.com">winn.rebecca.d@gmail.com</a> with reference code <strong>${ref}</strong>.
+          </div>
+        </div>
+      </div>`;
+
+    area.scrollIntoView({ behavior:'smooth', block:'start' });
+  }
+
+</script>
+</body>
+</html>

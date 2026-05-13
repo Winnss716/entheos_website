@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Application Lookup — Entheos Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style>
+    :root { --olive:#4a5240; --olive-dark:#2e3328; --gold:#c8aa5a; --gold-light:#e2c97e; --cream:#f5f0e8; --charcoal:#1c1e1a; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--charcoal);color:var(--cream);font-family:'Barlow',sans-serif;min-height:100vh;}
+
+    #login-gate{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;}
+    .brand{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;letter-spacing:0.12em;color:var(--gold);margin-bottom:6px;}
+    .brand-sub{font-size:0.75rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(245,240,232,0.35);margin-bottom:40px;}
+    .box{background:rgba(255,255,255,0.04);border:1px solid rgba(200,170,90,0.25);border-radius:6px;padding:40px 44px;width:100%;max-width:400px;text-align:center;}
+    .box h2{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;color:var(--gold);letter-spacing:0.1em;margin-bottom:6px;}
+    .box p{font-size:0.82rem;color:rgba(245,240,232,0.45);margin-bottom:26px;}
+    .field{width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(200,170,90,0.25);border-radius:4px;padding:13px 16px;color:var(--cream);font-family:'Barlow',sans-serif;font-size:0.95rem;outline:none;transition:border-color 0.2s;margin-bottom:12px;}
+    .field:focus{border-color:var(--gold);}
+    .btn{width:100%;background:var(--gold);color:var(--charcoal);border:none;border-radius:4px;padding:13px;font-family:'Barlow',sans-serif;font-size:0.88rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;}
+    .btn:hover{background:var(--gold-light);}
+    .login-err{color:#e07070;font-size:0.8rem;margin-top:10px;display:none;}
+
+    #app{display:none;}
+    .topbar{background:rgba(28,30,26,0.97);border-bottom:1px solid rgba(200,170,90,0.18);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;}
+    .t-brand{font-family:'Bebas Neue',sans-serif;font-size:1.35rem;color:var(--gold);letter-spacing:0.1em;}
+    .t-tag{font-size:0.66rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);background:rgba(200,170,90,0.1);border:1px solid rgba(200,170,90,0.25);padding:4px 10px;border-radius:3px;}
+    .signout{background:none;border:1px solid rgba(245,240,232,0.18);color:rgba(245,240,232,0.45);border-radius:3px;padding:5px 14px;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;font-family:'Barlow',sans-serif;transition:all 0.2s;}
+    .signout:hover{border-color:var(--gold);color:var(--gold);}
+
+    .main{max-width:880px;margin:0 auto;padding:52px 24px 80px;}
+    .page-title{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;letter-spacing:0.08em;color:var(--cream);margin-bottom:6px;}
+    .page-sub{font-size:0.85rem;color:rgba(245,240,232,0.45);margin-bottom:32px;}
+
+    .setup-box{background:rgba(200,170,90,0.08);border:1px solid rgba(200,170,90,0.3);border-radius:5px;padding:24px 26px;margin-bottom:28px;}
+    .setup-box h3{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--gold);margin-bottom:8px;letter-spacing:0.08em;}
+    .setup-box p{font-size:0.82rem;color:rgba(245,240,232,0.6);line-height:1.7;margin-bottom:14px;}
+    .setup-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+    .setup-input{background:rgba(255,255,255,0.06);border:1px solid rgba(200,170,90,0.25);border-radius:4px;padding:10px 14px;color:var(--cream);font-family:monospace;font-size:0.78rem;outline:none;transition:border-color 0.2s;width:100%;}
+    .setup-input:focus{border-color:var(--gold);}
+    .setup-save{background:var(--gold);color:var(--charcoal);border:none;border-radius:4px;padding:10px 24px;font-family:'Barlow',sans-serif;font-size:0.82rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;}
+    .setup-save:hover{background:var(--gold-light);}
+    .setup-clear{background:none;border:1px solid rgba(245,240,232,0.15);color:rgba(245,240,232,0.4);border-radius:4px;padding:10px 16px;font-family:'Barlow',sans-serif;font-size:0.78rem;cursor:pointer;transition:all 0.2s;margin-left:8px;}
+    .setup-clear:hover{border-color:rgba(245,240,232,0.35);color:rgba(245,240,232,0.7);}
+
+    .search-row{display:flex;gap:12px;margin-bottom:28px;}
+    .search-row input{flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(200,170,90,0.25);border-radius:4px;padding:15px 18px;color:var(--cream);font-family:'Barlow',sans-serif;font-size:1.05rem;letter-spacing:0.06em;outline:none;transition:border-color 0.2s;}
+    .search-row input:focus{border-color:var(--gold);}
+    .search-row input::placeholder{color:rgba(245,240,232,0.25);}
+    .search-row button{background:var(--gold);color:var(--charcoal);border:none;border-radius:4px;padding:15px 30px;font-family:'Barlow',sans-serif;font-size:0.88rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;}
+    .search-row button:hover{background:var(--gold-light);}
+    .search-row button:disabled{opacity:0.4;cursor:default;}
+
+    .msg{text-align:center;padding:52px 20px;font-size:0.88rem;color:rgba(245,240,232,0.4);}
+    .msg.err{color:#e07070;}
+    .msg-icon{font-size:2.4rem;display:block;margin-bottom:14px;}
+
+    .result-card{background:rgba(255,255,255,0.04);border:1px solid rgba(200,170,90,0.22);border-radius:6px;overflow:hidden;margin-bottom:16px;}
+    .rc-head{background:rgba(200,170,90,0.1);border-bottom:1px solid rgba(200,170,90,0.2);padding:20px 26px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+    .rc-ref{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:0.12em;color:var(--gold);}
+    .rc-date{font-size:0.76rem;color:rgba(245,240,232,0.4);}
+    .rc-body{padding:28px 26px;}
+    .rc-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+    .rc-field{padding:11px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+    .rc-field.full{grid-column:1/-1;}
+    .rc-label{font-size:0.65rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;}
+    .rc-val{font-size:0.9rem;color:var(--cream);line-height:1.55;}
+
+    .s-badge{display:inline-flex;align-items:center;border-radius:20px;padding:5px 14px;font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;}
+    .s-received,.s-under_review{background:rgba(200,170,90,0.1);border:1px solid rgba(200,170,90,0.3);color:var(--gold);}
+    .s-extended_review,.s-awaiting_docs{background:rgba(232,168,75,0.1);border:1px solid rgba(232,168,75,0.3);color:#e8a84b;}
+    .s-approved{background:rgba(90,170,110,0.1);border:1px solid rgba(90,170,110,0.3);color:#5aaa6e;}
+    .s-denied{background:rgba(224,112,112,0.1);border:1px solid rgba(224,112,112,0.3);color:#e07070;}
+
+    .update-panel{background:rgba(255,255,255,0.03);border:1px solid rgba(200,170,90,0.15);border-radius:6px;padding:24px 26px;}
+    .update-title{font-size:0.7rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;}
+    .update-row{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;}
+    .update-group{display:flex;flex-direction:column;gap:6px;flex:1;min-width:160px;}
+    .update-group label{font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(245,240,232,0.5);}
+    .update-select,.update-note{background:rgba(255,255,255,0.06);border:1px solid rgba(200,170,90,0.25);border-radius:4px;padding:10px 14px;color:var(--cream);font-family:'Barlow',sans-serif;font-size:0.88rem;outline:none;transition:border-color 0.2s;}
+    .update-select:focus,.update-note:focus{border-color:var(--gold);}
+    .update-select option{background:#2a2d27;}
+    .update-note{flex:2;min-width:220px;}
+    .update-btn{background:var(--gold);color:var(--charcoal);border:none;border-radius:4px;padding:10px 24px;font-family:'Barlow',sans-serif;font-size:0.82rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;white-space:nowrap;align-self:flex-end;}
+    .update-btn:hover{background:var(--gold-light);}
+    .update-btn:disabled{opacity:0.4;cursor:default;}
+    .update-ok{color:#5aaa6e;font-size:0.82rem;margin-top:10px;display:none;}
+
+    .section-label{font-size:0.68rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:rgba(245,240,232,0.3);margin-top:52px;margin-bottom:16px;}
+    table{width:100%;border-collapse:collapse;font-size:0.84rem;}
+    th{text-align:left;font-size:0.65rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);padding:8px 12px;border-bottom:1px solid rgba(200,170,90,0.2);}
+    td{padding:11px 12px;border-bottom:1px solid rgba(255,255,255,0.04);color:rgba(245,240,232,0.75);}
+    tr:hover td{background:rgba(255,255,255,0.025);cursor:pointer;}
+    .ref-link{color:var(--gold);font-family:monospace;font-size:0.8rem;}
+    .s-pill{font-size:0.63rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:10px;}
+  </style>
+</head>
+<body>
+
+<div id="login-gate">
+  <div class="brand">ENTHEOS</div>
+  <div class="brand-sub">Veteran Project — Admin</div>
+  <div class="box">
+    <h2>Admin Access</h2>
+    <p>Staff only. Enter your password to continue.</p>
+    <input type="password" class="field" id="pw" placeholder="Password" onkeydown="if(event.key==='Enter')login()"/>
+    <button class="btn" onclick="login()">Sign In</button>
+    <div class="login-err" id="pw-err">Incorrect password — try again.</div>
+  </div>
+</div>
+
+<div id="app">
+  <div class="topbar">
+    <span class="t-brand">ENTHEOS</span>
+    <span class="t-tag">Admin Portal</span>
+    <button class="signout" onclick="logout()">Sign Out</button>
+  </div>
+
+  <div class="main">
+    <div class="page-title">Application Lookup</div>
+    <div class="page-sub">Search by reference code to view and update any application's status.</div>
+
+    <div class="setup-box" id="setup-box" style="display:none">
+      <h3>Connect to Database</h3>
+      <p>Paste your Supabase Project URL and both keys below. Find them at <strong>supabase.com → your project → Settings → API</strong>. Saved in your browser.</p>
+      <div class="setup-grid">
+        <input type="text"     class="setup-input" id="sb-url"     placeholder="Project URL: https://xxxxx.supabase.co"/>
+        <input type="text"     class="setup-input" id="sb-anon"    placeholder="Anon / public key"/>
+        <input type="password" class="setup-input" id="sb-service" placeholder="Service role key (for status updates)" style="grid-column:1/-1"/>
+      </div>
+      <button class="setup-save" onclick="saveSetup()">Save & Connect</button>
+      <button class="setup-clear" onclick="clearSetup()">Clear Saved Keys</button>
+    </div>
+
+    <div class="setup-box" id="ej-setup-box" style="display:none">
+      <h3>Email Notifications Setup</h3>
+      <p>Paste your <strong>EmailJS</strong> credentials so veterans are automatically emailed when their status changes. Get them at <strong>emailjs.com → Account → API Keys</strong> and <strong>Email Services / Templates</strong>.<br><br>
+      Your template should use these variables: <code style="font-size:0.78rem;color:var(--gold)">{{to_name}}</code>, <code style="font-size:0.78rem;color:var(--gold)">{{to_email}}</code>, <code style="font-size:0.78rem;color:var(--gold)">{{ref_code}}</code>, <code style="font-size:0.78rem;color:var(--gold)">{{new_status}}</code>, <code style="font-size:0.78rem;color:var(--gold)">{{admin_note}}</code>.</p>
+      <div class="setup-grid">
+        <input type="text" class="setup-input" id="ej-pub" placeholder="Public Key (from Account → API Keys)"/>
+        <input type="text" class="setup-input" id="ej-svc" placeholder="Service ID (from Email Services)"/>
+        <input type="text" class="setup-input" id="ej-tpl" placeholder="Template ID (from Email Templates)" style="grid-column:1/-1"/>
+      </div>
+      <button class="setup-save" onclick="saveEJSetup()">Save & Enable Notifications</button>
+      <button class="setup-clear" onclick="Object.values(EJ_KEYS).forEach(k=>localStorage.removeItem(k));location.reload()">Clear</button>
+    </div>
+
+    <div class="search-row">
+      <input type="text" id="search-name" placeholder="Full name (e.g. John Smith)"
+        onkeydown="if(event.key==='Enter')doSearch()"/>
+      <button id="search-btn" onclick="doSearch()">Look Up</button>
+    </div>
+
+    <div id="result"></div>
+
+    <div id="recent-section" style="display:none">
+      <div class="section-label">Recent Applications</div>
+      <table>
+        <thead><tr><th>Reference Code</th><th>Name</th><th>Branch</th><th>Amount</th><th>Status</th><th>Submitted</th></tr></thead>
+        <tbody id="recent-body"></tbody>
+      </table>
+    </div>
+
+    <div id="users-section" style="display:none;margin-top:52px;">
+      <div class="section-label">Registered Accounts</div>
+      <table>
+        <thead><tr><th>#</th><th>Email</th><th>Verified</th><th>Created</th></tr></thead>
+        <tbody id="users-body"></tbody>
+      </table>
+      <div id="users-msg" style="font-size:0.82rem;color:rgba(245,240,232,0.35);margin-top:12px;display:none;"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const PASS     = 'Entheos2026!';
+  const AUTH_KEY = 'evp_authed';
+  const SB_KEYS  = { url:'evp_sb_url', anon:'evp_sb_anon', svc:'evp_sb_svc' };
+  const EJ_KEYS  = { pub:'evp_ej_pub', svc:'evp_ej_svc', tpl:'evp_ej_tpl' };
+  let _currentApp = null;
+  let _currentRef  = null;
+
+  // Pre-fill credentials
+  localStorage.setItem('evp_sb_url',  'https://afdybbbeukqnqlxlojmu.supabase.co');
+  localStorage.setItem('evp_sb_anon', 'sb_publishable_5YQFAeRNG64IYbPTRwtZCg_1BZooKWx');
+
+  const STATUS_LABELS = {
+    received:'Received', under_review:'Under Review', extended_review:'Extended Review',
+    awaiting_docs:'Awaiting Docs', approved:'Approved', denied:'Not Selected'
+  };
+
+  /* ── Auth ── */
+  function login() {
+    if (document.getElementById('pw').value === PASS) {
+      sessionStorage.setItem(AUTH_KEY, '1');
+      showApp();
+    } else {
+      document.getElementById('pw-err').style.display = 'block';
+      document.getElementById('pw').value = '';
+      document.getElementById('pw').focus();
+    }
+  }
+  function logout() { sessionStorage.removeItem(AUTH_KEY); location.reload(); }
+
+  function showApp() {
+    document.getElementById('login-gate').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    init();
+  }
+
+  /* ── Setup ── */
+  function getKeys() {
+    return {
+      url: localStorage.getItem(SB_KEYS.url)  || '',
+      anon: localStorage.getItem(SB_KEYS.anon) || '',
+      svc:  localStorage.getItem(SB_KEYS.svc)  || '',
+    };
+  }
+  function getEJ() {
+    return {
+      pub: localStorage.getItem(EJ_KEYS.pub) || '',
+      svc: localStorage.getItem(EJ_KEYS.svc) || '',
+      tpl: localStorage.getItem(EJ_KEYS.tpl) || '',
+    };
+  }
+
+  function init() {
+    const k = getKeys();
+    if (!k.url || !k.anon) {
+      document.getElementById('setup-box').style.display = 'block';
+    } else {
+      loadRecent();
+    }
+    const ej = getEJ();
+    if (ej.pub) {
+      emailjs.init({ publicKey: ej.pub });
+      document.getElementById('ej-setup-box').style.display = 'none';
+    } else {
+      document.getElementById('ej-setup-box').style.display = 'block';
+    }
+    loadUsers();
+  }
+
+  async function loadUsers() {
+    try {
+      const res  = await fetch('/api/admin/users?key=' + encodeURIComponent(PASS));
+      if (!res.ok) { return; }
+      const rows = await res.json();
+      if (!Array.isArray(rows) || rows.length === 0) {
+        document.getElementById('users-section').style.display = 'block';
+        document.getElementById('users-msg').textContent = 'No accounts yet.';
+        document.getElementById('users-msg').style.display = 'block';
+        return;
+      }
+      const tbody = document.getElementById('users-body');
+      tbody.innerHTML = '';
+      rows.forEach((r, i) => {
+        const tr = document.createElement('tr');
+        const date = r.created_at ? new Date(r.created_at + 'Z').toLocaleString('en-US', { month:'short', day:'numeric', year:'numeric', hour:'numeric', minute:'2-digit' }) : '—';
+        const verifiedBadge = r.verified ? '<span style="color:#5aaa6e">✓ Yes</span>' : '<span style="color:#e07070">✗ No</span>';
+        tr.innerHTML = `<td style="color:rgba(245,240,232,0.4)">${rows.length - i}</td><td>${r.email}</td><td>${verifiedBadge}</td><td>${date}</td>`;
+        tbody.appendChild(tr);
+      });
+      document.getElementById('users-section').style.display = 'block';
+    } catch {
+      /* server not running — section stays hidden */
+    }
+  }
+
+  function saveEJSetup() {
+    const pub = document.getElementById('ej-pub').value.trim();
+    const svc = document.getElementById('ej-svc').value.trim();
+    const tpl = document.getElementById('ej-tpl').value.trim();
+    if (!pub || !svc || !tpl) { alert('All three EmailJS fields are required.'); return; }
+    localStorage.setItem(EJ_KEYS.pub, pub);
+    localStorage.setItem(EJ_KEYS.svc, svc);
+    localStorage.setItem(EJ_KEYS.tpl, tpl);
+    emailjs.init({ publicKey: pub });
+    document.getElementById('ej-setup-box').style.display = 'none';
+  }
+
+  function saveSetup() {
+    const url = document.getElementById('sb-url').value.trim();
+    const anon = document.getElementById('sb-anon').value.trim();
+    const svc  = document.getElementById('sb-service').value.trim();
+    if (!url || !anon) { alert('URL and anon key are required.'); return; }
+    localStorage.setItem(SB_KEYS.url,  url);
+    localStorage.setItem(SB_KEYS.anon, anon);
+    if (svc) localStorage.setItem(SB_KEYS.svc, svc);
+    document.getElementById('setup-box').style.display = 'none';
+    loadRecent();
+  }
+
+  function clearSetup() {
+    Object.values(SB_KEYS).forEach(k => localStorage.removeItem(k));
+    document.getElementById('setup-box').style.display = 'block';
+  }
+
+  /* ── Headers ── */
+  function headers() {
+    const k = getKeys();
+    return { 'apikey': k.anon, 'Authorization': 'Bearer ' + k.anon, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' };
+  }
+
+  /* ── Search ── */
+  async function doSearch() {
+    const raw   = document.getElementById('search-name').value.trim();
+    if (!raw) return;
+    const parts = raw.split(/\s+/);
+    const first = parts[0] || '';
+    const last  = parts.slice(1).join(' ') || '';
+    const k = getKeys();
+    if (!k.url) { document.getElementById('setup-box').style.display='block'; return; }
+
+    const btn = document.getElementById('search-btn');
+    btn.disabled = true; btn.textContent = 'Searching…';
+    setResult('<div class="msg"><span class="msg-icon">⏳</span>Searching for ' + raw + '…</div>');
+
+    let query = k.url + '/rest/v1/applications?select=*&order=submitted_at.desc';
+    if (first) query += '&first_name=ilike.' + encodeURIComponent('*' + first + '*');
+    if (last)  query += '&last_name=ilike.'  + encodeURIComponent('*' + last  + '*');
+
+    try {
+      const res  = await fetch(query, { headers: headers() });
+      const rows = await res.json();
+      btn.disabled = false; btn.textContent = 'Look Up';
+
+      if (!Array.isArray(rows)) {
+        setResult('<div class="msg err"><span class="msg-icon">⚠️</span>Database error.<br><small>' + JSON.stringify(rows) + '</small></div>');
+      } else if (rows.length === 0) {
+        setResult('<div class="msg err"><span class="msg-icon">🔍</span>No application found for <strong style="color:var(--gold)">' + raw + '</strong>.<br>Check the name or browse recent applications below.</div>');
+      } else if (rows.length === 1) {
+        renderCard(rows[0]);
+      } else {
+        renderMultiple(rows);
+      }
+    } catch(e) {
+      btn.disabled = false; btn.textContent = 'Look Up';
+      setResult('<div class="msg err"><span class="msg-icon">⚠️</span>Could not reach database.<br><small>' + e.message + '</small></div>');
+    }
+  }
+
+  /* ── Multiple results ── */
+  function renderMultiple(rows) {
+    let html = '<div style="margin-bottom:16px;font-size:0.82rem;color:rgba(245,240,232,0.5);">' + rows.length + ' applications found — click one to view.</div>';
+    rows.forEach(r => {
+      const s = r.status || 'received';
+      html += `<div class="result-card" style="cursor:pointer;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;" onclick="renderCard(${JSON.stringify(r).replace(/"/g,'&quot;')})">
+        <div>
+          <div style="font-size:1rem;font-weight:600;color:var(--cream)">${r.first_name||''} ${r.last_name||''}</div>
+          <div style="font-family:monospace;font-size:0.78rem;color:var(--gold);margin-top:3px">${r.reference_code||'—'}</div>
+          <div style="font-size:0.76rem;color:rgba(245,240,232,0.35);margin-top:2px">${r.submitted_at ? new Date(r.submitted_at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '—'}</div>
+        </div>
+        <div class="s-badge s-${s}">${STATUS_LABELS[s]||s}</div>
+      </div>`;
+    });
+    setResult(html);
+  }
+
+  /* ── Render card ── */
+  function renderCard(app) {
+    _currentApp = app;
+    _currentRef  = app.reference_code;
+    const f = (label, key, full) =>
+      `<div class="rc-field${full?' full':''}"><div class="rc-label">${label}</div><div class="rc-val">${app[key]||'—'}</div></div>`;
+
+    const status = app.status || 'received';
+    const date   = app.submitted_at ? new Date(app.submitted_at).toLocaleString('en-US',{month:'long',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'}) : '—';
+
+    setResult(`
+      <div class="result-card">
+        <div class="rc-head">
+          <div>
+            <div class="rc-ref">${app.reference_code||'—'}</div>
+            <div class="rc-date">Submitted ${date}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="s-badge s-${status}">${STATUS_LABELS[status]||status}</div>
+            <button onclick="refreshCurrent()" style="background:none;border:1px solid rgba(200,170,90,0.3);color:var(--gold);border-radius:4px;padding:5px 12px;font-family:'Barlow',sans-serif;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;" title="Reload from database">↻ Refresh</button>
+          </div>
+        </div>
+        <div class="rc-body">
+          <div class="rc-grid">
+            ${f('First Name','first_name')}
+            ${f('Last Name','last_name')}
+            ${f('Email','email')}
+            ${f('Phone','phone')}
+            ${f('State','state')}
+            ${f('Date of Birth','date_of_birth')}
+            ${f('Branch','branch')}
+            ${f('Discharge Status','discharge_status')}
+            ${f('Years Served','years_served')}
+            ${f('Deployments','deployments')}
+            ${f('Amount Needed','amount_needed')}
+            ${f('How They Heard','how_they_heard')}
+            ${f('Areas of Need','areas_of_need',true)}
+            ${f('Program / Provider','program_provider',true)}
+            ${f('Situation','situation',true)}
+            ${f('Goals','goals',true)}
+          </div>
+        </div>
+      </div>
+
+      <div class="update-panel">
+        <div class="update-title">Update Application Status</div>
+        <div class="update-row">
+          <div class="update-group">
+            <label>New Status</label>
+            <select class="update-select" id="new-status">
+              <option value="received"        ${status==='received'?'selected':''}>Received</option>
+              <option value="under_review"    ${status==='under_review'?'selected':''}>Under Review</option>
+              <option value="extended_review" ${status==='extended_review'?'selected':''}>Extended Review (&gt;$5k)</option>
+              <option value="awaiting_docs"   ${status==='awaiting_docs'?'selected':''}>Awaiting Documents</option>
+              <option value="approved"        ${status==='approved'?'selected':''}>Approved</option>
+              <option value="denied"          ${status==='denied'?'selected':''}>Not Selected</option>
+            </select>
+          </div>
+          <div class="update-group" style="flex:2">
+            <label>Note to Veteran (shows on their status page)</label>
+            <input type="text" class="update-note" id="status-note" value="${(app.status_note||'').replace(/"/g,'&quot;')}" placeholder="e.g. Please email your DD-214 to continue."/>
+          </div>
+          <button class="update-btn" id="update-btn" onclick="updateStatus('${app.reference_code}')">Save Status</button>
+        </div>
+        <div class="update-ok" id="update-ok">✓ Status updated — veteran's status page now reflects this change.</div>
+      </div>
+    `);
+  }
+
+  /* ── Update status ── */
+  async function updateStatus(ref) {
+    const k         = getKeys();
+    const newStatus = document.getElementById('new-status').value;
+    const note      = document.getElementById('status-note').value.trim();
+    const btn       = document.getElementById('update-btn');
+
+    btn.disabled = true; btn.textContent = 'Saving…';
+
+    try {
+      const res = await fetch(
+        k.url + '/rest/v1/applications?reference_code=eq.' + encodeURIComponent(ref),
+        {
+          method: 'PATCH',
+          headers: headers(),
+          body: JSON.stringify({ status: newStatus, status_note: note, status_updated_at: new Date().toISOString() })
+        }
+      );
+      btn.disabled = false; btn.textContent = 'Save Status';
+      if (res.ok || res.status === 204) {
+        let emailSent = false;
+        const ej = getEJ();
+        if (ej.pub && ej.svc && ej.tpl && _currentApp && _currentApp.email) {
+          try {
+            await emailjs.send(ej.svc, ej.tpl, {
+              to_name:   _currentApp.first_name || 'Veteran',
+              to_email:  _currentApp.email,
+              ref_code:  ref,
+              new_status: STATUS_LABELS[newStatus] || newStatus,
+              admin_note: note || 'No additional notes at this time.',
+            });
+            emailSent = true;
+          } catch(ejErr) { console.warn('EmailJS error:', ejErr); }
+        }
+        const okEl = document.getElementById('update-ok');
+        okEl.textContent = emailSent
+          ? '✓ Status updated and notification email sent to ' + _currentApp.email
+          : '✓ Status updated — veteran\'s status page now reflects this change.';
+        okEl.style.display = 'block';
+        loadRecent();
+      } else {
+        alert('Update failed (status ' + res.status + ').');
+      }
+    } catch(e) {
+      btn.disabled = false; btn.textContent = 'Save Status';
+      alert('Could not reach database: ' + e.message);
+    }
+  }
+
+  /* ── Recent list ── */
+  async function loadRecent() {
+    const k = getKeys();
+    if (!k.url) return;
+    try {
+      const res  = await fetch(k.url + '/rest/v1/applications?select=reference_code,first_name,last_name,branch,amount_needed,status,submitted_at&order=submitted_at.desc&limit=50', { headers: headers() });
+      const rows = await res.json();
+      if (!Array.isArray(rows) || !rows.length) return;
+
+      const tbody = document.getElementById('recent-body');
+      tbody.innerHTML = '';
+      rows.forEach(r => {
+        const s = r.status || 'received';
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><span class="ref-link">${r.reference_code||'—'}</span></td>
+          <td>${r.first_name||''} ${r.last_name||''}</td>
+          <td>${r.branch||'—'}</td>
+          <td>${r.amount_needed||'—'}</td>
+          <td><span class="s-pill s-${s}">${STATUS_LABELS[s]||s}</span></td>
+          <td>${r.submitted_at ? new Date(r.submitted_at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : '—'}</td>
+        `;
+        tr.onclick = () => { renderCard(r); window.scrollTo({top:0,behavior:'smooth'}); };
+        tbody.appendChild(tr);
+      });
+      document.getElementById('recent-section').style.display = 'block';
+    } catch(e) { /* silent */ }
+  }
+
+  function setResult(html) { document.getElementById('result').innerHTML = html; }
+
+  async function refreshCurrent() {
+    if (!_currentRef) return;
+    const k = getKeys();
+    try {
+      const res  = await fetch(k.url + '/rest/v1/applications?reference_code=eq.' + encodeURIComponent(_currentRef) + '&select=*', { headers: headers() });
+      const rows = await res.json();
+      if (Array.isArray(rows) && rows.length > 0) {
+        renderCard(rows[0]);
+        loadRecent();
+      }
+    } catch(e) { /* silent */ }
+  }
+
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && _currentRef) refreshCurrent();
+  });
+
+  window.addEventListener('DOMContentLoaded', () => {
+    if (sessionStorage.getItem(AUTH_KEY) === '1') showApp();
+    else document.getElementById('pw').focus();
+  });
+</script>
+</body>
+</html>
