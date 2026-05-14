@@ -679,6 +679,15 @@
         <div id="gate-su-msg" style="margin-top:10px;font-size:0.8rem;text-align:center;color:#e87c6e;display:none;"></div>
       </div>
 
+      <!-- Unverified notice -->
+      <div id="gate-unverified" style="display:none;text-align:center;padding:8px 0;">
+        <div style="font-size:2.2rem;margin-bottom:14px;">📧</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.08em;color:var(--gold);margin-bottom:10px;">Check Your Inbox</div>
+        <p style="font-size:0.88rem;color:rgba(245,240,232,0.55);line-height:1.7;margin-bottom:6px;">We sent a verification email to <strong id="gate-unverified-email" style="color:var(--gold-light);"></strong>.</p>
+        <p style="font-size:0.85rem;color:rgba(245,240,232,0.4);line-height:1.6;">Once you verify your email, come back and log in to submit your application.</p>
+        <button onclick="document.getElementById('auth-gate').style.display='none'" style="margin-top:20px;background:none;border:1px solid rgba(201,146,26,0.3);color:var(--gold);border-radius:4px;padding:10px 24px;font-family:'Barlow',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;">Got It</button>
+      </div>
+
       <!-- Log In -->
       <div id="gate-si" style="display:none;">
         <div style="margin-bottom:14px;">
@@ -847,16 +856,35 @@
       return 'EVP-' + ymd + '-' + rand;
     }
 
-    function submitApplication() {
+    async function submitApplication() {
       if (!validateStep3()) return;
-      if (!localStorage.getItem('ev_user')) {
-        // Show auth gate — pre-fill email from form
+
+      const loggedInEmail = localStorage.getItem('ev_user');
+
+      if (!loggedInEmail) {
         const email = document.getElementById('email').value.trim();
         document.getElementById('gate-su-email').value = email;
         document.getElementById('auth-gate').style.display = 'flex';
         setTimeout(() => document.getElementById('gate-su-pass').focus(), 100);
         return;
       }
+
+      // Check if account is verified
+      try {
+        const res  = await fetch(API + '/api/is-verified?email=' + encodeURIComponent(loggedInEmail));
+        const data = await res.json();
+        if (!data.verified) {
+          document.getElementById('gate-su-email').value = loggedInEmail;
+          document.getElementById('auth-gate').style.display = 'flex';
+          document.getElementById('gate-su').style.display = 'none';
+          document.getElementById('gate-si').style.display = 'none';
+          document.getElementById('gate-unverified').style.display = 'block';
+          return;
+        }
+      } catch (_) {
+        // If server unreachable, allow submission to not block the user
+      }
+
       runSubmit();
     }
 
@@ -965,6 +993,7 @@
     function gateTab(tab) {
       document.getElementById('gate-su').style.display = tab === 'su' ? 'block' : 'none';
       document.getElementById('gate-si').style.display = tab === 'si' ? 'block' : 'none';
+      document.getElementById('gate-unverified').style.display = 'none';
       document.getElementById('gate-tab-su').style.cssText = tab === 'su' ? 'flex:1;padding:10px;background:var(--gold);color:var(--charcoal);border:none;font-family:Barlow,sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;' : 'flex:1;padding:10px;background:transparent;color:rgba(245,240,232,0.45);border:none;font-family:Barlow,sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;';
       document.getElementById('gate-tab-si').style.cssText = tab === 'si' ? 'flex:1;padding:10px;background:var(--gold);color:var(--charcoal);border:none;font-family:Barlow,sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;' : 'flex:1;padding:10px;background:transparent;color:rgba(245,240,232,0.45);border:none;font-family:Barlow,sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;';
     }
@@ -981,7 +1010,10 @@
         const data = await res.json();
         if (res.ok) {
           localStorage.setItem('ev_user', email);
-          closeGateAndSubmit();
+          // Show verify prompt — must verify before submitting
+          document.getElementById('gate-su').style.display = 'none';
+          document.getElementById('gate-unverified').style.display = 'block';
+          document.getElementById('gate-unverified-email').textContent = email;
         } else {
           btn.disabled = false; btn.textContent = 'Create Account & Submit';
           msg.textContent = data.error || 'Sign-up failed.'; msg.style.display = 'block';

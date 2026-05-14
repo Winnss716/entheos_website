@@ -1,0 +1,295 @@
+{
+	"name": "phone-preview",
+	"displayName": "Mobile Preview - Phone & Tablet Simulator",
+	"description": "Preview web apps in iPhone, Android & iPad frames with live reload. Test responsive designs instantly without leaving VS Code.",
+	"version": "3.1.1",
+	"engines": {
+		"vscode": "^1.60.0"
+	},
+	"categories": [
+		"Testing",
+		"Visualization",
+		"Other"
+	],
+	"keywords": [
+		"mobile",
+		"preview",
+		"responsive",
+		"phone",
+		"iphone",
+		"android",
+		"ipad",
+		"tablet",
+		"simulator",
+		"device",
+		"viewport",
+		"testing",
+		"web development",
+		"react",
+		"vue",
+		"pwa",
+		"live reload",
+		"hot reload",
+		"mobile-first",
+		"ui testing"
+	],
+	"galleryBanner": {
+		"color": "#1e1e1e",
+		"theme": "dark"
+	},
+	"badges": [
+		{
+			"url": "https://img.shields.io/badge/price-%245%20lifetime-success",
+			"href": "https://mobilepreview.lirobi.com/pricing",
+			"description": "One-time payment"
+		}
+	],
+	"activationEvents": [
+		"onCommand:mobile-preview.show"
+	],
+	"main": "./build/out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "mobile-preview.show",
+				"title": "Mobile Preview: Show"
+			},
+			{
+				"command": "mobile-preview.openSettings",
+				"title": "Mobile Preview: Open Settings"
+			},
+			{
+				"command": "mobile-preview.togglePro",
+				"title": "Mobile Preview: Toggle Pro Version"
+			},
+			{
+				"command": "mobile-preview.enterLicense",
+				"title": "Mobile Preview: Enter License Key"
+			},
+			{
+				"command": "mobile-preview.viewLicenseInfo",
+				"title": "Mobile Preview: View License Information"
+			},
+			{
+				"command": "mobile-preview.purchaseLicense",
+				"title": "Mobile Preview: Purchase License"
+			},
+			{
+				"command": "mobile-preview.deactivateLicense",
+				"title": "Mobile Preview: Deactivate License"
+			},
+			{
+				"command": "mobile-preview.checkLicenseServer",
+				"title": "Mobile Preview: Check License Server Status"
+			},
+			{
+				"command": "mobile-preview.addToFavorites",
+				"title": "Mobile Preview: Add Current Device to Favorites"
+			},
+			{
+				"command": "mobile-preview.switchToFavorite1",
+				"title": "Mobile Preview: Switch to Favorite 1"
+			},
+			{
+				"command": "mobile-preview.switchToFavorite2",
+				"title": "Mobile Preview: Switch to Favorite 2"
+			},
+			{
+				"command": "mobile-preview.switchToFavorite3",
+				"title": "Mobile Preview: Switch to Favorite 3"
+			},
+			{
+				"command": "mobile-preview.switchToFavorite4",
+				"title": "Mobile Preview: Switch to Favorite 4"
+			},
+			{
+				"command": "mobile-preview.switchToFavorite5",
+				"title": "Mobile Preview: Switch to Favorite 5"
+			},
+			{
+				"command": "mobile-preview.showConversionStats",
+				"title": "Mobile Preview: Show Conversion Stats"
+			},
+			{
+				"command": "mobile-preview.resetConversionStats",
+				"title": "Mobile Preview: Reset Conversion Stats"
+			}
+		],
+		"menus": {
+			"commandPalette": [
+				{
+					"command": "mobile-preview.show",
+					"when": "true"
+				},
+				{
+					"command": "mobile-preview.enterLicense",
+					"when": "false"
+				},
+				{
+					"command": "mobile-preview.viewLicenseInfo",
+					"when": "false"
+				},
+				{
+					"command": "mobile-preview.purchaseLicense",
+					"when": "false"
+				},
+				{
+					"command": "mobile-preview.deactivateLicense",
+					"when": "false"
+				},
+				{
+					"command": "mobile-preview.openSettings",
+					"when": "false"
+				},
+				{
+					"command": "mobile-preview.togglePro",
+					"when": "false"
+				},
+				{
+					"command": "mobile-preview.checkLicenseServer",
+					"when": "false"
+				},
+				{
+					"command": "mobile-preview.addToFavorites",
+					"when": "false"
+				},
+				{
+					"command": "mobile-preview.showConversionStats",
+					"when": "false"
+				},
+				{
+					"command": "mobile-preview.resetConversionStats",
+					"when": "false"
+				},
+				{
+					"command": "mobile-preview.switchToFavorite1",
+					"when": "false"
+				},
+				{
+					"command": "mobile-preview.switchToFavorite2",
+					"when": "false"
+				},
+				{
+					"command": "mobile-preview.switchToFavorite3",
+					"when": "false"
+				},
+				{
+					"command": "mobile-preview.switchToFavorite4",
+					"when": "false"
+				},
+				{
+					"command": "mobile-preview.switchToFavorite5",
+					"when": "false"
+				}
+			]
+		},
+		"keybindings": [
+			{
+				"command": "mobile-preview.switchToFavorite1",
+				"key": "cmd+1",
+				"mac": "cmd+1",
+				"when": "mobilePreviewFocus"
+			},
+			{
+				"command": "mobile-preview.switchToFavorite2",
+				"key": "cmd+2",
+				"mac": "cmd+2",
+				"when": "mobilePreviewFocus"
+			},
+			{
+				"command": "mobile-preview.switchToFavorite3",
+				"key": "cmd+3",
+				"mac": "cmd+3",
+				"when": "mobilePreviewFocus"
+			},
+			{
+				"command": "mobile-preview.switchToFavorite4",
+				"key": "cmd+4",
+				"mac": "cmd+4",
+				"when": "mobilePreviewFocus"
+			},
+			{
+				"command": "mobile-preview.switchToFavorite5",
+				"key": "cmd+5",
+				"mac": "cmd+5",
+				"when": "mobilePreviewFocus"
+			}
+		],
+		"configuration": {
+			"title": "Mobile Preview",
+			"properties": {
+				"mobile-preview.url": {
+					"type": "string",
+					"default": null,
+					"description": "The URL of the web app to preview"
+				},
+				"mobile-preview.device": {
+					"type": "string",
+					"default": "iPhone 13 Pro",
+					"description": "The device to preview the web app on",
+					"enum": [
+						"iPhone 13 Pro",
+						"iPhone 15",
+						"iPhone 15 Pro Max"
+					]
+				},
+				"mobile-preview.deviceOptions": {
+					"type": "array",
+					"default": [
+						"iPhone 13 Pro",
+						"iPhone 15",
+						"iPhone 15 Pro Max"
+					],
+					"description": "Available devices for preview (dynamically updated based on license)",
+					"scope": "application"
+				}
+			}
+		}
+	},
+	"files": [
+		"out/**/*",
+		"out/assets/**/*",
+		"LICENSE.md"
+	],
+	"scripts": {
+		"vscode:prepublish": "npm run compile && npm run build:webview",
+		"compile": "npm run build:webview && tsc -p ./",
+		"build:webview": "node esbuild.mjs",
+		"watch": "tsc -watch -p ./",
+		"watch:webview": "node esbuild.mjs --dev --watch",
+		"dev": "concurrently \"npm run watch\" \"npm run watch:webview\"",
+		"lint": "eslint src --ext .ts,.tsx",
+		"package": "vsce package --out build/"
+	},
+	"devDependencies": {
+		"@types/node": "^14.14.37",
+		"@types/react": "^19.2.14",
+		"@types/react-dom": "^19.2.3",
+		"@types/vscode": "^1.60.0",
+		"@typescript-eslint/eslint-plugin": "^4.19.0",
+		"@typescript-eslint/parser": "^4.19.0",
+		"esbuild": "^0.28.0",
+		"eslint": "^7.22.0",
+		"react": "^19.2.6",
+		"react-dom": "^19.2.6",
+		"typescript": "^4.2.3"
+	},
+	"publisher": "lirobi",
+	"icon": "build/out/assets/extension-logo.png",
+	"license": "Proprietary",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Lirobi/phoneviewvscode"
+	},
+	"dependencies": {
+		"concurrently": "^9.2.1",
+		"node-fetch": "^3.3.2",
+		"open": "^10.1.0",
+		"vsce": "^2.15.0"
+	},
+	"__metadata": {
+		"installedTimestamp": 1778773513431,
+		"targetPlatform": "undefined",
+		"size": 3062592
+	}
+}

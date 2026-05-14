@@ -4,6 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Entheos Veteran Project</title>
+  <meta name="description" content="The Entheos Veteran Project funds scholarships and treatment for veterans battling PTSD, TBI, substance abuse, and the invisible wounds of service."/>
+
+  <!-- Open Graph / Link preview -->
+  <meta property="og:type"        content="website"/>
+  <meta property="og:url"         content="https://entheosveteranproject.org/"/>
+  <meta property="og:title"       content="Entheos Veteran Project"/>
+  <meta property="og:description" content="Funding scholarships and treatment pathways for veterans battling PTSD, TBI, substance abuse, and the invisible wounds of service."/>
+  <meta property="og:image"       content="https://entheosveteranproject.org/og-image.png"/>
+  <meta property="og:image:width"  content="1200"/>
+  <meta property="og:image:height" content="630"/>
+
+  <!-- Twitter / iMessage card -->
+  <meta name="twitter:card"        content="summary_large_image"/>
+  <meta name="twitter:title"       content="Entheos Veteran Project"/>
+  <meta name="twitter:description" content="Funding scholarships and treatment pathways for veterans battling PTSD, TBI, substance abuse, and the invisible wounds of service."/>
+  <meta name="twitter:image"       content="https://entheosveteranproject.org/og-image.png"/>
+
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300&display=swap" rel="stylesheet"/>
   <style>
     :root {
@@ -449,6 +466,24 @@
     </div>
   </nav>
 
+  <!-- Delete Account Modal -->
+  <div class="modal-overlay" id="delete-modal" onclick="if(event.target===this)closeDeleteModal()" style="display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.75);align-items:center;justify-content:center;">
+    <div style="background:#1e2419;border:1px solid rgba(224,112,112,0.3);border-radius:8px;padding:36px;width:100%;max-width:400px;margin:20px;position:relative;">
+      <button onclick="closeDeleteModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;color:rgba(245,240,232,0.35);font-size:1.1rem;cursor:pointer;">✕</button>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.1em;color:#e07070;margin-bottom:6px;">Delete Account</div>
+      <p style="font-size:0.85rem;color:rgba(245,240,232,0.5);margin-bottom:16px;line-height:1.6;">This permanently removes your account and cannot be undone. Enter your password to confirm.</p>
+      <div id="del-app-warning" style="display:none;background:rgba(232,168,75,0.1);border:1px solid rgba(232,168,75,0.4);border-radius:4px;padding:12px 16px;margin-bottom:16px;font-size:0.84rem;color:#e8a84b;line-height:1.6;">
+        ⚠️ <strong>You have an active application.</strong> Deleting your account will withdraw your application from consideration.
+      </div>
+      <div style="margin-bottom:16px;">
+        <label style="font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(245,240,232,0.4);display:block;margin-bottom:6px;">Password</label>
+        <input type="password" id="del-modal-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')confirmDelete()" style="width:100%;background:rgba(245,240,232,0.06);border:1px solid rgba(224,112,112,0.3);border-radius:4px;padding:12px 14px;color:var(--cream);font-family:'Barlow',sans-serif;font-size:0.95rem;outline:none;"/>
+      </div>
+      <button onclick="confirmDelete()" id="del-modal-btn" style="width:100%;background:#7a1f1f;color:#fff;border:none;border-radius:4px;padding:13px;font-family:'Barlow',sans-serif;font-size:0.88rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">Delete Account</button>
+      <div id="del-modal-msg" style="margin-top:10px;font-size:0.82rem;text-align:center;color:#e07070;display:none;"></div>
+    </div>
+  </div>
+
   <!-- Auth Modal -->
   <div class="modal-overlay" id="auth-modal" onclick="if(event.target===this)closeModal()">
     <div class="modal">
@@ -804,9 +839,54 @@
   function closeDots() {
     document.getElementById('nav-dots-menu').style.display = 'none';
   }
-  function showDeleteFromNav() {
-    if (!localStorage.getItem('ev_user')) { openModal('si'); return; }
-    window.location.href = 'account.html';
+  async function showDeleteFromNav() {
+    const email = localStorage.getItem('ev_user');
+    if (!email) { openModal('si'); return; }
+
+    // Check if they have an application in Supabase
+    let hasApplication = false;
+    try {
+      const res  = await fetch(
+        'https://afdybbbeukqnqlxlojmu.supabase.co/rest/v1/applications?email=eq.' + encodeURIComponent(email) + '&select=reference_code&limit=1',
+        { headers: { 'apikey': 'sb_publishable_5YQFAeRNG64IYbPTRwtZCg_1BZooKWx', 'Authorization': 'Bearer sb_publishable_5YQFAeRNG64IYbPTRwtZCg_1BZooKWx' } }
+      );
+      const rows = await res.json();
+      if (Array.isArray(rows) && rows.length > 0) hasApplication = true;
+    } catch (_) {}
+
+    document.getElementById('del-modal-pass').value = '';
+    document.getElementById('del-modal-msg').style.display = 'none';
+    document.getElementById('del-app-warning').style.display = hasApplication ? 'block' : 'none';
+    document.getElementById('delete-modal').style.display = 'flex';
+    setTimeout(() => document.getElementById('del-modal-pass').focus(), 100);
+  }
+  function closeDeleteModal() {
+    document.getElementById('delete-modal').style.display = 'none';
+  }
+  async function confirmDelete() {
+    const email = localStorage.getItem('ev_user');
+    const pass  = document.getElementById('del-modal-pass').value;
+    const msg   = document.getElementById('del-modal-msg');
+    const btn   = document.getElementById('del-modal-btn');
+    if (!pass) { msg.textContent = 'Please enter your password.'; msg.style.display = 'block'; return; }
+
+    btn.disabled = true; btn.textContent = 'Deleting…';
+    try {
+      const res  = await fetch(API + '/api/delete-account', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: pass }) });
+      const data = await res.json();
+      if (res.ok) {
+        localStorage.removeItem('ev_user');
+        closeDeleteModal();
+        document.getElementById('nav-auth-area').innerHTML = '<button class="nav-signin" onclick="openModal(\'si\')">Log In</button>';
+        alert('Your account has been deleted.');
+      } else {
+        btn.disabled = false; btn.textContent = 'Delete Account';
+        msg.textContent = data.error || 'Failed.'; msg.style.display = 'block';
+      }
+    } catch {
+      btn.disabled = false; btn.textContent = 'Delete Account';
+      msg.textContent = 'Could not reach the server.'; msg.style.display = 'block';
+    }
   }
   document.addEventListener('click', e => {
     const btn = document.getElementById('nav-dots-btn');

@@ -1,0 +1,198 @@
+{
+	"name": "claude-code-extension",
+	"displayName": "Claude Code Assistant for VSCode",
+	"description": "Unofficial integration of Anthropic's Claude Code AI assistant into VSCode",
+	"version": "0.1.10",
+	"publisher": "codeflow-studio",
+	"icon": "resources/claude-icon.png",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/codeflow-studio/claude-code-chat"
+	},
+	"bugs": {
+		"url": "https://github.com/codeflow-studio/claude-code-chat/issues"
+	},
+	"homepage": "https://github.com/codeflow-studio/claude-code-chat#readme",
+	"license": "MIT",
+	"keywords": [
+		"ai",
+		"claude",
+		"code assistant",
+		"anthropic",
+		"coding",
+		"artificial intelligence",
+		"unofficial",
+		"codeflow"
+	],
+	"galleryBanner": {
+		"color": "#1E1E1E",
+		"theme": "dark"
+	},
+	"engines": {
+		"vscode": "^1.90.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"main": "./dist/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "claude-code-extension.launchClaudeCodeTerminal",
+				"title": "Claude Code: Launch Terminal",
+				"icon": "resources/claude-icon.svg"
+			},
+			{
+				"command": "claude-code-extension.restartClaudeCode",
+				"title": "Claude Code: Restart and Continue Last Session",
+				"icon": {
+					"light": "resources/restart-light.svg",
+					"dark": "resources/restart-dark.svg"
+				}
+			},
+			{
+				"command": "claude-code-extension.addSelectionToInput",
+				"title": "Add to Claude Code Input"
+			},
+			{
+				"command": "claude-code-extension.toggleMode",
+				"title": "Claude Code: Toggle Mode (Shift+Tab)"
+			},
+			{
+				"command": "claude-code-extension.focusInput",
+				"title": "Focus on Claude Code Input"
+			},
+			{
+				"command": "claude-code-extension.explainFile",
+				"title": "Explain with Claude Code"
+			},
+			{
+				"command": "claude-code-extension.explainFolder",
+				"title": "Explain Folder with Claude Code"
+			},
+			{
+				"command": "claude-code-extension.explainSelection",
+				"title": "Explain Selection with Claude Code"
+			},
+			{
+				"command": "claude-code-extension.explainCurrentFile",
+				"title": "Explain File with Claude Code"
+			}
+		],
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "claude-code-sidebar",
+					"title": "Claude Code",
+					"icon": "resources/claude-icon.svg"
+				}
+			]
+		},
+		"views": {
+			"claude-code-sidebar": [
+				{
+					"type": "webview",
+					"id": "claudeCodeInputView",
+					"name": "Terminal Input",
+					"contextualTitle": "Claude Terminal Input"
+				}
+			]
+		},
+		"menus": {
+			"view/title": [
+				{
+					"command": "claude-code-extension.launchClaudeCodeTerminal",
+					"group": "navigation",
+					"when": "view == claudeCodeInputView"
+				},
+				{
+					"command": "claude-code-extension.restartClaudeCode",
+					"group": "navigation",
+					"when": "view == claudeCodeInputView"
+				}
+			],
+			"editor/context": [
+				{
+					"command": "claude-code-extension.addSelectionToInput",
+					"when": "editorHasSelection",
+					"group": "claude@1"
+				},
+				{
+					"command": "claude-code-extension.explainSelection",
+					"when": "editorHasSelection",
+					"group": "claude@2"
+				},
+				{
+					"command": "claude-code-extension.explainCurrentFile",
+					"when": "!editorHasSelection",
+					"group": "claude@1"
+				}
+			],
+			"explorer/context": [
+				{
+					"command": "claude-code-extension.explainFile",
+					"when": "!explorerResourceIsFolder",
+					"group": "claude@1"
+				},
+				{
+					"command": "claude-code-extension.explainFolder",
+					"when": "explorerResourceIsFolder",
+					"group": "claude@1"
+				}
+			]
+		},
+		"configuration": {
+			"title": "Claude Code",
+			"properties": {
+				"claude-code-extension.autoStartOnActivation": {
+					"type": "boolean",
+					"default": true,
+					"description": "Automatically start Claude Code when the extension is activated"
+				},
+				"claude-code-extension.autoStartCommand": {
+					"type": "string",
+					"enum": [
+						"claude",
+						"claude -c",
+						"claude -r",
+						"claude --dangerously-skip-permissions"
+					],
+					"default": "claude",
+					"description": "Command to use when auto-starting Claude Code"
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run package",
+		"compile": "webpack",
+		"watch": "webpack --watch",
+		"package": "webpack --mode production --devtool hidden-source-map",
+		"lint": "eslint src --ext ts",
+		"test": "node ./out/test/runTest.js",
+		"build": "npm run package && npm run vsix",
+		"vsix": "vsce package"
+	},
+	"devDependencies": {
+		"@types/node": "^22.15.18",
+		"@types/vscode": "^1.90.0",
+		"@typescript-eslint/eslint-plugin": "^6.9.0",
+		"@typescript-eslint/parser": "^6.9.0",
+		"@vscode/test-electron": "^2.5.2",
+		"@vscode/vsce": "^2.24.0",
+		"css-loader": "^6.8.1",
+		"eslint": "^8.52.0",
+		"generator-code": "^1.11.9",
+		"style-loader": "^3.3.3",
+		"ts-loader": "^9.5.0",
+		"typescript": "^5.8.3",
+		"webpack": "^5.89.0",
+		"webpack-cli": "^5.1.4",
+		"yo": "^5.1.0"
+	},
+	"__metadata": {
+		"installedTimestamp": 1778274284292,
+		"targetPlatform": "undefined",
+		"size": 169923924
+	}
+}

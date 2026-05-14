@@ -101,7 +101,7 @@
         <label style="color:rgba(224,112,112,0.7);">Confirm your password to delete account</label>
         <input type="password" class="field" id="del-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doDelete()"/>
       </div>
-      <button class="btn" onclick="doDelete()" id="del-btn" style="background:#7a1f1f;color:#fff;">Permanently Delete My Account</button>
+      <button class="btn" onclick="doDelete()" id="del-btn" style="background:#7a1f1f;color:#fff;">Delete Account</button>
       <button onclick="document.getElementById('delete-section').style.display='none'" style="width:100%;margin-top:8px;background:none;border:none;color:rgba(245,240,232,0.35);font-size:0.8rem;cursor:pointer;padding:6px;">Cancel</button>
       <div class="msg" id="del-msg"></div>
     </div>
@@ -272,7 +272,7 @@
     try {
       const res  = await fetch(API + '/api/delete-account', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: pass }) });
       const data = await res.json();
-      btn.disabled = false; btn.textContent = 'Permanently Delete My Account';
+      btn.disabled = false; btn.textContent = 'Delete Account';
 
       if (res.ok) {
         localStorage.removeItem('ev_user');
@@ -281,7 +281,7 @@
         showMsg('del-msg', data.error || 'Failed to delete account.', 'err');
       }
     } catch {
-      btn.disabled = false; btn.textContent = 'Permanently Delete My Account';
+      btn.disabled = false; btn.textContent = 'Delete Account';
       showMsg('del-msg', 'Could not reach the server.', 'err');
     }
   }

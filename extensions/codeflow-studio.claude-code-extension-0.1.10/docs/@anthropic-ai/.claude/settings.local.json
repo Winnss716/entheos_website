@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rg:*)",
+      "Bash(sed:*)",
+      "Bash(/Users/quang.tranminh/.claude/local/node_modules/@anthropic-ai/claude-code/vendor/ripgrep/arm64-darwin/rg \"\\.parse|command\\.|yargs|argparse|commander\" cli.js)",
+      "Bash(/Users/quang.tranminh/.claude/local/node_modules/@anthropic-ai/claude-code/vendor/ripgrep/arm64-darwin/rg \"process\\.argv|argv|ARGV\" cli.js)",
+      "Bash(/Users/quang.tranminh/.claude/local/node_modules/@anthropic-ai/claude-code/vendor/ripgrep/arm64-darwin/rg \"oauth|auth|login|token|credential\" cli.js)",
+      "Bash(/Users/quang.tranminh/.claude/local/node_modules/@anthropic-ai/claude-code/vendor/ripgrep/arm64-darwin/rg:*)",
+      "Bash(find:*)",
+      "mcp__server-sequential-thinking__sequentialthinking",
+      "Bash(cp:*)",
+      "Bash(unzip:*)",
+      "Bash(ls:*)"
+    ],
+    "deny": []
+  }
+}

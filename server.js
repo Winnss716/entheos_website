@@ -258,6 +258,21 @@ app.post('/api/reset-password', async (req, res) => {
   }
 });
 
+// ── GET /api/is-verified ─────────────────────────────────────────────────────
+app.get('/api/is-verified', (req, res) => {
+  const email = (req.query.email || '').toLowerCase().trim();
+  if (!email) return res.status(400).json({ error: 'Email required.' });
+
+  const stmt = db.prepare('SELECT verified FROM users WHERE email = ?');
+  stmt.bind([email]);
+  const found = stmt.step();
+  const row   = found ? stmt.getAsObject() : null;
+  stmt.free();
+
+  if (!row) return res.status(404).json({ error: 'Account not found.' });
+  res.json({ verified: !!row.verified });
+});
+
 // ── POST /api/delete-account ─────────────────────────────────────────────────
 app.post('/api/delete-account', async (req, res) => {
   const { email, password } = req.body;
