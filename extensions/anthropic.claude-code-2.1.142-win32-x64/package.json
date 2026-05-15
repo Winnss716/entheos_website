@@ -2,7 +2,7 @@
 	"name": "claude-code",
 	"displayName": "Claude Code for VS Code",
 	"description": "Claude Code for VS Code: Harness the power of Claude Code without leaving your IDE",
-	"version": "2.1.141",
+	"version": "2.1.142",
 	"publisher": "Anthropic",
 	"license": "© Anthropic PBC. All rights reserved. Use is subject to the Legal Agreements outlined here: https://code.claude.com/docs/en/legal-and-compliance.",
 	"bugs": {
@@ -504,8 +504,8 @@
 	"scripts": {},
 	"dependencies": {},
 	"__metadata": {
-		"installedTimestamp": 1778774067116,
+		"installedTimestamp": 1778852391078,
 		"targetPlatform": "win32-x64",
-		"size": 237785430
+		"size": 237831603
 	}
 }

@@ -36,7 +36,7 @@
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
 
     body {
       font-family: 'Barlow', sans-serif;
@@ -84,7 +84,7 @@
     .nav-signout:hover { color:var(--gold); }
 
     /* ── Auth Modal ── */
-    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.72); z-index:900; display:none; align-items:center; justify-content:center; padding:20px; }
+    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.72); z-index:900; display:none; align-items:flex-start; justify-content:center; padding:80px 20px 20px; }
     .modal-overlay.open { display:flex; }
     .modal { background:#1e2118; border:1px solid rgba(201,146,26,0.3); border-radius:6px; padding:40px 44px; width:100%; max-width:400px; position:relative; }
     .modal-close { position:absolute; top:14px; right:18px; background:none; border:none; color:rgba(245,240,232,0.35); font-size:1.2rem; cursor:pointer; line-height:1; transition:color 0.2s; }
@@ -409,8 +409,27 @@
     @media (max-width: 820px) {
       .mission-grid, .scholarship-inner, .footer-inner { grid-template-columns: 1fr; gap: 40px; }
       .mission-image-wrap { display: none; }
-      .nav-links { display: none; }
     }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      #nav-auth-area { display: none; }
+      .nav-cta { display: none; }
+      #nav-dots-btn { display: none; }
+      .hamburger { display: flex !important; }
+    }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 6px; z-index: 200; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--cream); border-radius: 2px; transition: all 0.3s; }
+
+    .mobile-menu { display: none; position: fixed; top: 0; right: 0; bottom: 0; width: 220px; background: #1a1e14; border-left: 1px solid rgba(201,146,26,0.2); z-index: 150; flex-direction: column; align-items: flex-start; justify-content: flex-start; padding: 60px 24px 32px; gap: 16px; box-shadow: -8px 0 32px rgba(0,0,0,0.5); }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { color: var(--cream); text-decoration: none; font-family: 'Barlow', sans-serif; font-weight: 600; font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
+    .mobile-menu a:hover { color: var(--gold-light); }
+    .mobile-menu .close-btn { position: absolute; top: 16px; right: 16px; background: none; border: none; color: rgba(245,240,232,0.5); font-size: 1.2rem; cursor: pointer; }
+    .mobile-menu .apply-link { background: var(--gold); color: var(--charcoal) !important; padding: 8px 20px; border-radius: 2px; font-size: 0.82rem !important; margin-top: 8px; }
+    .mobile-menu .account-link { opacity: 0.5; }
+    .mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 149; }
+    .mobile-overlay.open { display: block; }
   </style>
 </head>
 <body>
@@ -456,15 +475,33 @@
       <div style="position:relative;">
         <button id="nav-dots-btn" onclick="toggleDots()" style="background:none;border:1px solid rgba(201,146,26,0.3);border-radius:4px;color:rgba(245,240,232,0.5);font-size:1.1rem;cursor:pointer;padding:5px 11px;line-height:1;transition:all 0.2s;" onmouseover="this.style.color='var(--gold-light)';this.style.borderColor='var(--gold)'" onmouseout="this.style.color='rgba(245,240,232,0.5)';this.style.borderColor='rgba(201,146,26,0.3)'">⋮</button>
         <div id="nav-dots-menu" style="display:none;position:absolute;right:0;top:44px;background:#1e2419;border:1px solid rgba(201,146,26,0.2);border-radius:6px;min-width:190px;z-index:200;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,0.5);">
-          <button onclick="closeDots();showDeleteFromNav()" style="width:100%;text-align:left;background:none;border:none;padding:13px 18px;color:#e07070;font-family:'Barlow',sans-serif;font-size:0.88rem;cursor:pointer;transition:background 0.15s;" onmouseover="this.style.background='rgba(224,112,112,0.08)'" onmouseout="this.style.background='none'">Delete Account</button>
-          <div style="height:1px;background:rgba(201,146,26,0.1);"></div>
+          <button id="create-acct-btn" onclick="closeDots();openModal('su')" style="width:100%;text-align:left;background:none;border:none;padding:13px 18px;color:var(--gold);font-family:'Barlow',sans-serif;font-size:0.88rem;cursor:pointer;transition:background 0.15s;" onmouseover="this.style.background='rgba(201,146,26,0.08)'" onmouseout="this.style.background='none'">Create Account</button>
+          <div id="create-acct-divider" style="height:1px;background:rgba(201,146,26,0.1);"></div>
+          <button id="delete-acct-btn" onclick="closeDots();showDeleteFromNav()" style="display:none;width:100%;text-align:left;background:none;border:none;padding:13px 18px;color:#e07070;font-family:'Barlow',sans-serif;font-size:0.88rem;cursor:pointer;transition:background 0.15s;" onmouseover="this.style.background='rgba(224,112,112,0.08)'" onmouseout="this.style.background='none'">Delete Account</button>
+          <div id="delete-acct-divider" style="display:none;height:1px;background:rgba(201,146,26,0.1);"></div>
           <a href="mailto:Entheosveteranproject@gmail.com?subject=Problem Report" onclick="closeDots()" style="display:block;padding:13px 18px;color:rgba(245,240,232,0.7);font-family:'Barlow',sans-serif;font-size:0.88rem;text-decoration:none;transition:background 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='none'">Report a Problem</a>
           <div style="height:1px;background:rgba(201,146,26,0.1);"></div>
           <a href="faq.html" onclick="closeDots()" style="display:block;padding:13px 18px;color:rgba(245,240,232,0.7);font-family:'Barlow',sans-serif;font-size:0.88rem;text-decoration:none;transition:background 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='none'">Help</a>
         </div>
       </div>
+      <button class="hamburger" onclick="openMobileMenu()" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
+
+  <div class="mobile-overlay" id="mobile-overlay" onclick="closeMobileMenu()"></div>
+  <div class="mobile-menu" id="mobile-menu">
+    <button class="close-btn" onclick="closeMobileMenu()">✕</button>
+    <a href="#mission" onclick="closeMobileMenu()">Mission</a>
+    <a href="#focus" onclick="closeMobileMenu()">Who We Help</a>
+    <a href="scholarship.html" onclick="closeMobileMenu()">Scholarships</a>
+    <a href="our-team.html" onclick="closeMobileMenu()">Our Team</a>
+    <a href="donate.html" onclick="closeMobileMenu()">Donate</a>
+    <a href="faq.html" onclick="closeMobileMenu()">FAQ</a>
+    <a href="apply.html" class="apply-link" onclick="closeMobileMenu()">Apply Now</a>
+    <a href="account.html" class="account-link" onclick="closeMobileMenu()">My Account</a>
+  </div>
 
   <!-- Delete Account Modal -->
   <div class="modal-overlay" id="delete-modal" onclick="if(event.target===this)closeDeleteModal()" style="display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.75);align-items:center;justify-content:center;">
@@ -772,6 +809,7 @@
     document.getElementById('mform-su').style.display = tab === 'su' ? 'block' : 'none';
     document.getElementById('mtab-si').className = 'modal-tab' + (tab === 'si' ? ' active' : '');
     document.getElementById('mtab-su').className = 'modal-tab' + (tab === 'su' ? ' active' : '');
+    document.querySelector('.modal-title').textContent = tab === 'su' ? 'Welcome!' : 'Welcome Back';
   }
 
   function showMMsg(id, text, type) {
@@ -830,6 +868,19 @@
         <a href="status.html" style="color:var(--gold);font-size:0.78rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;margin:0 10px;">My Status</a>
         <button class="nav-signout" onclick="mSignOut()">Sign Out</button>
       </div>`;
+    document.getElementById('delete-acct-btn').style.display = 'block';
+    document.getElementById('delete-acct-divider').style.display = 'block';
+    document.getElementById('create-acct-btn').style.display = 'none';
+    document.getElementById('create-acct-divider').style.display = 'none';
+  }
+
+  function openMobileMenu()  {
+    document.getElementById('mobile-menu').classList.add('open');
+    document.getElementById('mobile-overlay').classList.add('open');
+  }
+  function closeMobileMenu() {
+    document.getElementById('mobile-menu').classList.remove('open');
+    document.getElementById('mobile-overlay').classList.remove('open');
   }
 
   function toggleDots() {
@@ -897,11 +948,17 @@
   function mSignOut() {
     localStorage.removeItem('ev_user');
     document.getElementById('nav-auth-area').innerHTML = `<button class="nav-signin" onclick="openModal('si')">Log In</button>`;
+    document.getElementById('delete-acct-btn').style.display = 'none';
+    document.getElementById('delete-acct-divider').style.display = 'none';
+    document.getElementById('create-acct-btn').style.display = 'block';
+    document.getElementById('create-acct-divider').style.display = 'block';
   }
 
   window.addEventListener('DOMContentLoaded', () => {
     const user = localStorage.getItem('ev_user');
-    if (user) setNavUser(user);
+    if (user) {
+      setNavUser(user);
+    }
   });
 </script>
 </body>

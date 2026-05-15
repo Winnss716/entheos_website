@@ -17,7 +17,7 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
     body {
       font-family: 'Barlow', sans-serif;
       background: var(--charcoal);
@@ -308,12 +308,26 @@
     @media (max-width: 900px) {
       .team-grid { grid-template-columns: 1fr 1fr; }
     }
-    @media (max-width: 600px) {
+    @media (max-width: 640px) {
       .team-grid { grid-template-columns: 1fr; }
       .values-inner { grid-template-columns: 1fr; gap: 32px; }
       .footer-inner { grid-template-columns: 1fr; gap: 36px; }
       .nav-links { display: none; }
+      .nav-cta { display: none; }
+      .hamburger { display: flex !important; }
     }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 6px; z-index: 200; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--cream); border-radius: 2px; transition: all 0.3s; }
+
+    .mobile-menu { display: none; position: fixed; top: 0; right: 0; bottom: 0; width: 220px; background: #1a1e14; border-left: 1px solid rgba(201,146,26,0.2); z-index: 150; flex-direction: column; align-items: flex-start; padding: 60px 24px 32px; gap: 16px; box-shadow: -8px 0 32px rgba(0,0,0,0.5); }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { color: var(--cream); text-decoration: none; font-family: 'Barlow', sans-serif; font-weight: 600; font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
+    .mobile-menu a:hover { color: var(--gold-light); }
+    .mobile-menu .close-btn { position: absolute; top: 16px; right: 16px; background: none; border: none; color: rgba(245,240,232,0.5); font-size: 1.2rem; cursor: pointer; }
+    .mobile-menu .apply-link { background: var(--gold); color: var(--charcoal) !important; padding: 8px 20px; border-radius: 2px; font-size: 0.82rem !important; margin-top: 8px; }
+    .mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 149; }
+    .mobile-overlay.open { display: block; }
   </style>
 </head>
 <body>
@@ -346,11 +360,29 @@
       <li><a href="index.html#mission">Mission</a></li>
       <li><a href="index.html#focus">Who We Help</a></li>
       <li><a href="scholarship.html">Scholarships</a></li>
-      <li><a href="our-team.html" class="active">Our Team</a></li>
+      <li style="display:none"><a href="our-team.html">Our Team</a></li>
       <li><a href="donate.html">Donate</a></li>
+      <li><a href="faq.html">FAQ</a></li>
     </ul>
     <a href="apply.html" class="nav-cta">Apply Now</a>
+    <button class="hamburger" onclick="openMenu()" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
+
+  <div class="mobile-overlay" id="mob-ov" onclick="closeMenu()"></div>
+  <div class="mobile-menu" id="mobile-menu">
+    <button class="close-btn" onclick="closeMenu()">✕</button>
+    <a href="index.html" onclick="closeMenu()">Home</a>
+    <a href="scholarship.html" onclick="closeMenu()">Scholarships</a>
+    <a href="donate.html" onclick="closeMenu()">Donate</a>
+    <a href="faq.html" onclick="closeMenu()">FAQ</a>
+    <a href="apply.html" class="apply-link" onclick="closeMenu()">Apply Now</a>
+  </div>
+  <script>
+    function openMenu()  { document.getElementById('mobile-menu').classList.add('open'); document.getElementById('mob-ov').classList.add('open'); }
+    function closeMenu() { document.getElementById('mobile-menu').classList.remove('open'); document.getElementById('mob-ov').classList.remove('open'); }
+  </script>
 
   <!-- PAGE HEADER -->
   <div class="page-header">
@@ -375,12 +407,7 @@
         <!-- Shane Winn -->
         <div class="team-card">
           <div class="card-photo">
-            <!-- Replace the div below with: <img src="photo-shane.jpg" alt="Shane Winn"/> -->
-            <div class="photo-placeholder">
-              <div class="placeholder-initials">SW</div>
-              <div class="placeholder-label">Photo Coming Soon</div>
-            </div>
-            <span class="card-photo-badge">Placeholder</span>
+            <img src="photo-shane.jpg" alt="Shane Winn" style="width:100%;height:100%;object-fit:cover;object-position:center top;"/>
           </div>
           <div class="card-body">
             <div class="card-name">Shane Winn</div>
@@ -390,9 +417,12 @@
               Shane's biography and personal story will go here. This section will describe his background, connection to the veteran community, his role in founding the Entheos Veteran Project, and what drives his commitment to this mission.
             </p>
             <div class="card-tags">
-              <span class="card-tag">Leadership</span>1
+              <span class="card-tag">Leadership</span>
               <span class="card-tag">Strategy</span>
               <span class="card-tag">Operations</span>
+            </div>
+            <div style="margin-top:16px;">
+              <a href="mailto:shane.m.winn@gmail.com" style="display:inline-block;font-size:0.82rem;color:var(--gold);text-decoration:none;border:1px solid var(--gold);border-radius:4px;padding:7px 14px;letter-spacing:0.04em;transition:background 0.2s,color 0.2s;" onmouseover="this.style.background='var(--gold)';this.style.color='var(--charcoal)'" onmouseout="this.style.background='transparent';this.style.color='var(--gold)'">shane.m.winn@gmail.com</a>
             </div>
           </div>
         </div>

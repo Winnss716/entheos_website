@@ -7,6 +7,7 @@ const nodemailer = require('nodemailer');
 const crypto     = require('crypto');
 const path       = require('path');
 const fs         = require('fs');
+const rateLimit  = require('express-rate-limit');
 
 const app      = express();
 const PORT     = process.env.PORT || 3000;
@@ -16,6 +17,28 @@ const DB_PATH  = path.join(__dirname, 'users.db');
 app.use(cors());
 app.use(express.json());
 app.use(express.static(__dirname));
+
+// ── Rate limiters ─────────────────────────────────────────────────────────────
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10,
+  message: { error: 'Too many login attempts. Please wait 15 minutes and try again.' },
+  standardHeaders: true, legacyHeaders: false,
+});
+
+const signupLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 5,
+  message: { error: 'Too many accounts created from this device. Please try again later.' },
+  standardHeaders: true, legacyHeaders: false,
+});
+
+const emailLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 3,
+  message: { error: 'Too many email requests. Please wait an hour before trying again.' },
+  standardHeaders: true, legacyHeaders: false,
+});
 
 // ── Database ──────────────────────────────────────────────────────────────────
 let db;
@@ -67,7 +90,7 @@ function emailConfigured() {
 }
 
 // ── POST /api/signup ──────────────────────────────────────────────────────────
-app.post('/api/signup', async (req, res) => {
+app.post('/api/signup', signupLimiter, async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -158,7 +181,7 @@ app.get('/api/verify', (req, res) => {
 });
 
 // ── POST /api/signin ──────────────────────────────────────────────────────────
-app.post('/api/signin', async (req, res) => {
+app.post('/api/signin', loginLimiter, async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).json({ error: 'Email and password are required.' });
@@ -191,8 +214,85 @@ app.post('/api/signin', async (req, res) => {
   }
 });
 
+// ── POST /api/resend-verification ────────────────────────────────────────────
+app.post('/api/resend-verification', emailLimiter, async (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ error: 'Email is required.' });
+
+  const normalizedEmail = email.toLowerCase().trim();
+  const stmt = db.prepare('SELECT id, verified, verification_token FROM users WHERE email = ?');
+  stmt.bind([normalizedEmail]);
+  const found = stmt.step();
+  const row   = found ? stmt.getAsObject() : null;
+  stmt.free();
+
+  if (!row) return res.json({ message: 'If that email has an account, a verification link has been sent.' });
+  if (row.verified) return res.json({ message: 'This account is already verified. You can log in.' });
+
+  const token = crypto.randomBytes(32).toString('hex');
+  db.run('UPDATE users SET verification_token = ? WHERE id = ?', [token, row.id]);
+  saveDb();
+
+  const link = `${BASE_URL}/api/verify?token=${token}`;
+  transporter.sendMail({
+    from:    process.env.GMAIL_USER,
+    to:      normalizedEmail,
+    subject: 'Verify it\'s you — Entheos Veteran Project',
+    html: `
+      <div style="font-family:sans-serif;max-width:480px;margin:auto;padding:32px 24px;">
+        <h2 style="color:#1c1e1a;">Entheos Veteran Project</h2>
+        <p style="color:#333;">Here's a new verification link for your account.</p>
+        <a href="${link}" style="display:inline-block;background:#1a6fd4;color:#ffffff;padding:14px 32px;border-radius:6px;text-decoration:none;font-weight:bold;font-size:1rem;margin:24px 0;">Verify It's Me</a>
+        <p style="color:#999;font-size:0.82em;">If you didn't create an account with Entheos you can safely ignore this email.</p>
+      </div>
+    `,
+  }).catch(err => console.error('Resend verification failed:', err.message));
+
+  res.json({ message: 'Verification email sent. Check your inbox.' });
+});
+
+// ── POST /api/confirm-application ────────────────────────────────────────────
+app.post('/api/confirm-application', (req, res) => {
+  const { email, firstName, refCode } = req.body;
+  if (!email || !firstName || !refCode) return res.status(400).json({ error: 'Missing fields.' });
+
+  transporter.sendMail({
+    from:    process.env.GMAIL_USER,
+    to:      email,
+    subject: 'Your Application Has Been Received — Entheos Veteran Project',
+    html: `
+      <div style="font-family:sans-serif;max-width:560px;margin:auto;padding:32px 24px;background:#f9f9f9;">
+        <div style="background:#1c1e1a;padding:24px 28px;border-radius:6px 6px 0 0;text-align:center;">
+          <div style="font-family:Georgia,serif;font-size:1.8rem;letter-spacing:0.1em;color:#c8aa5a;font-weight:bold;">ENTHEOS</div>
+          <div style="color:rgba(245,240,232,0.5);font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;margin-top:4px;">Veteran Project</div>
+        </div>
+        <div style="background:#fff;padding:32px 28px;border-radius:0 0 6px 6px;border:1px solid #e0e0e0;border-top:none;">
+          <h2 style="color:#1c1e1a;margin-bottom:8px;">Application Received, ${firstName}</h2>
+          <p style="color:#444;line-height:1.7;">Thank you for submitting your application. Our team will review it within <strong>7–10 business days</strong> and will contact you at this email address.</p>
+          <div style="background:#f5f0e8;border:1px solid #c8aa5a;border-radius:4px;padding:16px 20px;margin:24px 0;text-align:center;">
+            <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#888;margin-bottom:6px;">Your Reference Code</div>
+            <div style="font-size:1.4rem;font-weight:700;letter-spacing:0.12em;color:#c8aa5a;">${refCode}</div>
+            <div style="font-size:0.78rem;color:#888;margin-top:6px;">Save this code to check your status at any time</div>
+          </div>
+          <p style="color:#444;line-height:1.7;"><strong>What happens next:</strong><br/>
+          1. Our team reviews your submission and verifies your service history.<br/>
+          2. We may reach out with follow-up questions — check your email and phone.<br/>
+          3. You'll receive an approval decision within 7–10 business days.<br/>
+          4. If approved, funds go directly to your provider, school, or program.</p>
+          <div style="margin-top:24px;text-align:center;">
+            <a href="${BASE_URL}/status.html" style="display:inline-block;background:#c8aa5a;color:#1c1e1a;padding:12px 28px;border-radius:4px;text-decoration:none;font-weight:bold;font-size:0.9rem;">Check Application Status</a>
+          </div>
+          <p style="color:#888;font-size:0.82em;margin-top:24px;">Questions? Email us at <a href="mailto:Entheosveteranproject@gmail.com" style="color:#c8aa5a;">Entheosveteranproject@gmail.com</a></p>
+        </div>
+      </div>
+    `,
+  }).catch(err => console.error('Confirmation email failed:', err.message));
+
+  res.json({ message: 'Confirmation sent.' });
+});
+
 // ── POST /api/forgot-password ─────────────────────────────────────────────────
-app.post('/api/forgot-password', async (req, res) => {
+app.post('/api/forgot-password', emailLimiter, async (req, res) => {
   const { email } = req.body;
   if (!email) return res.status(400).json({ error: 'Email is required.' });
 

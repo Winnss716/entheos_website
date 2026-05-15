@@ -179,6 +179,31 @@
       padding: 32px 5%; text-align: center; }
     footer p { font-size: 0.78rem; color: rgba(245,240,232,0.3); }
     footer a { color: rgba(200,170,90,0.6); text-decoration: none; }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .nav-right { display: none; }
+      .hamburger { display: flex !important; }
+      .hero { padding: 60px 5% 48px; }
+      .hero h1 { font-size: 2.8rem; }
+      .search-row input { font-size: 0.9rem; padding: 12px 14px; }
+      .search-row button { padding: 12px 18px; font-size: 0.8rem; }
+      .result-section { padding: 0 16px; margin: 40px auto; }
+      .sc-head { padding: 18px 20px; }
+      .sc-body { padding: 20px; }
+      .tl-step { gap: 12px; }
+      .cta-strip { padding: 36px 16px; }
+    }
+    .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 6px; z-index: 200; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--cream); border-radius: 2px; }
+    .mobile-menu { display: none; position: fixed; top: 0; right: 0; bottom: 0; width: 220px; background: #1c1e1a; border-left: 1px solid rgba(200,170,90,0.2); z-index: 150; flex-direction: column; align-items: flex-start; padding: 60px 24px 32px; gap: 16px; box-shadow: -8px 0 32px rgba(0,0,0,0.5); }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { color: var(--cream); text-decoration: none; font-family: 'Barlow', sans-serif; font-weight: 600; font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
+    .mobile-menu a:hover { color: var(--gold-light); }
+    .mobile-menu .close-btn { position: absolute; top: 16px; right: 16px; background: none; border: none; color: rgba(245,240,232,0.5); font-size: 1.2rem; cursor: pointer; }
+    .mobile-menu .apply-link { background: var(--gold); color: var(--charcoal) !important; padding: 8px 20px; border-radius: 2px; font-size: 0.82rem !important; margin-top: 8px; }
+    .mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 149; }
+    .mobile-overlay.open { display: block; }
   </style>
 </head>
 <body>
@@ -214,12 +239,26 @@
     <a href="scholarship.html">Scholarships</a>
     <a href="our-team.html">Our Team</a>
     <a href="donate.html">Donate</a>
+    <a href="faq.html">FAQ</a>
   </div>
   <div class="nav-right">
     <a href="apply.html" class="nav-cta">Apply Now</a>
     <a href="account.html" id="nav-account-link" style="font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;color:rgba(245,240,232,0.6);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(245,240,232,0.6)'">My Account</a>
   </div>
+  <button class="hamburger" onclick="document.getElementById('mob').classList.add('open');document.getElementById('mob-ov').classList.add('open')" aria-label="Open menu"><span></span><span></span><span></span></button>
 </nav>
+
+<div class="mobile-overlay" id="mob-ov" onclick="document.getElementById('mob').classList.remove('open');this.classList.remove('open')"></div>
+<div class="mobile-menu" id="mob">
+  <button class="close-btn" onclick="document.getElementById('mob').classList.remove('open');document.getElementById('mob-ov').classList.remove('open')">✕</button>
+  <a href="index.html">Home</a>
+  <a href="scholarship.html">Scholarships</a>
+  <a href="our-team.html">Our Team</a>
+  <a href="donate.html">Donate</a>
+  <a href="faq.html">FAQ</a>
+  <a href="account.html">My Account</a>
+  <a href="apply.html" class="apply-link">Apply Now</a>
+</div>
 
 <!-- Logged-in banner -->
 <div id="auth-banner" style="display:none; background:rgba(200,170,90,0.08); border-bottom:1px solid rgba(200,170,90,0.2); padding:12px 32px; display:none; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">

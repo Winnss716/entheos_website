@@ -18,7 +18,7 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
     body {
       font-family: 'Barlow', sans-serif;
       background: var(--charcoal);
@@ -294,8 +294,24 @@
       .impact-strip-inner { grid-template-columns: 1fr; gap: 28px; }
       .why-inner { grid-template-columns: 1fr; gap: 40px; }
       .footer-inner { grid-template-columns: 1fr; gap: 40px; }
-      .nav-links { display: none; }
     }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .nav-cta { display: none; }
+      .hamburger { display: flex !important; }
+    }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 6px; z-index: 200; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--cream); border-radius: 2px; transition: all 0.3s; }
+
+    .mobile-menu { display: none; position: fixed; top: 0; right: 0; bottom: 0; width: 220px; background: #1a1e14; border-left: 1px solid rgba(201,146,26,0.2); z-index: 150; flex-direction: column; align-items: flex-start; padding: 60px 24px 32px; gap: 16px; box-shadow: -8px 0 32px rgba(0,0,0,0.5); }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { color: var(--cream); text-decoration: none; font-family: 'Barlow', sans-serif; font-weight: 600; font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
+    .mobile-menu a:hover { color: var(--gold-light); }
+    .mobile-menu .close-btn { position: absolute; top: 16px; right: 16px; background: none; border: none; color: rgba(245,240,232,0.5); font-size: 1.2rem; cursor: pointer; }
+    .mobile-menu .apply-link { background: var(--gold); color: var(--charcoal) !important; padding: 8px 20px; border-radius: 2px; font-size: 0.82rem !important; margin-top: 8px; }
+    .mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 149; }
+    .mobile-overlay.open { display: block; }
   </style>
 </head>
 <body>
@@ -329,10 +345,27 @@
       <li><a href="index.html#focus">Who We Help</a></li>
       <li><a href="scholarship.html">Scholarships</a></li>
       <li><a href="our-team.html">Our Team</a></li>
-      <li><a href="donate.html">Donate</a></li>
+      <li><a href="faq.html">FAQ</a></li>
     </ul>
     <a href="apply.html" class="nav-cta">Apply Now</a>
+    <button class="hamburger" onclick="openMenu()" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
+
+  <div class="mobile-overlay" id="mob-ov" onclick="closeMenu()"></div>
+  <div class="mobile-menu" id="mobile-menu">
+    <button class="close-btn" onclick="closeMenu()">✕</button>
+    <a href="index.html" onclick="closeMenu()">Home</a>
+    <a href="scholarship.html" onclick="closeMenu()">Scholarships</a>
+    <a href="our-team.html" onclick="closeMenu()">Our Team</a>
+    <a href="faq.html" onclick="closeMenu()">FAQ</a>
+    <a href="apply.html" class="apply-link" onclick="closeMenu()">Apply Now</a>
+  </div>
+  <script>
+    function openMenu()  { document.getElementById('mobile-menu').classList.add('open'); document.getElementById('mob-ov').classList.add('open'); }
+    function closeMenu() { document.getElementById('mobile-menu').classList.remove('open'); document.getElementById('mob-ov').classList.remove('open'); }
+  </script>
 
   <!-- PAGE HEADER -->
   <div class="page-header">
