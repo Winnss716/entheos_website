@@ -1,10 +1,13 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Scholarship Program — Entheos Veteran Project</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300&display=swap" rel="stylesheet"/>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300&display=swap"
+    rel="stylesheet" />
   <style>
     :root {
       --olive: #3b4a2f;
@@ -17,8 +20,19 @@
       --mid: #5a6645;
     }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; overflow-x: hidden; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
     body {
       font-family: 'Barlow', sans-serif;
       background: var(--charcoal);
@@ -28,90 +42,184 @@
 
     /* ── NAV ── */
     nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; justify-content: space-between; align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       padding: 18px 5%;
-      background: rgba(26,30,20,0.92);
+      background: rgba(26, 30, 20, 0.92);
       backdrop-filter: blur(8px);
-      border-bottom: 1px solid rgba(201,146,26,0.25);
+      border-bottom: 1px solid rgba(201, 146, 26, 0.25);
     }
-    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-    .nav-logo img { height: 52px; width: auto; }
-    .nav-links { display: flex; gap: 32px; list-style: none; }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      height: 52px;
+      width: auto;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
     .nav-links a {
-      color: var(--cream); text-decoration: none;
-      font-weight: 600; font-size: 0.85rem; letter-spacing: 0.12em;
-      text-transform: uppercase; opacity: 0.85; transition: opacity 0.2s, color 0.2s;
+      color: var(--cream);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.85;
+      transition: opacity 0.2s, color 0.2s;
     }
-    .nav-links a:hover { opacity: 1; color: var(--gold-light); }
-    .nav-links a.active { opacity: 1; color: var(--gold-light); }
+
+    .nav-links a:hover {
+      opacity: 1;
+      color: var(--gold-light);
+    }
+
+    .nav-links a.active {
+      opacity: 1;
+      color: var(--gold-light);
+    }
+
     .nav-cta {
-      background: var(--gold); color: var(--charcoal);
-      padding: 10px 24px; border-radius: 2px;
-      font-weight: 700; letter-spacing: 0.08em;
-      text-decoration: none; font-size: 0.82rem; text-transform: uppercase;
+      background: var(--gold);
+      color: var(--charcoal);
+      padding: 10px 24px;
+      border-radius: 2px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      font-size: 0.82rem;
+      text-transform: uppercase;
       transition: background 0.2s;
     }
-    .nav-cta:hover { background: var(--gold-light); }
+
+    .nav-cta:hover {
+      background: var(--gold-light);
+    }
 
     /* ── PAGE HEADER ── */
     .page-header {
       padding: 160px 5% 90px;
       background:
-        linear-gradient(to bottom, rgba(26,30,20,0.6) 0%, rgba(26,30,20,0.9) 65%, var(--charcoal) 100%),
+        linear-gradient(to bottom, rgba(26, 30, 20, 0.6) 0%, rgba(26, 30, 20, 0.9) 65%, var(--charcoal) 100%),
         url('https://images.unsplash.com/photo-1541802645635-11f2286a7482?w=1600&q=80') center/cover no-repeat;
       text-align: center;
     }
+
     .page-header .eyebrow {
-      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.3em;
-      text-transform: uppercase; color: var(--gold-light); margin-bottom: 16px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      margin-bottom: 16px;
     }
+
     .page-header h1 {
       font-family: 'Bebas Neue', sans-serif;
       font-size: clamp(3rem, 8vw, 6.5rem);
-      line-height: 0.95; letter-spacing: 0.04em; color: var(--white);
+      line-height: 0.95;
+      letter-spacing: 0.04em;
+      color: var(--white);
     }
-    .page-header h1 span { color: var(--gold); }
+
+    .page-header h1 span {
+      color: var(--gold);
+    }
+
     .page-header p {
-      max-width: 580px; margin: 24px auto 0;
-      font-size: 1.1rem; font-weight: 300; line-height: 1.75;
-      color: rgba(245,240,232,0.8);
+      max-width: 580px;
+      margin: 24px auto 0;
+      font-size: 1.1rem;
+      font-weight: 300;
+      line-height: 1.75;
+      color: rgba(245, 240, 232, 0.8);
     }
+
     .header-actions {
-      display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
       margin-top: 40px;
     }
 
     /* ── BUTTONS ── */
     .btn-primary {
-      background: var(--gold); color: var(--charcoal);
-      padding: 15px 40px; border-radius: 2px;
-      font-family: 'Barlow', sans-serif; font-weight: 700;
-      font-size: 0.9rem; letter-spacing: 0.12em; text-transform: uppercase;
-      text-decoration: none; border: none; cursor: pointer;
-      display: inline-block; transition: background 0.2s, transform 0.2s;
+      background: var(--gold);
+      color: var(--charcoal);
+      padding: 15px 40px;
+      border-radius: 2px;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      display: inline-block;
+      transition: background 0.2s, transform 0.2s;
     }
-    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+    .btn-primary:hover {
+      background: var(--gold-light);
+      transform: translateY(-2px);
+    }
+
     .btn-outline {
-      background: transparent; color: var(--cream);
-      padding: 15px 40px; border-radius: 2px;
-      border: 1.5px solid rgba(245,240,232,0.4);
-      font-family: 'Barlow', sans-serif; font-weight: 700;
-      font-size: 0.9rem; letter-spacing: 0.12em; text-transform: uppercase;
-      text-decoration: none; display: inline-block;
+      background: transparent;
+      color: var(--cream);
+      padding: 15px 40px;
+      border-radius: 2px;
+      border: 1.5px solid rgba(245, 240, 232, 0.4);
+      font-family: 'Barlow', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      display: inline-block;
       transition: border-color 0.2s, color 0.2s, transform 0.2s;
     }
-    .btn-outline:hover { border-color: var(--gold-light); color: var(--gold-light); transform: translateY(-2px); }
+
+    .btn-outline:hover {
+      border-color: var(--gold-light);
+      color: var(--gold-light);
+      transform: translateY(-2px);
+    }
 
     /* ── SHARED ── */
     .section-label {
-      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.3em;
-      text-transform: uppercase; color: var(--gold); margin-bottom: 12px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
     }
+
     .section-title {
       font-family: 'Bebas Neue', sans-serif;
       font-size: clamp(2.2rem, 4.5vw, 3.6rem);
-      line-height: 1.05; letter-spacing: 0.04em; color: var(--white);
+      line-height: 1.05;
+      letter-spacing: 0.04em;
+      color: var(--white);
     }
 
     /* ── AWARD CALLOUT ── */
@@ -119,69 +227,141 @@
       background: var(--olive-dark);
       padding: 64px 5%;
     }
+
     .award-strip-inner {
-      max-width: 1100px; margin: 0 auto;
-      display: grid; grid-template-columns: 1fr 2px 1fr 2px 1fr; gap: 0;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 2px 1fr 2px 1fr;
+      gap: 0;
       align-items: center;
     }
-    .award-stat { text-align: center; padding: 0 40px; }
+
+    .award-stat {
+      text-align: center;
+      padding: 0 40px;
+    }
+
     .award-stat .num {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 4rem; color: var(--gold); line-height: 1;
+      font-size: 4rem;
+      color: var(--gold);
+      line-height: 1;
     }
+
     .award-stat .lbl {
-      font-size: 0.82rem; font-weight: 600; letter-spacing: 0.1em;
-      text-transform: uppercase; color: rgba(245,240,232,0.5); margin-top: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(245, 240, 232, 0.5);
+      margin-top: 8px;
     }
-    .award-divider { background: rgba(201,146,26,0.25); height: 60px; }
+
+    .award-divider {
+      background: rgba(201, 146, 26, 0.25);
+      height: 60px;
+    }
 
     /* ── WHAT WE FUND ── */
     .what-we-fund {
       background: var(--charcoal);
       padding: 90px 5%;
     }
-    .what-inner { max-width: 1200px; margin: 0 auto; }
-    .what-intro { max-width: 680px; margin-bottom: 52px; }
-    .what-intro .section-body {
-      font-size: 1.05rem; font-weight: 300; line-height: 1.8;
-      color: rgba(245,240,232,0.75); margin-top: 16px;
+
+    .what-inner {
+      max-width: 1200px;
+      margin: 0 auto;
     }
+
+    .what-intro {
+      max-width: 680px;
+      margin-bottom: 52px;
+    }
+
+    .what-intro .section-body {
+      font-size: 1.05rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(245, 240, 232, 0.75);
+      margin-top: 16px;
+    }
+
     .fund-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 22px;
     }
+
     .fund-card {
-      background: rgba(59,74,47,0.15);
-      border: 1px solid rgba(201,146,26,0.15);
-      padding: 34px 30px; border-radius: 3px;
-      position: relative; overflow: hidden;
+      background: rgba(59, 74, 47, 0.15);
+      border: 1px solid rgba(201, 146, 26, 0.15);
+      padding: 34px 30px;
+      border-radius: 3px;
+      position: relative;
+      overflow: hidden;
       transition: border-color 0.3s, transform 0.3s;
     }
+
     .fund-card::before {
       content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 3px;
-      background: var(--gold); transform: scaleX(0); transform-origin: left;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
       transition: transform 0.3s;
     }
-    .fund-card:hover { border-color: rgba(201,146,26,0.4); transform: translateY(-4px); }
-    .fund-card:hover::before { transform: scaleX(1); }
-    .fund-icon { font-size: 2.2rem; margin-bottom: 16px; }
+
+    .fund-card:hover {
+      border-color: rgba(201, 146, 26, 0.4);
+      transform: translateY(-4px);
+    }
+
+    .fund-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .fund-icon {
+      font-size: 2.2rem;
+      margin-bottom: 16px;
+    }
+
     .fund-card h3 {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.5rem; letter-spacing: 0.05em; color: var(--white); margin-bottom: 10px;
+      font-size: 1.5rem;
+      letter-spacing: 0.05em;
+      color: var(--white);
+      margin-bottom: 10px;
     }
+
     .fund-card p {
-      font-size: 0.93rem; font-weight: 300; line-height: 1.7;
-      color: rgba(245,240,232,0.65);
+      font-size: 0.93rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: rgba(245, 240, 232, 0.65);
     }
+
     .fund-examples {
-      margin-top: 14px; display: flex; flex-wrap: wrap; gap: 6px;
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
     }
+
     .fund-tag {
-      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em;
-      text-transform: uppercase; padding: 4px 10px; border-radius: 2px;
-      background: rgba(201,146,26,0.12); color: var(--gold-light);
-      border: 1px solid rgba(201,146,26,0.2);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 2px;
+      background: rgba(201, 146, 26, 0.12);
+      color: var(--gold-light);
+      border: 1px solid rgba(201, 146, 26, 0.2);
     }
 
     /* ── HOW IT WORKS ── */
@@ -189,216 +369,526 @@
       background: var(--olive-dark);
       padding: 90px 5%;
     }
+
     .how-inner {
-      max-width: 1100px; margin: 0 auto;
-      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
     }
-    .how-steps { display: flex; flex-direction: column; gap: 0; }
+
+    .how-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
     .how-step {
-      display: flex; gap: 24px; position: relative;
+      display: flex;
+      gap: 24px;
+      position: relative;
       padding-bottom: 36px;
     }
-    .how-step:last-child { padding-bottom: 0; }
+
+    .how-step:last-child {
+      padding-bottom: 0;
+    }
+
     .how-step:not(:last-child)::after {
       content: '';
-      position: absolute; left: 22px; top: 52px; bottom: 0;
-      width: 1px; background: rgba(201,146,26,0.2);
+      position: absolute;
+      left: 22px;
+      top: 52px;
+      bottom: 0;
+      width: 1px;
+      background: rgba(201, 146, 26, 0.2);
     }
+
     .step-num-wrap {
-      width: 46px; height: 46px; flex-shrink: 0;
-      border: 2px solid var(--gold); border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; color: var(--gold);
-      background: var(--olive-dark); position: relative; z-index: 1;
+      width: 46px;
+      height: 46px;
+      flex-shrink: 0;
+      border: 2px solid var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      color: var(--gold);
+      background: var(--olive-dark);
+      position: relative;
+      z-index: 1;
     }
-    .how-step-content { padding-top: 8px; }
+
+    .how-step-content {
+      padding-top: 8px;
+    }
+
     .how-step-content h4 {
-      font-weight: 700; font-size: 1rem; letter-spacing: 0.06em;
-      text-transform: uppercase; color: var(--white); margin-bottom: 8px;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 8px;
     }
+
     .how-step-content p {
-      font-size: 0.93rem; font-weight: 300; line-height: 1.7;
-      color: rgba(245,240,232,0.65);
+      font-size: 0.93rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: rgba(245, 240, 232, 0.65);
     }
+
     .award-box {
-      background: rgba(245,240,232,0.04);
-      border: 1px solid rgba(201,146,26,0.3);
-      padding: 48px 40px; border-radius: 4px; text-align: center;
-      position: sticky; top: 110px;
+      background: rgba(245, 240, 232, 0.04);
+      border: 1px solid rgba(201, 146, 26, 0.3);
+      padding: 48px 40px;
+      border-radius: 4px;
+      text-align: center;
+      position: sticky;
+      top: 110px;
     }
+
     .award-box .big-num {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 5.5rem; color: var(--gold); line-height: 1;
+      font-size: 5.5rem;
+      color: var(--gold);
+      line-height: 1;
     }
+
     .award-box .big-label {
-      font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase;
-      color: rgba(245,240,232,0.45); display: block; margin-bottom: 28px;
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(245, 240, 232, 0.45);
+      display: block;
+      margin-bottom: 28px;
     }
+
     .award-box p {
-      font-size: 0.96rem; font-weight: 300; line-height: 1.75;
-      color: rgba(245,240,232,0.7); margin-bottom: 12px;
+      font-size: 0.96rem;
+      font-weight: 300;
+      line-height: 1.75;
+      color: rgba(245, 240, 232, 0.7);
+      margin-bottom: 12px;
     }
+
     .award-box .award-perks {
-      display: flex; flex-direction: column; gap: 12px;
-      margin: 28px 0; text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 28px 0;
+      text-align: left;
     }
+
     .award-perk {
-      display: flex; gap: 12px; align-items: flex-start;
-      font-size: 0.9rem; font-weight: 300; line-height: 1.55;
-      color: rgba(245,240,232,0.7);
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      font-size: 0.9rem;
+      font-weight: 300;
+      line-height: 1.55;
+      color: rgba(245, 240, 232, 0.7);
     }
-    .award-perk-check { color: var(--gold); flex-shrink: 0; font-size: 1rem; }
-    .award-box .btn-primary { width: 100%; text-align: center; }
+
+    .award-perk-check {
+      color: var(--gold);
+      flex-shrink: 0;
+      font-size: 1rem;
+    }
+
+    .award-box .btn-primary {
+      width: 100%;
+      text-align: center;
+    }
 
     /* ── ELIGIBILITY ── */
     .eligibility {
       background: var(--charcoal);
       padding: 90px 5%;
     }
-    .eli-inner { max-width: 1100px; margin: 0 auto; }
-    .eli-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
-      margin-top: 48px; align-items: start;
+
+    .eli-inner {
+      max-width: 1100px;
+      margin: 0 auto;
     }
+
+    .eli-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      margin-top: 48px;
+      align-items: start;
+    }
+
     .eli-col h3 {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.6rem; letter-spacing: 0.04em; color: var(--white);
+      font-size: 1.6rem;
+      letter-spacing: 0.04em;
+      color: var(--white);
       margin-bottom: 20px;
     }
-    .eli-list { display: flex; flex-direction: column; gap: 14px; }
+
+    .eli-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
     .eli-item {
-      display: flex; gap: 14px; align-items: flex-start;
-      background: rgba(245,240,232,0.04);
-      border: 1px solid rgba(201,146,26,0.15);
-      padding: 18px 20px; border-radius: 3px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      background: rgba(245, 240, 232, 0.04);
+      border: 1px solid rgba(201, 146, 26, 0.15);
+      padding: 18px 20px;
+      border-radius: 3px;
     }
-    .eli-icon { color: var(--gold); font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+
+    .eli-icon {
+      color: var(--gold);
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
     .eli-text {
-      font-size: 0.93rem; font-weight: 300; line-height: 1.6;
-      color: rgba(245,240,232,0.75);
+      font-size: 0.93rem;
+      font-weight: 300;
+      line-height: 1.6;
+      color: rgba(245, 240, 232, 0.75);
     }
-    .eli-text strong { color: var(--cream); font-weight: 600; }
+
+    .eli-text strong {
+      color: var(--cream);
+      font-weight: 600;
+    }
 
     /* ── FAQ ── */
     .faq {
       background: var(--olive-dark);
       padding: 90px 5%;
     }
-    .faq-inner { max-width: 820px; margin: 0 auto; }
-    .faq-inner .section-title { margin-bottom: 48px; }
+
+    .faq-inner {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    .faq-inner .section-title {
+      margin-bottom: 48px;
+    }
+
     .faq-item {
-      border-bottom: 1px solid rgba(201,146,26,0.15);
+      border-bottom: 1px solid rgba(201, 146, 26, 0.15);
     }
+
     .faq-question {
-      width: 100%; background: none; border: none; cursor: pointer;
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 22px 0; text-align: left;
-      font-family: 'Barlow', sans-serif; font-weight: 700;
-      font-size: 1rem; letter-spacing: 0.03em;
-      color: var(--cream); transition: color 0.2s;
+      width: 100%;
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 0;
+      text-align: left;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.03em;
+      color: var(--cream);
+      transition: color 0.2s;
     }
-    .faq-question:hover { color: var(--gold-light); }
-    .faq-question.open { color: var(--gold-light); }
+
+    .faq-question:hover {
+      color: var(--gold-light);
+    }
+
+    .faq-question.open {
+      color: var(--gold-light);
+    }
+
     .faq-icon {
-      font-size: 1.3rem; color: var(--gold); flex-shrink: 0;
+      font-size: 1.3rem;
+      color: var(--gold);
+      flex-shrink: 0;
       transition: transform 0.25s;
     }
-    .faq-question.open .faq-icon { transform: rotate(45deg); }
-    .faq-answer {
-      display: none; padding-bottom: 22px;
-      font-size: 0.95rem; font-weight: 300; line-height: 1.8;
-      color: rgba(245,240,232,0.68);
+
+    .faq-question.open .faq-icon {
+      transform: rotate(45deg);
     }
-    .faq-answer.open { display: block; }
+
+    .faq-answer {
+      display: none;
+      padding-bottom: 22px;
+      font-size: 0.95rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(245, 240, 232, 0.68);
+    }
+
+    .faq-answer.open {
+      display: block;
+    }
 
     /* ── CTA BANNER ── */
     .cta-banner {
       background:
-        linear-gradient(rgba(26,30,20,0.75), rgba(26,30,20,0.75)),
+        linear-gradient(rgba(26, 30, 20, 0.75), rgba(26, 30, 20, 0.75)),
         url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1400&q=80') center/cover no-repeat;
-      padding: 100px 5%; text-align: center;
+      padding: 100px 5%;
+      text-align: center;
     }
+
     .cta-banner h2 {
       font-family: 'Bebas Neue', sans-serif;
       font-size: clamp(2.8rem, 6vw, 5rem);
-      color: var(--white); letter-spacing: 0.04em; line-height: 1.1;
+      color: var(--white);
+      letter-spacing: 0.04em;
+      line-height: 1.1;
       margin-bottom: 16px;
     }
-    .cta-banner h2 span { color: var(--gold); }
-    .cta-banner p {
-      max-width: 520px; margin: 0 auto 40px;
-      font-size: 1.05rem; font-weight: 300; line-height: 1.75;
-      color: rgba(245,240,232,0.78);
+
+    .cta-banner h2 span {
+      color: var(--gold);
     }
-    .cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    .cta-banner p {
+      max-width: 520px;
+      margin: 0 auto 40px;
+      font-size: 1.05rem;
+      font-weight: 300;
+      line-height: 1.75;
+      color: rgba(245, 240, 232, 0.78);
+    }
+
+    .cta-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
 
     /* ── FOOTER ── */
     footer {
       background: var(--olive-dark);
-      border-top: 1px solid rgba(201,146,26,0.2);
+      border-top: 1px solid rgba(201, 146, 26, 0.2);
       padding: 60px 5% 36px;
     }
+
     .footer-inner {
-      max-width: 1200px; margin: 0 auto;
-      display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 60px;
     }
+
     .footer-brand p {
-      font-size: 0.92rem; font-weight: 300; line-height: 1.75;
-      color: rgba(245,240,232,0.55); margin-top: 14px; max-width: 320px;
+      font-size: 0.92rem;
+      font-weight: 300;
+      line-height: 1.75;
+      color: rgba(245, 240, 232, 0.55);
+      margin-top: 14px;
+      max-width: 320px;
     }
-    .footer-brand img { height: 60px; }
+
+    .footer-brand img {
+      height: 60px;
+    }
+
     .footer-col h4 {
-      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.2em;
-      text-transform: uppercase; color: var(--gold); margin-bottom: 18px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 18px;
     }
-    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
     .footer-col a {
-      color: rgba(245,240,232,0.6); text-decoration: none;
-      font-size: 0.9rem; transition: color 0.2s;
+      color: rgba(245, 240, 232, 0.6);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
     }
-    .footer-col a:hover { color: var(--gold-light); }
+
+    .footer-col a:hover {
+      color: var(--gold-light);
+    }
+
     .footer-bottom {
-      max-width: 1200px; margin: 48px auto 0;
-      padding-top: 24px; border-top: 1px solid rgba(245,240,232,0.1);
-      display: flex; justify-content: space-between; align-items: center;
-      font-size: 0.8rem; color: rgba(245,240,232,0.35);
+      max-width: 1200px;
+      margin: 48px auto 0;
+      padding-top: 24px;
+      border-top: 1px solid rgba(245, 240, 232, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: rgba(245, 240, 232, 0.35);
     }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 820px) {
-      .award-strip-inner { grid-template-columns: 1fr; gap: 32px; }
-      .award-divider { display: none; }
-      .how-inner { grid-template-columns: 1fr; gap: 48px; }
-      .award-box { position: static; }
-      .eli-grid { grid-template-columns: 1fr; gap: 40px; }
-      .footer-inner { grid-template-columns: 1fr; gap: 40px; }
+      .award-strip-inner {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .award-divider {
+        display: none;
+      }
+
+      .how-inner {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .award-box {
+        position: static;
+      }
+
+      .eli-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .footer-inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
     }
+
     @media (max-width: 640px) {
-      .nav-links { display: none; }
-      .nav-cta { display: none; }
-      .hamburger { display: flex !important; }
+      .nav-links {
+        display: none;
+      }
+
+      .nav-cta {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex !important;
+      }
     }
-    .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 6px; z-index: 200; }
-    .hamburger span { display: block; width: 24px; height: 2px; background: var(--cream); border-radius: 2px; }
-    .mobile-menu { display: none; position: fixed; top: 0; right: 0; bottom: 0; width: 220px; background: #1a1e14; border-left: 1px solid rgba(201,146,26,0.2); z-index: 150; flex-direction: column; align-items: flex-start; padding: 60px 24px 32px; gap: 16px; box-shadow: -8px 0 32px rgba(0,0,0,0.5); }
-    .mobile-menu.open { display: flex; }
-    .mobile-menu a { color: var(--cream); text-decoration: none; font-family: 'Barlow', sans-serif; font-weight: 600; font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
-    .mobile-menu a:hover { color: var(--gold-light); }
-    .mobile-menu .close-btn { position: absolute; top: 16px; right: 16px; background: none; border: none; color: rgba(245,240,232,0.5); font-size: 1.2rem; cursor: pointer; }
-    .mobile-menu .apply-link { background: var(--gold); color: var(--charcoal) !important; padding: 8px 20px; border-radius: 2px; font-size: 0.82rem !important; margin-top: 8px; }
-    .mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 149; }
-    .mobile-overlay.open { display: block; }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      z-index: 200;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--cream);
+      border-radius: 2px;
+    }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 220px;
+      background: #1a1e14;
+      border-left: 1px solid rgba(201, 146, 26, 0.2);
+      z-index: 150;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 60px 24px 32px;
+      gap: 16px;
+      box-shadow: -8px 0 32px rgba(0, 0, 0, 0.5);
+    }
+
+    .mobile-menu.open {
+      display: flex;
+    }
+
+    .mobile-menu a {
+      color: var(--cream);
+      text-decoration: none;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .mobile-menu a:hover {
+      color: var(--gold-light);
+    }
+
+    .mobile-menu .close-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: none;
+      border: none;
+      color: rgba(245, 240, 232, 0.5);
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .mobile-menu .apply-link {
+      background: var(--gold);
+      color: var(--charcoal) !important;
+      padding: 8px 20px;
+      border-radius: 2px;
+      font-size: 0.82rem !important;
+      margin-top: 8px;
+    }
+
+    .mobile-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 149;
+    }
+
+    .mobile-overlay.open {
+      display: block;
+    }
   </style>
 </head>
+
 <body>
 
   <!-- Crisis Bar -->
-  <div id="crisis-bar" style="background:#7a1f1f;color:#fff;text-align:center;padding:9px 48px 9px 16px;font-size:0.8rem;letter-spacing:0.03em;line-height:1.5;position:relative;z-index:2000;">
-    If you're in crisis — <strong style="color:#ffd080;">Call or text 988, then press 1</strong> — Veterans Crisis Line — Available 24/7 — <a href="https://www.veteranscrisisline.net" target="_blank" rel="noopener" style="color:#ffd080;">Chat online</a>
-    <button onclick="dismissCrisisBar()" aria-label="Dismiss" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,0.55);font-size:1rem;cursor:pointer;padding:4px 6px;">✕</button>
+  <div id="crisis-bar"
+    style="background:#7a1f1f;color:#fff;text-align:center;padding:9px 48px 9px 16px;font-size:0.8rem;letter-spacing:0.03em;line-height:1.5;position:relative;z-index:2000;">
+    If you're in crisis — <strong style="color:#ffd080;">Call or text 988, then press 1</strong> — Veterans Crisis Line
+    — Available 24/7 — <a href="https://www.veteranscrisisline.net" target="_blank" rel="noopener"
+      style="color:#ffd080;">Chat online</a>
+    <button onclick="dismissCrisisBar()" aria-label="Dismiss"
+      style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,0.55);font-size:1rem;cursor:pointer;padding:4px 6px;">✕</button>
   </div>
   <script>
-    (function() {
+    (function () {
       if ((performance.getEntriesByType('navigation')[0] || {}).type === 'reload') {
         sessionStorage.removeItem('crisisBarDismissed');
       }
@@ -414,22 +904,27 @@
   <!-- NAV -->
   <nav>
     <a href="index.html" class="nav-logo">
-      <img src="413212FE-ACE0-4643-9C94-3C2A5F1B4848.PNG" alt="Entheos Veteran Project Logo" onerror="this.style.display='none'"/>
+      <img src="413212FE-ACE0-4643-9C94-3C2A5F1B4848.PNG" alt="Entheos Veteran Project Logo"
+        onerror="this.style.display='none'" />
     </a>
     <ul class="nav-links">
-      <li><a href="index.html#mission">Mission</a></li>
-      <li><a href="index.html#focus">Who We Help</a></li>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="how-we-help.html">How We Help</a></li>
       <li style="display:none"><a href="scholarship.html">Scholarships</a></li>
       <li><a href="our-team.html">Our Team</a></li>
       <li><a href="donate.html">Donate</a></li>
       <li><a href="faq.html">FAQ</a></li>
     </ul>
     <a href="apply.html" class="nav-cta">Apply Now</a>
-    <button class="hamburger" onclick="document.getElementById('mob').classList.add('open');document.getElementById('mob-ov').classList.add('open')" aria-label="Open menu"><span></span><span></span><span></span></button>
+    <button class="hamburger"
+      onclick="document.getElementById('mob').classList.add('open');document.getElementById('mob-ov').classList.add('open')"
+      aria-label="Open menu"><span></span><span></span><span></span></button>
   </nav>
-  <div class="mobile-overlay" id="mob-ov" onclick="document.getElementById('mob').classList.remove('open');this.classList.remove('open')"></div>
+  <div class="mobile-overlay" id="mob-ov"
+    onclick="document.getElementById('mob').classList.remove('open');this.classList.remove('open')"></div>
   <div class="mobile-menu" id="mob">
-    <button class="close-btn" onclick="document.getElementById('mob').classList.remove('open');document.getElementById('mob-ov').classList.remove('open')">✕</button>
+    <button class="close-btn"
+      onclick="document.getElementById('mob').classList.remove('open');document.getElementById('mob-ov').classList.remove('open')">✕</button>
     <a href="index.html">Home</a>
     <a href="our-team.html">Our Team</a>
     <a href="donate.html">Donate</a>
@@ -440,8 +935,9 @@
   <!-- PAGE HEADER -->
   <div class="page-header">
     <p class="eyebrow">Entheos Scholarship Program</p>
-    <h1>Fund Your<br/><span>Healing</span></h1>
-    <p>The Entheos Scholarship removes the financial barrier between veterans and the care they need — with no cost to apply and no repayment required.</p>
+    <h1>Fund Your<br /><span>Healing</span></h1>
+    <p>The Entheos Scholarship removes the financial barrier between veterans and the care they need — with no cost to
+      apply and no repayment required.</p>
     <div class="header-actions">
       <a href="apply.html" class="btn-primary">Apply for a Scholarship</a>
       <a href="donate.html" class="btn-outline">Fund a Veteran</a>
@@ -473,9 +969,10 @@
     <div class="what-inner">
       <div class="what-intro">
         <p class="section-label">What We Fund</p>
-        <h2 class="section-title">Covering the Cost<br/>of Real Recovery</h2>
+        <h2 class="section-title">Covering the Cost<br />of Real Recovery</h2>
         <p class="section-body">
-          Scholarship funds are disbursed directly to treatment providers, educational institutions, and recovery programs — never to a middleman. We cover a wide range of services so veterans can focus entirely on healing.
+          Scholarship funds are disbursed directly to treatment providers, educational institutions, and recovery
+          programs — never to a middleman. We cover a wide range of services so veterans can focus entirely on healing.
         </p>
       </div>
       <div class="fund-grid">
@@ -493,7 +990,8 @@
         <div class="fund-card">
           <div class="fund-icon">🏥</div>
           <h3>Residential & Inpatient</h3>
-          <p>Covering stays at residential treatment centers, inpatient psychiatric facilities, and structured sober living homes.</p>
+          <p>Covering stays at residential treatment centers, inpatient psychiatric facilities, and structured sober
+            living homes.</p>
           <div class="fund-examples">
             <span class="fund-tag">Inpatient Rehab</span>
             <span class="fund-tag">Sober Living</span>
@@ -503,7 +1001,8 @@
         <div class="fund-card">
           <div class="fund-icon">⚡</div>
           <h3>TBI Rehabilitation</h3>
-          <p>Neurological rehab, cognitive therapy, speech and occupational therapy for veterans living with traumatic brain injury.</p>
+          <p>Neurological rehab, cognitive therapy, speech and occupational therapy for veterans living with traumatic
+            brain injury.</p>
           <div class="fund-examples">
             <span class="fund-tag">Cognitive Rehab</span>
             <span class="fund-tag">Speech Therapy</span>
@@ -513,7 +1012,8 @@
         <div class="fund-card">
           <div class="fund-icon">🔗</div>
           <h3>Addiction Recovery</h3>
-          <p>Detox programs, outpatient counseling, 12-step support, and medication-assisted treatment for substance use disorders.</p>
+          <p>Detox programs, outpatient counseling, 12-step support, and medication-assisted treatment for substance use
+            disorders.</p>
           <div class="fund-examples">
             <span class="fund-tag">Detox</span>
             <span class="fund-tag">MAT</span>
@@ -533,7 +1033,8 @@
         <div class="fund-card">
           <div class="fund-icon">🤝</div>
           <h3>Family & Caregiver Support</h3>
-          <p>Counseling and financial assistance for the families and caregivers of veterans during active treatment periods.</p>
+          <p>Counseling and financial assistance for the families and caregivers of veterans during active treatment
+            periods.</p>
           <div class="fund-examples">
             <span class="fund-tag">Family Counseling</span>
             <span class="fund-tag">Caregiver Support</span>
@@ -548,34 +1049,38 @@
     <div class="how-inner">
       <div>
         <p class="section-label">The Process</p>
-        <h2 class="section-title">Simple. Fast.<br/>No Red Tape.</h2>
+        <h2 class="section-title">Simple. Fast.<br />No Red Tape.</h2>
         <div class="how-steps" style="margin-top: 44px;">
           <div class="how-step">
             <div class="step-num-wrap">1</div>
             <div class="how-step-content">
               <h4>Complete the Application</h4>
-              <p>Fill out our secure online form with your basic service history, current needs, and treatment goals. Takes about 10 minutes. No cost, no commitment.</p>
+              <p>Fill out our secure online form with your basic service history, current needs, and treatment goals.
+                Takes about 10 minutes. No cost, no commitment.</p>
             </div>
           </div>
           <div class="how-step">
             <div class="step-num-wrap">2</div>
             <div class="how-step-content">
               <h4>Review & Verification</h4>
-              <p>Our team carefully reviews every submission within 7–10 business days. We may contact you for additional information or to connect you with resources while you wait.</p>
+              <p>Our team carefully reviews every submission within 7–10 business days. We may contact you for
+                additional information or to connect you with resources while you wait.</p>
             </div>
           </div>
           <div class="how-step">
             <div class="step-num-wrap">3</div>
             <div class="how-step-content">
               <h4>Approval Notification</h4>
-              <p>You'll be notified by email or phone. Approved applicants receive a formal award letter and are contacted to confirm treatment program details.</p>
+              <p>You'll be notified by email or phone. Approved applicants receive a formal award letter and are
+                contacted to confirm treatment program details.</p>
             </div>
           </div>
           <div class="how-step">
             <div class="step-num-wrap">4</div>
             <div class="how-step-content">
               <h4>Funds Disbursed Directly</h4>
-              <p>Payment goes straight to your provider, school, or program. You never handle the money — there's nothing to repay, ever.</p>
+              <p>Payment goes straight to your provider, school, or program. You never handle the money — there's
+                nothing to repay, ever.</p>
             </div>
           </div>
         </div>
@@ -584,7 +1089,8 @@
       <div class="award-box">
         <div class="big-num">$2,500</div>
         <span class="big-label">Average Award Per Recipient</span>
-        <p>Scholarships are awarded based on demonstrated need. Multiple awards may be granted for extended or ongoing treatment programs.</p>
+        <p>Scholarships are awarded based on demonstrated need. Multiple awards may be granted for extended or ongoing
+          treatment programs.</p>
         <div class="award-perks">
           <div class="award-perk">
             <span class="award-perk-check">★</span>
@@ -626,23 +1132,29 @@
           <div class="eli-list">
             <div class="eli-item">
               <span class="eli-icon">★</span>
-              <p class="eli-text">You are a <strong>U.S. military veteran</strong> of any branch and any era of service</p>
+              <p class="eli-text">You are a <strong>U.S. military veteran</strong> of any branch and any era of service
+              </p>
             </div>
             <div class="eli-item">
               <span class="eli-icon">★</span>
-              <p class="eli-text">You are <strong>actively seeking or enrolled</strong> in a treatment, recovery, or education program</p>
+              <p class="eli-text">You are <strong>actively seeking or enrolled</strong> in a treatment, recovery, or
+                education program</p>
             </div>
             <div class="eli-item">
               <span class="eli-icon">★</span>
-              <p class="eli-text">You have a <strong>demonstrated financial need</strong> that creates a barrier to receiving care</p>
+              <p class="eli-text">You have a <strong>demonstrated financial need</strong> that creates a barrier to
+                receiving care</p>
             </div>
             <div class="eli-item">
               <span class="eli-icon">★</span>
-              <p class="eli-text">You are dealing with <strong>PTSD, TBI, substance abuse, mental health challenges</strong>, or reintegration difficulties</p>
+              <p class="eli-text">You are dealing with <strong>PTSD, TBI, substance abuse, mental health
+                  challenges</strong>, or reintegration difficulties</p>
             </div>
             <div class="eli-item">
               <span class="eli-icon">★</span>
-              <p class="eli-text">Family members or caregivers of qualifying veterans may also be eligible for <strong>support services</strong></p>
+              <p class="eli-text">Family members or caregivers of qualifying veterans may also be eligible for
+                <strong>support services</strong>
+              </p>
             </div>
           </div>
         </div>
@@ -655,11 +1167,13 @@
             </div>
             <div class="eli-item">
               <span class="eli-icon">◆</span>
-              <p class="eli-text"><strong>Description of your current situation</strong> — what you're facing and what care you're seeking</p>
+              <p class="eli-text"><strong>Description of your current situation</strong> — what you're facing and what
+                care you're seeking</p>
             </div>
             <div class="eli-item">
               <span class="eli-icon">◆</span>
-              <p class="eli-text"><strong>Name of treatment provider or program</strong> you intend to use (if known)</p>
+              <p class="eli-text"><strong>Name of treatment provider or program</strong> you intend to use (if known)
+              </p>
             </div>
             <div class="eli-item">
               <span class="eli-icon">◆</span>
@@ -687,7 +1201,8 @@
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-answer">
-          No. The Entheos Scholarship operates on a rolling basis — applications are accepted and reviewed year-round. There is no deadline, no open or closed cycle. Apply whenever you are ready.
+          No. The Entheos Scholarship operates on a rolling basis — applications are accepted and reviewed year-round.
+          There is no deadline, no open or closed cycle. Apply whenever you are ready.
         </div>
       </div>
 
@@ -707,7 +1222,9 @@
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-answer">
-          Yes. VA benefits do not disqualify you. Many veterans use the Entheos Scholarship to cover costs that VA benefits do not fully address — co-pays, out-of-network providers, programs not covered by the VA, or treatment gaps during appeals.
+          Yes. VA benefits do not disqualify you. Many veterans use the Entheos Scholarship to cover costs that VA
+          benefits do not fully address — co-pays, out-of-network providers, programs not covered by the VA, or
+          treatment gaps during appeals.
         </div>
       </div>
 
@@ -717,7 +1234,8 @@
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-answer">
-          Yes. Veterans with extended or ongoing treatment needs may be considered for multiple awards. Each award is reviewed individually based on continued demonstrated need.
+          Yes. Veterans with extended or ongoing treatment needs may be considered for multiple awards. Each award is
+          reviewed individually based on continued demonstrated need.
         </div>
       </div>
 
@@ -727,7 +1245,8 @@
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-answer">
-          Our team reviews applications within 7–10 business days. If we need more information, we'll reach out directly. Once approved, disbursement to your provider typically occurs within 5 business days.
+          Our team reviews applications within 7–10 business days. If we need more information, we'll reach out
+          directly. Once approved, disbursement to your provider typically occurs within 5 business days.
         </div>
       </div>
 
@@ -737,7 +1256,8 @@
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-answer">
-          Absolutely. You don't need to have a program or provider identified before applying. Our team can help connect you with vetted treatment options in your area as part of the review process.
+          Absolutely. You don't need to have a program or provider identified before applying. Our team can help connect
+          you with vetted treatment options in your area as part of the review process.
         </div>
       </div>
 
@@ -747,7 +1267,9 @@
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-answer">
-          We accept applications from veterans with any discharge status, including Honorable, General (Under Honorable Conditions), and medical discharges. We review each application individually and believe service members deserve access to healing regardless of the circumstances of their discharge.
+          We accept applications from veterans with any discharge status, including Honorable, General (Under Honorable
+          Conditions), and medical discharges. We review each application individually and believe service members
+          deserve access to healing regardless of the circumstances of their discharge.
         </div>
       </div>
     </div>
@@ -755,8 +1277,9 @@
 
   <!-- CTA BANNER -->
   <div class="cta-banner">
-    <h2>Ready to Take<br/>the <span>Next Step?</span></h2>
-    <p>The application takes about 10 minutes. There is no cost, no deadline, and no repayment — ever. Your healing starts here.</p>
+    <h2>Ready to Take<br />the <span>Next Step?</span></h2>
+    <p>The application takes about 10 minutes. There is no cost, no deadline, and no repayment — ever. Your healing
+      starts here.</p>
     <div class="cta-actions">
       <a href="apply.html" class="btn-primary">Apply for a Scholarship</a>
       <a href="donate.html" class="btn-outline">Support a Fellow Veteran</a>
@@ -767,8 +1290,10 @@
   <footer>
     <div class="footer-inner">
       <div class="footer-brand">
-        <img src="413212FE-ACE0-4643-9C94-3C2A5F1B4848.PNG" alt="Entheos Veteran Project" onerror="this.style.display='none'"/>
-        <p>The Entheos Veteran Project raises and distributes scholarship funds for veterans battling PTSD, TBI, substance abuse, and the invisible wounds of war.</p>
+        <img src="413212FE-ACE0-4643-9C94-3C2A5F1B4848.PNG" alt="Entheos Veteran Project"
+          onerror="this.style.display='none'" />
+        <p>The Entheos Veteran Project raises and distributes scholarship funds for veterans battling PTSD, TBI,
+          substance abuse, and the invisible wounds of war.</p>
       </div>
       <div class="footer-col">
         <h4>Navigate</h4>
@@ -812,4 +1337,5 @@
   </script>
 
 </body>
+
 </html>

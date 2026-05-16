@@ -1,154 +1,935 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Education & Reintegration — Entheos Veteran Project</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300&display=swap" rel="stylesheet"/>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300&display=swap"
+    rel="stylesheet" />
   <style>
-    :root { --olive: #3b4a2f; --olive-dark: #232d1a; --gold: #c9921a; --gold-light: #e8b84b; --cream: #f5f0e8; --white: #ffffff; --charcoal: #1a1e14; --mid: #5a6645; }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; overflow-x: hidden; }
-    body { font-family: 'Barlow', sans-serif; background: var(--charcoal); color: var(--cream); overflow-x: hidden; }
-    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 18px 5%; background: rgba(26,30,20,0.92); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(201,146,26,0.25); }
-    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-    .nav-logo img { height: 52px; width: auto; }
-    .nav-links { display: flex; gap: 32px; list-style: none; }
-    .nav-links a { color: var(--cream); text-decoration: none; font-weight: 600; font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.85; transition: opacity 0.2s, color 0.2s; }
-    .nav-links a:hover { opacity: 1; color: var(--gold-light); }
-    .nav-cta { background: var(--gold); color: var(--charcoal); padding: 10px 24px; border-radius: 2px; font-weight: 700; letter-spacing: 0.08em; text-decoration: none; font-size: 0.82rem; text-transform: uppercase; transition: background 0.2s; }
-    .nav-cta:hover { background: var(--gold-light); }
-    .page-header { padding: 160px 5% 90px; text-align: center; background: linear-gradient(to bottom, rgba(26,30,20,0.5) 0%, rgba(26,30,20,0.88) 60%, var(--charcoal) 100%), url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1600&q=80') center/cover no-repeat; }
-    .page-header .eyebrow { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 16px; }
-    .page-header h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3.5rem, 9vw, 7rem); line-height: 0.92; letter-spacing: 0.04em; color: var(--white); }
-    .page-header h1 span { color: var(--gold); }
-    .page-header p { max-width: 580px; margin: 24px auto 0; font-size: 1.08rem; font-weight: 300; line-height: 1.8; color: rgba(245,240,232,0.78); }
-    .stat-strip { background: var(--olive-dark); border-top: 1px solid rgba(201,146,26,0.2); border-bottom: 1px solid rgba(201,146,26,0.2); padding: 40px 5%; }
-    .stat-strip-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; text-align: center; }
-    .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.4rem, 4vw, 3.4rem); color: var(--gold); line-height: 1; letter-spacing: 0.04em; }
-    .stat-label { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(245,240,232,0.55); margin-top: 6px; line-height: 1.4; }
-    .section { padding: 90px 5%; }
-    .section-inner { max-width: 1100px; margin: 0 auto; }
-    .section-eyebrow { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
-    .section-heading { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.4rem, 5vw, 4rem); letter-spacing: 0.04em; color: var(--white); line-height: 1; margin-bottom: 20px; }
-    .section-heading span { color: var(--gold); }
-    .section-body { font-size: 1rem; font-weight: 300; line-height: 1.85; color: rgba(245,240,232,0.7); max-width: 700px; }
-    .challenge-section { background: var(--charcoal); }
-    .challenge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; margin-top: 50px; }
-    .challenge-text p { font-size: 1rem; font-weight: 300; line-height: 1.9; color: rgba(245,240,232,0.72); margin-bottom: 18px; }
-    .challenge-text p strong { color: var(--cream); font-weight: 600; }
-    .challenge-callout { background: rgba(201,146,26,0.07); border-left: 3px solid var(--gold); padding: 28px 30px; border-radius: 0 4px 4px 0; }
-    .challenge-callout p { font-size: 1.05rem; font-style: italic; font-weight: 300; line-height: 1.8; color: rgba(245,240,232,0.8); }
-    .challenge-callout cite { display: block; margin-top: 14px; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); font-style: normal; }
-    .barriers-section { background: var(--olive-dark); }
-    .barriers-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 50px; }
-    .barrier-card { background: rgba(245,240,232,0.04); border: 1px solid rgba(201,146,26,0.18); border-top: 3px solid var(--gold); border-radius: 4px; padding: 28px 24px; transition: background 0.2s; }
-    .barrier-card:hover { background: rgba(245,240,232,0.07); }
-    .barrier-icon { font-size: 1.8rem; margin-bottom: 14px; }
-    .barrier-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 0.06em; color: var(--white); margin-bottom: 12px; }
-    .barrier-desc { font-size: 0.88rem; font-weight: 300; line-height: 1.6; color: rgba(245,240,232,0.65); }
-    .programs-section { background: var(--charcoal); }
-    .program-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 50px; }
-    .program-card { background: rgba(245,240,232,0.04); border: 1px solid rgba(201,146,26,0.18); border-radius: 4px; padding: 32px 28px; transition: border-color 0.2s, background 0.2s; }
-    .program-card:hover { border-color: rgba(201,146,26,0.45); background: rgba(245,240,232,0.07); }
-    .program-tag { display: inline-block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 9px; border-radius: 2px; background: rgba(201,146,26,0.15); color: var(--gold-light); margin-bottom: 14px; }
-    .program-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 0.05em; color: var(--white); margin-bottom: 10px; line-height: 1.1; }
-    .program-desc { font-size: 0.9rem; font-weight: 300; line-height: 1.75; color: rgba(245,240,232,0.65); }
-    .program-divider { height: 1px; background: rgba(201,146,26,0.15); margin: 18px 0; }
-    .program-covers-label { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(245,240,232,0.4); margin-bottom: 8px; }
-    .program-covers { font-size: 0.88rem; font-weight: 300; line-height: 1.65; color: rgba(245,240,232,0.6); }
-    .veteran-context-section { background: var(--olive-dark); }
-    .context-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; margin-top: 50px; }
-    .context-facts { display: flex; flex-direction: column; gap: 22px; }
-    .fact-item { display: flex; gap: 18px; align-items: flex-start; padding: 22px 24px; background: rgba(245,240,232,0.03); border: 1px solid rgba(201,146,26,0.15); border-radius: 4px; }
-    .fact-num { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--gold); flex-shrink: 0; line-height: 1; }
-    .fact-text { font-size: 0.93rem; font-weight: 300; line-height: 1.65; color: rgba(245,240,232,0.7); }
-    .fact-text strong { color: var(--cream); font-weight: 600; }
-    .context-image { background: linear-gradient(to bottom right, rgba(26,30,20,0.3), rgba(26,30,20,0.6)), url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=900&q=80') center/cover no-repeat; border-radius: 4px; min-height: 420px; border: 1px solid rgba(201,146,26,0.15); }
-    .help-section { background: var(--charcoal); }
-    .help-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; margin-top: 50px; }
-    .help-steps { display: flex; flex-direction: column; }
-    .help-step { display: flex; gap: 20px; padding-bottom: 32px; position: relative; }
-    .help-step:not(:last-child)::after { content: ''; position: absolute; left: 19px; top: 42px; bottom: 0; width: 1px; background: rgba(201,146,26,0.25); }
-    .help-num { width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; background: rgba(201,146,26,0.12); border: 1.5px solid rgba(201,146,26,0.4); display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; color: var(--gold); z-index: 1; }
-    .help-content h4 { font-size: 1rem; font-weight: 700; color: var(--cream); margin-bottom: 6px; padding-top: 7px; }
-    .help-content p { font-size: 0.9rem; font-weight: 300; line-height: 1.75; color: rgba(245,240,232,0.62); }
-    .help-aside { background: rgba(245,240,232,0.04); border: 1px solid rgba(201,146,26,0.2); border-radius: 4px; padding: 36px 32px; position: sticky; top: 110px; }
-    .help-aside h3 { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 0.05em; color: var(--white); margin-bottom: 6px; }
-    .help-aside h3 span { color: var(--gold); }
-    .help-aside p { font-size: 0.92rem; font-weight: 300; line-height: 1.75; color: rgba(245,240,232,0.6); margin-bottom: 24px; }
-    .aside-perks { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
-    .aside-perks li { display: flex; gap: 10px; font-size: 0.88rem; font-weight: 300; color: rgba(245,240,232,0.68); align-items: flex-start; }
-    .aside-perks li::before { content: '✓'; color: var(--gold); font-weight: 700; flex-shrink: 0; }
-    .btn-gold { display: block; text-align: center; background: var(--gold); color: var(--charcoal); padding: 15px 28px; border-radius: 2px; font-family: 'Barlow', sans-serif; font-weight: 700; font-size: 0.88rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; margin-bottom: 12px; transition: background 0.2s, transform 0.15s; }
-    .btn-gold:hover { background: var(--gold-light); transform: translateY(-1px); }
-    .btn-outline-sm { display: block; text-align: center; background: transparent; color: var(--cream); padding: 13px 28px; border-radius: 2px; border: 1.5px solid rgba(245,240,232,0.25); font-family: 'Barlow', sans-serif; font-weight: 700; font-size: 0.88rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; transition: border-color 0.2s, color 0.2s; }
-    .btn-outline-sm:hover { border-color: var(--gold-light); color: var(--gold-light); }
-    .cta-banner { background: linear-gradient(to right, rgba(35,45,26,0.97) 0%, rgba(35,45,26,0.85) 100%), url('https://images.unsplash.com/photo-1531058020387-3be344556be6?w=1600&q=80') center/cover no-repeat; padding: 90px 5%; text-align: center; }
-    .cta-banner h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 6vw, 4.5rem); letter-spacing: 0.04em; color: var(--white); line-height: 1.05; margin-bottom: 14px; }
-    .cta-banner h2 span { color: var(--gold); }
-    .cta-banner p { max-width: 520px; margin: 0 auto 36px; font-size: 1rem; font-weight: 300; line-height: 1.8; color: rgba(245,240,232,0.72); }
-    .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-    .btn-cta-primary { background: var(--gold); color: var(--charcoal); padding: 15px 40px; border-radius: 2px; font-family: 'Barlow', sans-serif; font-weight: 700; font-size: 0.88rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; transition: background 0.2s, transform 0.15s; }
-    .btn-cta-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
-    .btn-cta-outline { background: transparent; color: var(--cream); padding: 15px 40px; border-radius: 2px; border: 1.5px solid rgba(245,240,232,0.35); font-family: 'Barlow', sans-serif; font-weight: 700; font-size: 0.88rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; transition: border-color 0.2s, color 0.2s; }
-    .btn-cta-outline:hover { border-color: var(--gold-light); color: var(--gold-light); }
-    footer { background: var(--olive-dark); border-top: 1px solid rgba(201,146,26,0.2); padding: 60px 5% 36px; }
-    .footer-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 60px; }
-    .footer-brand p { font-size: 0.92rem; font-weight: 300; line-height: 1.75; color: rgba(245,240,232,0.55); margin-top: 14px; max-width: 320px; }
-    .footer-brand img { height: 60px; }
-    .footer-col h4 { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
-    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-    .footer-col a { color: rgba(245,240,232,0.6); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
-    .footer-col a:hover { color: var(--gold-light); }
-    .footer-bottom { max-width: 1200px; margin: 48px auto 0; padding-top: 24px; border-top: 1px solid rgba(245,240,232,0.1); display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: rgba(245,240,232,0.35); }
-    @media (max-width: 900px) { .challenge-grid, .context-grid, .help-grid { grid-template-columns: 1fr; gap: 36px; } .barriers-grid { grid-template-columns: 1fr 1fr; } .program-grid { grid-template-columns: 1fr 1fr; } .stat-strip-inner { grid-template-columns: 1fr 1fr; gap: 28px; } .context-image { min-height: 260px; } .help-aside { position: static; } }
-    @media (max-width: 600px) { .barriers-grid, .program-grid { grid-template-columns: 1fr; } .stat-strip-inner { grid-template-columns: 1fr 1fr; } .footer-inner { grid-template-columns: 1fr; gap: 36px; } }
-    @media (max-width: 640px) { .nav-links { display: none; } .nav-cta { display: none; } .hamburger { display: flex !important; } }
-    .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 6px; z-index: 200; }
-    .hamburger span { display: block; width: 24px; height: 2px; background: var(--cream); border-radius: 2px; }
-    .mobile-menu { display: none; position: fixed; top: 0; right: 0; bottom: 0; width: 220px; background: #1a1e14; border-left: 1px solid rgba(201,146,26,0.2); z-index: 150; flex-direction: column; align-items: flex-start; padding: 60px 24px 32px; gap: 16px; box-shadow: -8px 0 32px rgba(0,0,0,0.5); }
-    .mobile-menu.open { display: flex; }
-    .mobile-menu a { color: var(--cream); text-decoration: none; font-family: 'Barlow', sans-serif; font-weight: 600; font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
-    .mobile-menu .close-btn { position: absolute; top: 16px; right: 16px; background: none; border: none; color: rgba(245,240,232,0.5); font-size: 1.2rem; cursor: pointer; }
-    .mobile-menu .apply-link { background: var(--gold); color: var(--charcoal) !important; padding: 8px 20px; border-radius: 2px; font-size: 0.82rem !important; margin-top: 8px; }
-    .mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 149; }
-    .mobile-overlay.open { display: block; }
+    :root {
+      --olive: #3b4a2f;
+      --olive-dark: #232d1a;
+      --gold: #c9921a;
+      --gold-light: #e8b84b;
+      --cream: #f5f0e8;
+      --white: #ffffff;
+      --charcoal: #1a1e14;
+      --mid: #5a6645;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--charcoal);
+      color: var(--cream);
+      overflow-x: hidden;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 5%;
+      background: rgba(26, 30, 20, 0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(201, 146, 26, 0.25);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      height: 52px;
+      width: auto;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--cream);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.85;
+      transition: opacity 0.2s, color 0.2s;
+    }
+
+    .nav-links a:hover {
+      opacity: 1;
+      color: var(--gold-light);
+    }
+
+    .nav-cta {
+      background: var(--gold);
+      color: var(--charcoal);
+      padding: 10px 24px;
+      border-radius: 2px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      transition: background 0.2s;
+    }
+
+    .nav-cta:hover {
+      background: var(--gold-light);
+    }
+
+    .page-header {
+      padding: 160px 5% 90px;
+      text-align: center;
+      background: linear-gradient(to bottom, rgba(26, 30, 20, 0.5) 0%, rgba(26, 30, 20, 0.88) 60%, var(--charcoal) 100%), url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1600&q=80') center/cover no-repeat;
+    }
+
+    .page-header .eyebrow {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      margin-bottom: 16px;
+    }
+
+    .page-header h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 9vw, 7rem);
+      line-height: 0.92;
+      letter-spacing: 0.04em;
+      color: var(--white);
+    }
+
+    .page-header h1 span {
+      color: var(--gold);
+    }
+
+    .page-header p {
+      max-width: 580px;
+      margin: 24px auto 0;
+      font-size: 1.08rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(245, 240, 232, 0.78);
+    }
+
+    .stat-strip {
+      background: var(--olive-dark);
+      border-top: 1px solid rgba(201, 146, 26, 0.2);
+      border-bottom: 1px solid rgba(201, 146, 26, 0.2);
+      padding: 40px 5%;
+    }
+
+    .stat-strip-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      text-align: center;
+    }
+
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.4rem, 4vw, 3.4rem);
+      color: var(--gold);
+      line-height: 1;
+      letter-spacing: 0.04em;
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(245, 240, 232, 0.55);
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+
+    .section {
+      padding: 90px 5%;
+    }
+
+    .section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-eyebrow {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+
+    .section-heading {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      letter-spacing: 0.04em;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+
+    .section-heading span {
+      color: var(--gold);
+    }
+
+    .section-body {
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.85;
+      color: rgba(245, 240, 232, 0.7);
+      max-width: 700px;
+    }
+
+    .challenge-section {
+      background: var(--charcoal);
+    }
+
+    .challenge-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+      margin-top: 50px;
+    }
+
+    .challenge-text p {
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.9;
+      color: rgba(245, 240, 232, 0.72);
+      margin-bottom: 18px;
+    }
+
+    .challenge-text p strong {
+      color: var(--cream);
+      font-weight: 600;
+    }
+
+    .challenge-callout {
+      background: rgba(201, 146, 26, 0.07);
+      border-left: 3px solid var(--gold);
+      padding: 28px 30px;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .challenge-callout p {
+      font-size: 1.05rem;
+      font-style: italic;
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(245, 240, 232, 0.8);
+    }
+
+    .challenge-callout cite {
+      display: block;
+      margin-top: 14px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-style: normal;
+    }
+
+    .barriers-section {
+      background: var(--olive-dark);
+    }
+
+    .barriers-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-top: 50px;
+    }
+
+    .barrier-card {
+      background: rgba(245, 240, 232, 0.04);
+      border: 1px solid rgba(201, 146, 26, 0.18);
+      border-top: 3px solid var(--gold);
+      border-radius: 4px;
+      padding: 28px 24px;
+      transition: background 0.2s;
+    }
+
+    .barrier-card:hover {
+      background: rgba(245, 240, 232, 0.07);
+    }
+
+    .barrier-icon {
+      font-size: 1.8rem;
+      margin-bottom: 14px;
+    }
+
+    .barrier-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      letter-spacing: 0.06em;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .barrier-desc {
+      font-size: 0.88rem;
+      font-weight: 300;
+      line-height: 1.6;
+      color: rgba(245, 240, 232, 0.65);
+    }
+
+    .programs-section {
+      background: var(--charcoal);
+    }
+
+    .program-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 50px;
+    }
+
+    .program-card {
+      background: rgba(245, 240, 232, 0.04);
+      border: 1px solid rgba(201, 146, 26, 0.18);
+      border-radius: 4px;
+      padding: 32px 28px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .program-card:hover {
+      border-color: rgba(201, 146, 26, 0.45);
+      background: rgba(245, 240, 232, 0.07);
+    }
+
+    .program-tag {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 2px;
+      background: rgba(201, 146, 26, 0.15);
+      color: var(--gold-light);
+      margin-bottom: 14px;
+    }
+
+    .program-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: 0.05em;
+      color: var(--white);
+      margin-bottom: 10px;
+      line-height: 1.1;
+    }
+
+    .program-desc {
+      font-size: 0.9rem;
+      font-weight: 300;
+      line-height: 1.75;
+      color: rgba(245, 240, 232, 0.65);
+    }
+
+    .program-divider {
+      height: 1px;
+      background: rgba(201, 146, 26, 0.15);
+      margin: 18px 0;
+    }
+
+    .program-covers-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(245, 240, 232, 0.4);
+      margin-bottom: 8px;
+    }
+
+    .program-covers {
+      font-size: 0.88rem;
+      font-weight: 300;
+      line-height: 1.65;
+      color: rgba(245, 240, 232, 0.6);
+    }
+
+    .veteran-context-section {
+      background: var(--olive-dark);
+    }
+
+    .context-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px;
+      align-items: center;
+      margin-top: 50px;
+    }
+
+    .context-facts {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .fact-item {
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+      padding: 22px 24px;
+      background: rgba(245, 240, 232, 0.03);
+      border: 1px solid rgba(201, 146, 26, 0.15);
+      border-radius: 4px;
+    }
+
+    .fact-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      color: var(--gold);
+      flex-shrink: 0;
+      line-height: 1;
+    }
+
+    .fact-text {
+      font-size: 0.93rem;
+      font-weight: 300;
+      line-height: 1.65;
+      color: rgba(245, 240, 232, 0.7);
+    }
+
+    .fact-text strong {
+      color: var(--cream);
+      font-weight: 600;
+    }
+
+    .context-image {
+      background: linear-gradient(to bottom right, rgba(26, 30, 20, 0.3), rgba(26, 30, 20, 0.6)), url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=900&q=80') center/cover no-repeat;
+      border-radius: 4px;
+      min-height: 420px;
+      border: 1px solid rgba(201, 146, 26, 0.15);
+    }
+
+    .help-section {
+      background: var(--charcoal);
+    }
+
+    .help-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+      margin-top: 50px;
+    }
+
+    .help-steps {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .help-step {
+      display: flex;
+      gap: 20px;
+      padding-bottom: 32px;
+      position: relative;
+    }
+
+    .help-step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 19px;
+      top: 42px;
+      bottom: 0;
+      width: 1px;
+      background: rgba(201, 146, 26, 0.25);
+    }
+
+    .help-num {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: rgba(201, 146, 26, 0.12);
+      border: 1.5px solid rgba(201, 146, 26, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      color: var(--gold);
+      z-index: 1;
+    }
+
+    .help-content h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--cream);
+      margin-bottom: 6px;
+      padding-top: 7px;
+    }
+
+    .help-content p {
+      font-size: 0.9rem;
+      font-weight: 300;
+      line-height: 1.75;
+      color: rgba(245, 240, 232, 0.62);
+    }
+
+    .help-aside {
+      background: rgba(245, 240, 232, 0.04);
+      border: 1px solid rgba(201, 146, 26, 0.2);
+      border-radius: 4px;
+      padding: 36px 32px;
+      position: sticky;
+      top: 110px;
+    }
+
+    .help-aside h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 0.05em;
+      color: var(--white);
+      margin-bottom: 6px;
+    }
+
+    .help-aside h3 span {
+      color: var(--gold);
+    }
+
+    .help-aside p {
+      font-size: 0.92rem;
+      font-weight: 300;
+      line-height: 1.75;
+      color: rgba(245, 240, 232, 0.6);
+      margin-bottom: 24px;
+    }
+
+    .aside-perks {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .aside-perks li {
+      display: flex;
+      gap: 10px;
+      font-size: 0.88rem;
+      font-weight: 300;
+      color: rgba(245, 240, 232, 0.68);
+      align-items: flex-start;
+    }
+
+    .aside-perks li::before {
+      content: '✓';
+      color: var(--gold);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .btn-gold {
+      display: block;
+      text-align: center;
+      background: var(--gold);
+      color: var(--charcoal);
+      padding: 15px 28px;
+      border-radius: 2px;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 700;
+      font-size: 0.88rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      margin-bottom: 12px;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn-gold:hover {
+      background: var(--gold-light);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline-sm {
+      display: block;
+      text-align: center;
+      background: transparent;
+      color: var(--cream);
+      padding: 13px 28px;
+      border-radius: 2px;
+      border: 1.5px solid rgba(245, 240, 232, 0.25);
+      font-family: 'Barlow', sans-serif;
+      font-weight: 700;
+      font-size: 0.88rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .btn-outline-sm:hover {
+      border-color: var(--gold-light);
+      color: var(--gold-light);
+    }
+
+    .cta-banner {
+      background: linear-gradient(to right, rgba(35, 45, 26, 0.97) 0%, rgba(35, 45, 26, 0.85) 100%), url('https://images.unsplash.com/photo-1531058020387-3be344556be6?w=1600&q=80') center/cover no-repeat;
+      padding: 90px 5%;
+      text-align: center;
+    }
+
+    .cta-banner h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      letter-spacing: 0.04em;
+      color: var(--white);
+      line-height: 1.05;
+      margin-bottom: 14px;
+    }
+
+    .cta-banner h2 span {
+      color: var(--gold);
+    }
+
+    .cta-banner p {
+      max-width: 520px;
+      margin: 0 auto 36px;
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(245, 240, 232, 0.72);
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-cta-primary {
+      background: var(--gold);
+      color: var(--charcoal);
+      padding: 15px 40px;
+      border-radius: 2px;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 700;
+      font-size: 0.88rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .btn-cta-primary:hover {
+      background: var(--gold-light);
+      transform: translateY(-1px);
+    }
+
+    .btn-cta-outline {
+      background: transparent;
+      color: var(--cream);
+      padding: 15px 40px;
+      border-radius: 2px;
+      border: 1.5px solid rgba(245, 240, 232, 0.35);
+      font-family: 'Barlow', sans-serif;
+      font-weight: 700;
+      font-size: 0.88rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .btn-cta-outline:hover {
+      border-color: var(--gold-light);
+      color: var(--gold-light);
+    }
+
+    footer {
+      background: var(--olive-dark);
+      border-top: 1px solid rgba(201, 146, 26, 0.2);
+      padding: 60px 5% 36px;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 60px;
+    }
+
+    .footer-brand p {
+      font-size: 0.92rem;
+      font-weight: 300;
+      line-height: 1.75;
+      color: rgba(245, 240, 232, 0.55);
+      margin-top: 14px;
+      max-width: 320px;
+    }
+
+    .footer-brand img {
+      height: 60px;
+    }
+
+    .footer-col h4 {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 18px;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-col a {
+      color: rgba(245, 240, 232, 0.6);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    .footer-col a:hover {
+      color: var(--gold-light);
+    }
+
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 48px auto 0;
+      padding-top: 24px;
+      border-top: 1px solid rgba(245, 240, 232, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: rgba(245, 240, 232, 0.35);
+    }
+
+    @media (max-width: 900px) {
+
+      .challenge-grid,
+      .context-grid,
+      .help-grid {
+        grid-template-columns: 1fr;
+        gap: 36px;
+      }
+
+      .barriers-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .program-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .stat-strip-inner {
+        grid-template-columns: 1fr 1fr;
+        gap: 28px;
+      }
+
+      .context-image {
+        min-height: 260px;
+      }
+
+      .help-aside {
+        position: static;
+      }
+    }
+
+    @media (max-width: 600px) {
+
+      .barriers-grid,
+      .program-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stat-strip-inner {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .footer-inner {
+        grid-template-columns: 1fr;
+        gap: 36px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav-links {
+        display: none;
+      }
+
+      .nav-cta {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex !important;
+      }
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      z-index: 200;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--cream);
+      border-radius: 2px;
+    }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 220px;
+      background: #1a1e14;
+      border-left: 1px solid rgba(201, 146, 26, 0.2);
+      z-index: 150;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 60px 24px 32px;
+      gap: 16px;
+      box-shadow: -8px 0 32px rgba(0, 0, 0, 0.5);
+    }
+
+    .mobile-menu.open {
+      display: flex;
+    }
+
+    .mobile-menu a {
+      color: var(--cream);
+      text-decoration: none;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .mobile-menu .close-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: none;
+      border: none;
+      color: rgba(245, 240, 232, 0.5);
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .mobile-menu .apply-link {
+      background: var(--gold);
+      color: var(--charcoal) !important;
+      padding: 8px 20px;
+      border-radius: 2px;
+      font-size: 0.82rem !important;
+      margin-top: 8px;
+    }
+
+    .mobile-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 149;
+    }
+
+    .mobile-overlay.open {
+      display: block;
+    }
   </style>
 </head>
+
 <body>
 
   <!-- Crisis Bar -->
-  <div id="crisis-bar" style="background:#7a1f1f;color:#fff;text-align:center;padding:9px 48px 9px 16px;font-size:0.8rem;letter-spacing:0.03em;line-height:1.5;position:relative;z-index:2000;">
-    If you're in crisis — <strong style="color:#ffd080;">Call or text 988, then press 1</strong> — Veterans Crisis Line — Available 24/7 — <a href="https://www.veteranscrisisline.net" target="_blank" rel="noopener" style="color:#ffd080;">Chat online</a>
-    <button onclick="dismissCrisisBar()" aria-label="Dismiss" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,0.55);font-size:1rem;cursor:pointer;padding:4px 6px;">✕</button>
+  <div id="crisis-bar"
+    style="background:#7a1f1f;color:#fff;text-align:center;padding:9px 48px 9px 16px;font-size:0.8rem;letter-spacing:0.03em;line-height:1.5;position:relative;z-index:2000;">
+    If you're in crisis — <strong style="color:#ffd080;">Call or text 988, then press 1</strong> — Veterans Crisis Line
+    — Available 24/7 — <a href="https://www.veteranscrisisline.net" target="_blank" rel="noopener"
+      style="color:#ffd080;">Chat online</a>
+    <button onclick="dismissCrisisBar()" aria-label="Dismiss"
+      style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,0.55);font-size:1rem;cursor:pointer;padding:4px 6px;">✕</button>
   </div>
-<script>
-    (function(){
-      if((performance.getEntriesByType('navigation')[0]||{}).type==='reload'){sessionStorage.removeItem('crisisBarDismissed');}
-      if(sessionStorage.getItem('crisisBarDismissed')){document.getElementById('crisis-bar').style.display='none';}
+  <script>
+    (function () {
+      if ((performance.getEntriesByType('navigation')[0] || {}).type === 'reload') { sessionStorage.removeItem('crisisBarDismissed'); }
+      if (sessionStorage.getItem('crisisBarDismissed')) { document.getElementById('crisis-bar').style.display = 'none'; }
     })();
-    function dismissCrisisBar(){document.getElementById('crisis-bar').style.display='none';sessionStorage.setItem('crisisBarDismissed','1');}
+    function dismissCrisisBar() { document.getElementById('crisis-bar').style.display = 'none'; sessionStorage.setItem('crisisBarDismissed', '1'); }
   </script>
   <nav>
     <a href="index.html" class="nav-logo">
-      <img src="413212FE-ACE0-4643-9C94-3C2A5F1B4848.PNG" alt="Entheos Veteran Project Logo" onerror="this.style.display='none'"/>
+      <img src="413212FE-ACE0-4643-9C94-3C2A5F1B4848.PNG" alt="Entheos Veteran Project Logo"
+        onerror="this.style.display='none'" />
     </a>
     <ul class="nav-links">
       <li><a href="index.html">← Home</a></li>
-      <li><a href="index.html#mission">Mission</a></li>
-      <li><a href="index.html#focus">Who We Help</a></li>
+      <li><a href="how-we-help.html">How We Help</a></li>
       <li><a href="scholarship.html">Scholarships</a></li>
       <li><a href="our-team.html">Our Team</a></li>
       <li><a href="donate.html">Donate</a></li>
       <li><a href="faq.html">FAQ</a></li>
     </ul>
     <a href="apply.html" class="nav-cta">Apply Now</a>
-    <button class="hamburger" onclick="document.getElementById('mob').classList.add('open');document.getElementById('mob-ov').classList.add('open')" aria-label="Open menu"><span></span><span></span><span></span></button>
+    <button class="hamburger"
+      onclick="document.getElementById('mob').classList.add('open');document.getElementById('mob-ov').classList.add('open')"
+      aria-label="Open menu"><span></span><span></span><span></span></button>
   </nav>
-  <div class="mobile-overlay" id="mob-ov" onclick="document.getElementById('mob').classList.remove('open');this.classList.remove('open')"></div>
+  <div class="mobile-overlay" id="mob-ov"
+    onclick="document.getElementById('mob').classList.remove('open');this.classList.remove('open')"></div>
   <div class="mobile-menu" id="mob">
-    <button class="close-btn" onclick="document.getElementById('mob').classList.remove('open');document.getElementById('mob-ov').classList.remove('open')">✕</button>
+    <button class="close-btn"
+      onclick="document.getElementById('mob').classList.remove('open');document.getElementById('mob-ov').classList.remove('open')">✕</button>
     <a href="index.html">Home</a>
     <a href="scholarship.html">Scholarships</a>
     <a href="our-team.html">Our Team</a>
@@ -159,27 +940,28 @@
 
   <div class="page-header">
     <p class="eyebrow">Veteran Opportunity</p>
-    <h1>Education &amp;<br/><span>Reintegration</span></h1>
-    <p>Veterans bring extraordinary discipline, leadership, and resilience to civilian life. We fund the education and training that turns that potential into a thriving career and a new mission.</p>
+    <h1>Education &amp;<br /><span>Reintegration</span></h1>
+    <p>Veterans bring extraordinary discipline, leadership, and resilience to civilian life. We fund the education and
+      training that turns that potential into a thriving career and a new mission.</p>
   </div>
 
   <div class="stat-strip">
     <div class="stat-strip-inner">
       <div class="stat-item">
         <div class="stat-num">200K</div>
-        <div class="stat-label">veterans transition to<br/>civilian life each year</div>
+        <div class="stat-label">veterans transition to<br />civilian life each year</div>
       </div>
       <div class="stat-item">
         <div class="stat-num">40%</div>
-        <div class="stat-label">who start college<br/>don't finish</div>
+        <div class="stat-label">who start college<br />don't finish</div>
       </div>
       <div class="stat-item">
         <div class="stat-num">36mo</div>
-        <div class="stat-label">GI Bill limit — leaving<br/>many programs uncovered</div>
+        <div class="stat-label">GI Bill limit — leaving<br />many programs uncovered</div>
       </div>
       <div class="stat-item">
         <div class="stat-num">30%</div>
-        <div class="stat-label">lower earnings vs civilian<br/>peers in first 5 years</div>
+        <div class="stat-label">lower earnings vs civilian<br />peers in first 5 years</div>
       </div>
     </div>
   </div>
@@ -190,17 +972,28 @@
       <h2 class="section-heading">Why Transition Is <span>Harder Than It Looks</span></h2>
       <div class="challenge-grid">
         <div class="challenge-text">
-          <p>Veterans leaving the military carry an extraordinary set of skills — leadership, problem-solving, team coordination, performance under pressure, discipline. <strong>These skills are genuinely valuable. They are also deeply misunderstood by most civilian employers and academic institutions.</strong></p>
-          <p>"Managed a $12M logistics operation for 450-person organization" doesn't fit on a standard college application. Military occupational specialties don't map neatly to civilian job titles. Experience that would be career-defining in any other context gets dismissed with "Thanks for your service."</p>
-          <p>At the same time, GI Bill benefits — while valuable — leave significant gaps. Programs longer than 36 months, non-accredited training, licensing exams, childcare costs, books, tools, and living expenses during school all fall outside what the GI Bill covers. Many veterans abandon their education not because they can't hack it academically, but because they can't afford to finish.</p>
+          <p>Veterans leaving the military carry an extraordinary set of skills — leadership, problem-solving, team
+            coordination, performance under pressure, discipline. <strong>These skills are genuinely valuable. They are
+              also deeply misunderstood by most civilian employers and academic institutions.</strong></p>
+          <p>"Managed a $12M logistics operation for 450-person organization" doesn't fit on a standard college
+            application. Military occupational specialties don't map neatly to civilian job titles. Experience that
+            would be career-defining in any other context gets dismissed with "Thanks for your service."</p>
+          <p>At the same time, GI Bill benefits — while valuable — leave significant gaps. Programs longer than 36
+            months, non-accredited training, licensing exams, childcare costs, books, tools, and living expenses during
+            school all fall outside what the GI Bill covers. Many veterans abandon their education not because they
+            can't hack it academically, but because they can't afford to finish.</p>
         </div>
         <div>
           <div class="challenge-callout">
-            <p>"Veterans consistently outperform their civilian peers in graduation rates — when given adequate financial support to complete their programs. The dropout problem is almost entirely financial, not academic."</p>
+            <p>"Veterans consistently outperform their civilian peers in graduation rates — when given adequate
+              financial support to complete their programs. The dropout problem is almost entirely financial, not
+              academic."</p>
             <cite>— Student Veterans of America</cite>
           </div>
           <div class="challenge-callout" style="margin-top:20px; border-left-color: rgba(201,146,26,0.4);">
-            <p>"The military gave me more training and real-world leadership experience than any MBA program could. What I needed was someone to help me translate it — and to cover the tuition for the credentials that civilians recognize."</p>
+            <p>"The military gave me more training and real-world leadership experience than any MBA program could. What
+              I needed was someone to help me translate it — and to cover the tuition for the credentials that civilians
+              recognize."</p>
             <cite>— Army veteran, Entheos scholarship recipient</cite>
           </div>
         </div>
@@ -212,27 +1005,36 @@
     <div class="section-inner">
       <p class="section-eyebrow">What Gets in the Way</p>
       <h2 class="section-heading">The Four <span>Barriers Veterans Face</span></h2>
-      <p class="section-body">Understanding why veterans struggle with educational and career transition helps us design the right support.</p>
+      <p class="section-body">Understanding why veterans struggle with educational and career transition helps us design
+        the right support.</p>
       <div class="barriers-grid">
         <div class="barrier-card">
           <div class="barrier-icon">💰</div>
           <div class="barrier-name">Financial Gaps</div>
-          <p class="barrier-desc">GI Bill covers tuition for 36 months — but most bachelor's degrees take longer, and the bill doesn't cover books, tools, childcare, licensing exam fees, or professional development costs. These gaps force many veterans to choose between their education and their family's stability.</p>
+          <p class="barrier-desc">GI Bill covers tuition for 36 months — but most bachelor's degrees take longer, and
+            the bill doesn't cover books, tools, childcare, licensing exam fees, or professional development costs.
+            These gaps force many veterans to choose between their education and their family's stability.</p>
         </div>
         <div class="barrier-card">
           <div class="barrier-icon">🧭</div>
           <div class="barrier-name">Culture Shock</div>
-          <p class="barrier-desc">Transitioning from a highly structured, mission-driven military environment to the ambiguity of a college campus or civilian workplace is genuinely disorienting. Veterans report feeling out of place, underestimated, and frustrated by the lack of clear purpose and hierarchy.</p>
+          <p class="barrier-desc">Transitioning from a highly structured, mission-driven military environment to the
+            ambiguity of a college campus or civilian workplace is genuinely disorienting. Veterans report feeling out
+            of place, underestimated, and frustrated by the lack of clear purpose and hierarchy.</p>
         </div>
         <div class="barrier-card">
           <div class="barrier-icon">📋</div>
           <div class="barrier-name">Credential Translation</div>
-          <p class="barrier-desc">Military training and experience — even extraordinary, complex, and high-stakes — rarely translates directly to civilian credentials. Veterans often have to start entry-level roles despite years of leadership experience, or pay for certifications to validate knowledge they already have.</p>
+          <p class="barrier-desc">Military training and experience — even extraordinary, complex, and high-stakes —
+            rarely translates directly to civilian credentials. Veterans often have to start entry-level roles despite
+            years of leadership experience, or pay for certifications to validate knowledge they already have.</p>
         </div>
         <div class="barrier-card">
           <div class="barrier-icon">🧠</div>
           <div class="barrier-name">Unaddressed Health</div>
-          <p class="barrier-desc">Unmanaged PTSD, TBI, or depression dramatically undermines academic performance and job retention. Many veterans are attempting education and career transition while simultaneously managing invisible wounds — without sufficient support for either.</p>
+          <p class="barrier-desc">Unmanaged PTSD, TBI, or depression dramatically undermines academic performance and
+            job retention. Many veterans are attempting education and career transition while simultaneously managing
+            invisible wounds — without sufficient support for either.</p>
         </div>
       </div>
     </div>
@@ -242,55 +1044,70 @@
     <div class="section-inner">
       <p class="section-eyebrow">What We Fund</p>
       <h2 class="section-heading">Programs That <span>Open Doors</span></h2>
-      <p class="section-body">Entheos scholarships cover a wide range of educational and career pathways — because every veteran's next mission looks different.</p>
+      <p class="section-body">Entheos scholarships cover a wide range of educational and career pathways — because every
+        veteran's next mission looks different.</p>
       <div class="program-grid">
         <div class="program-card">
           <div class="program-tag">Academic</div>
           <div class="program-name">College &amp; University</div>
-          <p class="program-desc">Covering tuition gaps, application fees, books, and academic support costs not covered by GI Bill benefits — for associate, bachelor's, and graduate-level programs.</p>
+          <p class="program-desc">Covering tuition gaps, application fees, books, and academic support costs not covered
+            by GI Bill benefits — for associate, bachelor's, and graduate-level programs.</p>
           <div class="program-divider"></div>
           <div class="program-covers-label">Covers</div>
-          <p class="program-covers">Tuition beyond GI Bill limits, books and materials, exam fees, academic coaching and tutoring support.</p>
+          <p class="program-covers">Tuition beyond GI Bill limits, books and materials, exam fees, academic coaching and
+            tutoring support.</p>
         </div>
         <div class="program-card">
           <div class="program-tag">Trade</div>
           <div class="program-name">Vocational &amp; Trade Schools</div>
-          <p class="program-desc">Electrician, plumber, welder, HVAC technician, diesel mechanic — skilled trades offer veterans immediate employment, strong wages, and the hands-on work many prefer to desk careers.</p>
+          <p class="program-desc">Electrician, plumber, welder, HVAC technician, diesel mechanic — skilled trades offer
+            veterans immediate employment, strong wages, and the hands-on work many prefer to desk careers.</p>
           <div class="program-divider"></div>
           <div class="program-covers-label">Covers</div>
-          <p class="program-covers">Program tuition, tools and equipment, certification exam fees, and licensure costs.</p>
+          <p class="program-covers">Program tuition, tools and equipment, certification exam fees, and licensure costs.
+          </p>
         </div>
         <div class="program-card">
           <div class="program-tag">Certifications</div>
           <div class="program-name">Professional Certifications</div>
-          <p class="program-desc">Cybersecurity (CompTIA, CISSP), project management (PMP), healthcare (CNA, EMT), real estate, financial planning — credentials that translate military expertise into civilian career currency.</p>
+          <p class="program-desc">Cybersecurity (CompTIA, CISSP), project management (PMP), healthcare (CNA, EMT), real
+            estate, financial planning — credentials that translate military expertise into civilian career currency.
+          </p>
           <div class="program-divider"></div>
           <div class="program-covers-label">Covers</div>
-          <p class="program-covers">Prep course costs, certification exam fees, study materials, and first renewal fees.</p>
+          <p class="program-covers">Prep course costs, certification exam fees, study materials, and first renewal fees.
+          </p>
         </div>
         <div class="program-card">
           <div class="program-tag">Career</div>
           <div class="program-name">Career Coaching</div>
-          <p class="program-desc">Professional resume translation, LinkedIn optimization, interview prep, networking coaching, and industry mentorship from veteran-specific career development specialists.</p>
+          <p class="program-desc">Professional resume translation, LinkedIn optimization, interview prep, networking
+            coaching, and industry mentorship from veteran-specific career development specialists.</p>
           <div class="program-divider"></div>
           <div class="program-covers-label">Covers</div>
-          <p class="program-covers">Coaching sessions, resume writing services, professional headshots, job fair registration, and career assessment tools.</p>
+          <p class="program-covers">Coaching sessions, resume writing services, professional headshots, job fair
+            registration, and career assessment tools.</p>
         </div>
         <div class="program-card">
           <div class="program-tag">Business</div>
           <div class="program-name">Entrepreneurship Programs</div>
-          <p class="program-desc">Veteran-owned businesses are among the fastest-growing small business categories in the country. We fund programs that give veterans the business planning, mentorship, and startup support to launch successfully.</p>
+          <p class="program-desc">Veteran-owned businesses are among the fastest-growing small business categories in
+            the country. We fund programs that give veterans the business planning, mentorship, and startup support to
+            launch successfully.</p>
           <div class="program-divider"></div>
           <div class="program-covers-label">Covers</div>
-          <p class="program-covers">Business courses, mentorship programs, legal formation costs, and professional development for veteran entrepreneurs.</p>
+          <p class="program-covers">Business courses, mentorship programs, legal formation costs, and professional
+            development for veteran entrepreneurs.</p>
         </div>
         <div class="program-card">
           <div class="program-tag">Advanced</div>
           <div class="program-name">Graduate &amp; Professional School</div>
-          <p class="program-desc">MBA, law, medicine, counseling, social work, public policy — advanced degrees that allow veterans to pursue leadership, advocacy, and service roles in civilian life.</p>
+          <p class="program-desc">MBA, law, medicine, counseling, social work, public policy — advanced degrees that
+            allow veterans to pursue leadership, advocacy, and service roles in civilian life.</p>
           <div class="program-divider"></div>
           <div class="program-covers-label">Covers</div>
-          <p class="program-covers">Tuition gaps, application fees, entrance exam prep (LSAT, GMAT, MCAT, GRE), and academic materials.</p>
+          <p class="program-covers">Tuition gaps, application fees, entrance exam prep (LSAT, GMAT, MCAT, GRE), and
+            academic materials.</p>
         </div>
       </div>
     </div>
@@ -304,19 +1121,31 @@
         <div class="context-facts">
           <div class="fact-item">
             <div class="fact-num">01</div>
-            <div class="fact-text"><strong>Veterans become community leaders.</strong> Veterans with completed education and stable careers at twice the rate of their civilian peers give back through community service, mentorship, and civic leadership. Investing in veteran success creates multiplier effects across communities.</div>
+            <div class="fact-text"><strong>Veterans become community leaders.</strong> Veterans with completed education
+              and stable careers at twice the rate of their civilian peers give back through community service,
+              mentorship, and civic leadership. Investing in veteran success creates multiplier effects across
+              communities.</div>
           </div>
           <div class="fact-item">
             <div class="fact-num">02</div>
-            <div class="fact-text"><strong>Financial stability accelerates mental health recovery.</strong> Chronic financial stress is both a cause and a consequence of mental health struggles. When veterans achieve career stability, mental health outcomes improve dramatically — creating a reinforcing cycle of recovery and success.</div>
+            <div class="fact-text"><strong>Financial stability accelerates mental health recovery.</strong> Chronic
+              financial stress is both a cause and a consequence of mental health struggles. When veterans achieve
+              career stability, mental health outcomes improve dramatically — creating a reinforcing cycle of recovery
+              and success.</div>
           </div>
           <div class="fact-item">
             <div class="fact-num">03</div>
-            <div class="fact-text"><strong>Veteran-owned businesses create jobs.</strong> Veterans start businesses at higher rates than any demographic group — and those businesses succeed at higher rates. Every veteran we help launch a business creates employment in their community.</div>
+            <div class="fact-text"><strong>Veteran-owned businesses create jobs.</strong> Veterans start businesses at
+              higher rates than any demographic group — and those businesses succeed at higher rates. Every veteran we
+              help launch a business creates employment in their community.</div>
           </div>
           <div class="fact-item">
             <div class="fact-num">04</div>
-            <div class="fact-text"><strong>Purpose accelerates recovery from invisible wounds.</strong> <strong>Employment, education, and mission are among the most powerful protective factors against veteran suicide.</strong> When a veteran has something to work toward, healing accelerates. When they are adrift, everything suffers.</div>
+            <div class="fact-text"><strong>Purpose accelerates recovery from invisible wounds.</strong>
+              <strong>Employment, education, and mission are among the most powerful protective factors against veteran
+                suicide.</strong> When a veteran has something to work toward, healing accelerates. When they are
+              adrift, everything suffers.
+            </div>
           </div>
         </div>
         <div class="context-image"></div>
@@ -328,41 +1157,47 @@
     <div class="section-inner">
       <p class="section-eyebrow">Entheos Veteran Project</p>
       <h2 class="section-heading">How We <span>Help</span></h2>
-      <p class="section-body">Cost should never be the barrier between a veteran and the education or career they've earned. Here is how we close that gap.</p>
+      <p class="section-body">Cost should never be the barrier between a veteran and the education or career they've
+        earned. Here is how we close that gap.</p>
       <div class="help-grid">
         <div class="help-steps">
           <div class="help-step">
             <div class="help-num">1</div>
             <div class="help-content">
               <h4>You Apply — At No Cost</h4>
-              <p>Our application is free and takes about 10 minutes. Tell us your education or career goals, your service history, and where you need support. No income thresholds, no complexity.</p>
+              <p>Our application is free and takes about 10 minutes. Tell us your education or career goals, your
+                service history, and where you need support. No income thresholds, no complexity.</p>
             </div>
           </div>
           <div class="help-step">
             <div class="help-num">2</div>
             <div class="help-content">
               <h4>We Review and Match</h4>
-              <p>Our team identifies the best funding pathway for your specific goals — tuition assistance, certification fees, career coaching — and reviews your application within 7–10 business days.</p>
+              <p>Our team identifies the best funding pathway for your specific goals — tuition assistance,
+                certification fees, career coaching — and reviews your application within 7–10 business days.</p>
             </div>
           </div>
           <div class="help-step">
             <div class="help-num">3</div>
             <div class="help-content">
               <h4>Funds Go Directly to Your Program</h4>
-              <p>Approved scholarships are disbursed directly to your school, training program, or service provider. You focus on your education; we handle the payment.</p>
+              <p>Approved scholarships are disbursed directly to your school, training program, or service provider. You
+                focus on your education; we handle the payment.</p>
             </div>
           </div>
           <div class="help-step">
             <div class="help-num">4</div>
             <div class="help-content">
               <h4>No Repayment. Ever.</h4>
-              <p>This is a scholarship — not a loan. You will never be asked to pay it back. Our only ask is that you pursue the next mission with everything you've got.</p>
+              <p>This is a scholarship — not a loan. You will never be asked to pay it back. Our only ask is that you
+                pursue the next mission with everything you've got.</p>
             </div>
           </div>
         </div>
         <div class="help-aside">
           <h3>The <span>Scholarship</span></h3>
-          <p>We close the gaps that GI Bill and other programs leave — so no veteran has to abandon their education because of cost.</p>
+          <p>We close the gaps that GI Bill and other programs leave — so no veteran has to abandon their education
+            because of cost.</p>
           <ul class="aside-perks">
             <li>College, trade school, and certification programs covered</li>
             <li>Career coaching and professional development funded</li>
@@ -379,8 +1214,9 @@
   </div>
 
   <div class="cta-banner">
-    <h2>Your Service Was the Mission.<br/><span>Let's Build What Comes Next.</span></h2>
-    <p>You gave years to this country. We'll help fund the education and career that makes those years count even more. No cost, no deadline, no repayment.</p>
+    <h2>Your Service Was the Mission.<br /><span>Let's Build What Comes Next.</span></h2>
+    <p>You gave years to this country. We'll help fund the education and career that makes those years count even more.
+      No cost, no deadline, no repayment.</p>
     <div class="cta-buttons">
       <a href="apply.html" class="btn-cta-primary">Apply for a Scholarship</a>
       <a href="donate.html" class="btn-cta-outline">Fund a Veteran's Future</a>
@@ -390,14 +1226,16 @@
   <footer>
     <div class="footer-inner">
       <div class="footer-brand">
-        <img src="413212FE-ACE0-4643-9C94-3C2A5F1B4848.PNG" alt="Entheos Veteran Project" onerror="this.style.display='none'"/>
-        <p>The Entheos Veteran Project raises and distributes scholarship funds for veterans battling PTSD, TBI, substance abuse, and the invisible wounds of war.</p>
+        <img src="413212FE-ACE0-4643-9C94-3C2A5F1B4848.PNG" alt="Entheos Veteran Project"
+          onerror="this.style.display='none'" />
+        <p>The Entheos Veteran Project raises and distributes scholarship funds for veterans battling PTSD, TBI,
+          substance abuse, and the invisible wounds of war.</p>
       </div>
       <div class="footer-col">
         <h4>Navigate</h4>
         <ul>
           <li><a href="index.html">← Home</a></li>
-      <li><a href="index.html#mission">Mission</a></li>
+          <li><a href="index.html#mission">Mission</a></li>
           <li><a href="index.html#focus">Who We Serve</a></li>
           <li><a href="scholarship.html">Scholarships</a></li>
           <li><a href="our-team.html">Our Team</a></li>
@@ -421,4 +1259,5 @@
   </footer>
 
 </body>
+
 </html>
