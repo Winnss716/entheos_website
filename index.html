@@ -74,6 +74,8 @@
       background: rgba(26, 30, 20, 0.92);
       backdrop-filter: blur(8px);
       border-bottom: 1px solid rgba(201, 146, 26, 0.25);
+      position: relative;
+      /* Needed for absolute centering */
     }
 
     .nav-logo {
@@ -88,10 +90,16 @@
       width: auto;
     }
 
+    /* Centered Navigation Links */
     .nav-links {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
       display: flex;
       gap: 32px;
       list-style: none;
+      margin: 0;
+      padding: 0;
     }
 
     .nav-links a {
@@ -1105,37 +1113,6 @@
         <button class="nav-signin" onclick="openModal('su')" style="background:rgba(201,146,26,0.12);">Sign Up</button>
       </div>
       <a href="apply.html" class="nav-cta">Apply Now</a>
-      <div style="position:relative;">
-        <button id="nav-dots-btn" onclick="toggleDots()"
-          style="background:none;border:1px solid rgba(201,146,26,0.3);border-radius:4px;color:rgba(245,240,232,0.5);font-size:1.1rem;cursor:pointer;padding:5px 11px;line-height:1;transition:all 0.2s;"
-          onmouseover="this.style.color='var(--gold-light)';this.style.borderColor='var(--gold)'"
-          onmouseout="this.style.color='rgba(245,240,232,0.5)';this.style.borderColor='rgba(201,146,26,0.3)'">⋮</button>
-        <div id="nav-dots-menu"
-          style="display:none;position:absolute;right:0;top:44px;background:#1e2419;border:1px solid rgba(201,146,26,0.2);border-radius:6px;min-width:190px;z-index:200;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,0.5);">
-          <button id="create-acct-btn" onclick="closeDots();openModal('su')"
-            style="width:100%;text-align:left;background:none;border:none;padding:13px 18px;color:var(--gold);font-family:'Barlow',sans-serif;font-size:0.88rem;cursor:pointer;transition:background 0.15s;"
-            onmouseover="this.style.background='rgba(201,146,26,0.08)'" onmouseout="this.style.background='none'">Create
-            Account</button>
-          <div id="create-acct-divider" style="height:1px;background:rgba(201,146,26,0.1);"></div>
-          <button id="delete-acct-btn" onclick="closeDots();showDeleteFromNav()"
-            style="display:none;width:100%;text-align:left;background:none;border:none;padding:13px 18px;color:#e07070;font-family:'Barlow',sans-serif;font-size:0.88rem;cursor:pointer;transition:background 0.15s;"
-            onmouseover="this.style.background='rgba(224,112,112,0.08)'"
-            onmouseout="this.style.background='none'">Delete Account</button>
-          <div id="delete-acct-divider" style="display:none;height:1px;background:rgba(201,146,26,0.1);"></div>
-          <a href="mailto:Entheosveteranproject@gmail.com?subject=Problem Report" onclick="closeDots()"
-            style="display:block;padding:13px 18px;color:rgba(245,240,232,0.7);font-family:'Barlow',sans-serif;font-size:0.88rem;text-decoration:none;transition:background 0.15s;"
-            onmouseover="this.style.background='rgba(255,255,255,0.05)'"
-            onmouseout="this.style.background='none'">Report a Problem</a>
-          <div style="height:1px;background:rgba(201,146,26,0.1);"></div>
-          <a href="faq.html" onclick="closeDots()"
-            style="display:block;padding:13px 18px;color:rgba(245,240,232,0.7);font-family:'Barlow',sans-serif;font-size:0.88rem;text-decoration:none;transition:background 0.15s;"
-            onmouseover="this.style.background='rgba(255,255,255,0.05)'"
-            onmouseout="this.style.background='none'">Help</a>
-        </div>
-      </div>
-      <button class="hamburger" onclick="openMobileMenu()" aria-label="Open menu">
-        <span></span><span></span><span></span>
-      </button>
     </div>
   </nav>
 
