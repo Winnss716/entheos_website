@@ -75,7 +75,6 @@
       backdrop-filter: blur(8px);
       border-bottom: 1px solid rgba(201, 146, 26, 0.25);
       position: relative;
-      /* Needed for absolute centering */
     }
 
     .nav-logo {
@@ -957,7 +956,6 @@
         display: none;
       }
 
-      /* Hide only the desktop buttons inside .nav-right, NOT the whole container */
       .nav-right #nav-auth-area,
       .nav-right .nav-cta {
         display: none;
@@ -1047,7 +1045,7 @@
       margin-top: auto;
     }
 
-    /* ── MOBILE OVERLAY (optional but recommended) ── */
+    /* ── MOBILE OVERLAY ── */
     .mobile-overlay {
       display: none;
       position: fixed;
@@ -1058,19 +1056,6 @@
 
     .mobile-overlay.open {
       display: block;
-    }
-
-    /* ── RESPONSIVE: Show Hamburger on Mobile ── */
-    @media (max-width: 900px) {
-
-      .nav-links,
-      .nav-right {
-        display: none;
-      }
-
-      .hamburger {
-        display: flex;
-      }
     }
   </style>
 </head>
@@ -1109,7 +1094,7 @@
         onerror="this.style.display='none'" />
     </a>
 
-    <!-- Desktop Navigation Links (hidden on mobile) -->
+    <!-- Desktop Navigation Links -->
     <ul class="nav-links">
       <li><a href="how-we-help.html">How We Help</a></li>
       <li><a href="scholarship.html">Scholarships</a></li>
@@ -1125,7 +1110,7 @@
         <button class="nav-signin" onclick="openModal('su')" style="background:rgba(201,146,26,0.12);">Sign Up</button>
       </div>
 
-      <!-- Hamburger Button (only visible on mobile) -->
+      <!-- Hamburger Button -->
       <button class="hamburger" onclick="toggleMobileMenu()" aria-label="Toggle menu">
         <span></span>
         <span></span>
@@ -1155,7 +1140,6 @@
       <a href="apply.html" class="nav-cta" onclick="toggleMobileMenu()">Apply Now</a>
     </div>
   </div>
-
 
   <!-- Delete Account Modal -->
   <div class="modal-overlay" id="delete-modal" onclick="if(event.target===this)closeDeleteModal()"
@@ -1545,77 +1529,6 @@
       document.getElementById('create-acct-btn').style.display = 'none';
       document.getElementById('create-acct-divider').style.display = 'none';
     }
-
-    function openMobileMenu() {
-      document.getElementById('mobile-menu').classList.add('open');
-      document.getElementById('mobile-overlay').classList.add('open');
-    }
-    function closeMobileMenu() {
-      document.getElementById('mobile-menu').classList.remove('open');
-      document.getElementById('mobile-overlay').classList.remove('open');
-    }
-
-    function toggleDots() {
-      const m = document.getElementById('nav-dots-menu');
-      m.style.display = m.style.display === 'none' ? 'block' : 'none';
-    }
-    function closeDots() {
-      document.getElementById('nav-dots-menu').style.display = 'none';
-    }
-    async function showDeleteFromNav() {
-      const email = localStorage.getItem('ev_user');
-      if (!email) { openModal('si'); return; }
-
-      // Check if they have an application in Supabase
-      let hasApplication = false;
-      try {
-        const res = await fetch(
-          'https://afdybbbeukqnqlxlojmu.supabase.co/rest/v1/applications?email=eq.' + encodeURIComponent(email) + '&select=reference_code&limit=1',
-          { headers: { 'apikey': 'sb_publishable_5YQFAeRNG64IYbPTRwtZCg_1BZooKWx', 'Authorization': 'Bearer sb_publishable_5YQFAeRNG64IYbPTRwtZCg_1BZooKWx' } }
-        );
-        const rows = await res.json();
-        if (Array.isArray(rows) && rows.length > 0) hasApplication = true;
-      } catch (_) { }
-
-      document.getElementById('del-modal-pass').value = '';
-      document.getElementById('del-modal-msg').style.display = 'none';
-      document.getElementById('del-app-warning').style.display = hasApplication ? 'block' : 'none';
-      document.getElementById('delete-modal').style.display = 'flex';
-      setTimeout(() => document.getElementById('del-modal-pass').focus(), 100);
-    }
-    function closeDeleteModal() {
-      document.getElementById('delete-modal').style.display = 'none';
-    }
-    async function confirmDelete() {
-      const email = localStorage.getItem('ev_user');
-      const pass = document.getElementById('del-modal-pass').value;
-      const msg = document.getElementById('del-modal-msg');
-      const btn = document.getElementById('del-modal-btn');
-      if (!pass) { msg.textContent = 'Please enter your password.'; msg.style.display = 'block'; return; }
-
-      btn.disabled = true; btn.textContent = 'Deleting…';
-      try {
-        const res = await fetch(API + '/api/delete-account', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: pass }) });
-        const data = await res.json();
-        if (res.ok) {
-          localStorage.removeItem('ev_user');
-          closeDeleteModal();
-          document.getElementById('nav-auth-area').innerHTML = '<button class="nav-signin" onclick="openModal(\'si\')">Log In</button>';
-          alert('Your account has been deleted.');
-        } else {
-          btn.disabled = false; btn.textContent = 'Delete Account';
-          msg.textContent = data.error || 'Failed.'; msg.style.display = 'block';
-        }
-      } catch {
-        btn.disabled = false; btn.textContent = 'Delete Account';
-        msg.textContent = 'Could not reach the server.'; msg.style.display = 'block';
-      }
-    }
-    document.addEventListener('click', e => {
-      const btn = document.getElementById('nav-dots-btn');
-      const menu = document.getElementById('nav-dots-menu');
-      if (btn && menu && !btn.contains(e.target) && !menu.contains(e.target)) closeDots();
-    });
 
     function mSignOut() {
       localStorage.removeItem('ev_user');
