@@ -952,39 +952,19 @@
     }
 
     /* ── RESPONSIVE ── */
-    @media (max-width: 820px) {
-
-      .mission-grid,
-      .scholarship-inner,
-      .footer-inner {
-        grid-template-columns: 1fr;
-        gap: 40px;
-      }
-
-      .mission-image-wrap {
-        display: none;
-      }
-    }
-
-    @media (max-width: 640px) {
+    @media (max-width: 900px) {
       .nav-links {
         display: none;
       }
 
-      #nav-auth-area {
-        display: none;
-      }
-
-      .nav-cta {
-        display: none;
-      }
-
-      #nav-dots-btn {
+      /* Hide only the desktop buttons inside .nav-right, NOT the whole container */
+      .nav-right #nav-auth-area,
+      .nav-right .nav-cta {
         display: none;
       }
 
       .hamburger {
-        display: flex !important;
+        display: flex;
       }
     }
 
@@ -1009,7 +989,7 @@
       transition: all 0.3s;
     }
 
-    /* ── MOBILE MENU (Slides in from LEFT) ── */
+    /* ── MOBILE MENU (Slides from LEFT) ── */
     .mobile-menu {
       display: none;
       position: fixed;
@@ -1067,7 +1047,7 @@
       margin-top: auto;
     }
 
-    /* ── MOBILE OVERLAY ── */
+    /* ── MOBILE OVERLAY (optional but recommended) ── */
     .mobile-overlay {
       display: none;
       position: fixed;
@@ -1502,6 +1482,11 @@
     function showMMsg(id, text, type) {
       const el = document.getElementById(id);
       el.textContent = text; el.className = 'modal-msg ' + type; el.style.display = 'block';
+    }
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('open');
     }
 
     async function mSignIn() {
