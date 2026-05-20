@@ -94,7 +94,7 @@
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
-      display: flex;
+      display: none;
       gap: 32px;
       list-style: none;
       margin: 0;
@@ -950,25 +950,14 @@
       }
     }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      .nav-links {
-        display: none;
-      }
-
-      .nav-right #nav-auth-area,
-      .nav-right .nav-cta {
-        display: none;
-      }
-
-      .hamburger {
-        display: flex;
-      }
+    /* ── NAV RIGHT (desktop auth — hidden, auth lives in hamburger menu) ── */
+    .nav-right {
+      display: none;
     }
 
     /* ── HAMBURGER BUTTON ── */
     .hamburger {
-      display: none;
+      display: flex;
       flex-direction: column;
       gap: 5px;
       background: none;
@@ -987,29 +976,32 @@
       transition: all 0.3s;
     }
 
-    /* ── MOBILE MENU (Slides from LEFT) ── */
+    /* ── MOBILE MENU — slides in from left ── */
     .mobile-menu {
-      display: none;
+      display: flex;
+      flex-direction: column;
       position: fixed;
       top: 0;
       left: 0;
       bottom: 0;
-      width: 260px;
+      width: 280px;
       background: #1a1e14;
       z-index: 300;
-      flex-direction: column;
       padding: 24px;
       box-shadow: 8px 0 32px rgba(0, 0, 0, 0.5);
+      border-right: 1px solid rgba(201, 146, 26, 0.15);
+      transform: translateX(-100%);
+      transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .mobile-menu.open {
-      display: flex;
+      transform: translateX(0);
     }
 
     .mobile-menu-header {
       display: flex;
       justify-content: flex-end;
-      margin-bottom: 20px;
+      margin-bottom: 28px;
     }
 
     .close-btn {
@@ -1018,44 +1010,63 @@
       color: var(--cream);
       font-size: 1.5rem;
       cursor: pointer;
+      line-height: 1;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+    }
+
+    .close-btn:hover {
+      opacity: 1;
     }
 
     .mobile-nav-links {
       list-style: none;
       padding: 0;
-      margin: 0 0 40px 0;
-    }
-
-    .mobile-nav-links li {
-      margin-bottom: 18px;
+      margin: 0 0 auto 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
 
     .mobile-nav-links a {
+      display: block;
       color: var(--cream);
       text-decoration: none;
       font-size: 1rem;
       font-weight: 600;
       letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(245, 240, 232, 0.06);
+      transition: color 0.2s;
+    }
+
+    .mobile-nav-links a:hover {
+      color: var(--gold-light);
     }
 
     .mobile-auth {
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      margin-top: auto;
+      gap: 10px;
+      margin-top: 32px;
     }
 
-    /* ── MOBILE OVERLAY ── */
+    /* ── MOBILE OVERLAY — fades in ── */
     .mobile-overlay {
-      display: none;
+      display: block;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.5);
       z-index: 149;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.32s ease;
     }
 
     .mobile-overlay.open {
-      display: block;
+      opacity: 1;
+      pointer-events: auto;
     }
   </style>
 </head>
@@ -1088,6 +1099,13 @@
 
   <!-- NAV -->
   <nav>
+    <!-- Hamburger Button (mobile left) -->
+    <button class="hamburger" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
     <!-- Logo -->
     <a href="index.html" class="nav-logo">
       <img src="413212FE-ACE0-4643-9C94-3C2A5F1B4848.PNG" alt="Entheos Veteran Project Logo"
@@ -1097,6 +1115,7 @@
     <!-- Desktop Navigation Links -->
     <ul class="nav-links">
       <li><a href="how-we-help.html">How We Help</a></li>
+      <li><a href="partners.html">Our Partners</a></li>
       <li><a href="scholarship.html">Scholarships</a></li>
       <li><a href="our-team.html">Our Team</a></li>
       <li><a href="donate.html">Donate</a></li>
@@ -1109,15 +1128,11 @@
         <button class="nav-signin" onclick="openModal('si')">Log In</button>
         <button class="nav-signin" onclick="openModal('su')" style="background:rgba(201,146,26,0.12);">Sign Up</button>
       </div>
-
-      <!-- Hamburger Button -->
-      <button class="hamburger" onclick="toggleMobileMenu()" aria-label="Toggle menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
     </div>
   </nav>
+
+  <!-- Overlay (click off to close) -->
+  <div class="mobile-overlay" id="mobile-overlay" onclick="toggleMobileMenu()"></div>
 
   <!-- Mobile Menu -->
   <div class="mobile-menu" id="mobile-menu">
@@ -1127,6 +1142,7 @@
 
     <ul class="mobile-nav-links">
       <li><a href="how-we-help.html" onclick="toggleMobileMenu()">How We Help</a></li>
+      <li><a href="partners.html" onclick="toggleMobileMenu()">Our Partners</a></li>
       <li><a href="scholarship.html" onclick="toggleMobileMenu()">Scholarships</a></li>
       <li><a href="our-team.html" onclick="toggleMobileMenu()">Our Team</a></li>
       <li><a href="donate.html" onclick="toggleMobileMenu()">Donate</a></li>
@@ -1136,8 +1152,8 @@
     <div class="mobile-auth">
       <button class="nav-signin" onclick="toggleMobileMenu(); openModal('si')">Log In</button>
       <button class="nav-signin" onclick="toggleMobileMenu(); openModal('su')"
-        style="background:rgba(201,146,26,0.12);">Sign Up</button>
-      <a href="apply.html" class="nav-cta" onclick="toggleMobileMenu()">Apply Now</a>
+        style="background:rgba(201,146,26,0.08);">Sign Up</button>
+      <a href="apply.html" class="nav-cta-mobile" onclick="toggleMobileMenu()">Apply Now</a>
     </div>
   </div>
 
@@ -1370,10 +1386,10 @@
         </div>
       </div>
       <div class="scholarship-box">
-        <span class="amount">$2,500</span>
-        <span class="amount-label">Average Award Per Recipient</span>
-        <p>Scholarships are awarded based on demonstrated need. Multiple awards may be granted for extended treatment
-          programs. There is no cost to apply and no repayment required.</p>
+        <span class="amount-label">Every Case Individually Assessed</span>
+        <p>There is no flat rate — each scholarship is carefully reviewed and tailored to the veteran's unique
+          situation. Healing is not one-size-fits-all, and neither is our support. No cost to apply. No repayment.
+          Ever.</p>
         <a href="donate.html" class="btn-primary" style="display:inline-block;">Fund a Scholarship</a>
         <p style="margin-top:20px; font-size:0.82rem; color:rgba(245,240,232,0.4);">
           100% of donations go directly to veteran scholarships and support services.
@@ -1469,8 +1485,8 @@
     }
 
     function toggleMobileMenu() {
-      const menu = document.getElementById('mobile-menu');
-      menu.classList.toggle('open');
+      document.getElementById('mobile-menu').classList.toggle('open');
+      document.getElementById('mobile-overlay').classList.toggle('open');
     }
 
     async function mSignIn() {

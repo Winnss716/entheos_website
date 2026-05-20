@@ -1,20 +1,23 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Apply for a Scholarship — Entheos Veteran Project</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300&display=swap" rel="stylesheet"/>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300&display=swap"
+    rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
     // ── EmailJS config ──
-    const EMAILJS_PUBLIC_KEY  = 'PASTE_YOUR_PUBLIC_KEY';
-    const EMAILJS_SERVICE_ID  = 'PASTE_YOUR_SERVICE_ID';
+    const EMAILJS_PUBLIC_KEY = 'PASTE_YOUR_PUBLIC_KEY';
+    const EMAILJS_SERVICE_ID = 'PASTE_YOUR_SERVICE_ID';
     const EMAILJS_TEMPLATE_ID = 'PASTE_YOUR_TEMPLATE_ID';
-    (function(){ emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY }); })();
+    (function () { emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY }); })();
 
     // ── Supabase config — paste after setup at supabase.com ──
-    const SB_URL  = 'https://afdybbbeukqnqlxlojmu.supabase.co';
+    const SB_URL = 'https://afdybbbeukqnqlxlojmu.supabase.co';
     const SB_ANON = 'sb_publishable_5YQFAeRNG64IYbPTRwtZCg_1BZooKWx';
   </script>
   <style>
@@ -29,8 +32,19 @@
       --red: #c0392b;
     }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; overflow-x: hidden; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
     body {
       font-family: 'Barlow', sans-serif;
       background: var(--charcoal);
@@ -40,125 +54,247 @@
 
     /* ── NAV ── */
     nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; justify-content: space-between; align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       padding: 18px 5%;
-      background: rgba(26,30,20,0.92);
+      background: rgba(26, 30, 20, 0.92);
       backdrop-filter: blur(8px);
-      border-bottom: 1px solid rgba(201,146,26,0.25);
+      border-bottom: 1px solid rgba(201, 146, 26, 0.25);
     }
-    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-    .nav-logo img { height: 52px; width: auto; }
-    .nav-links { display: flex; gap: 32px; list-style: none; }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      height: 52px;
+      width: auto;
+    }
+
+    .nav-links {
+      display: none;
+      gap: 32px;
+      list-style: none;
+    }
+
     .nav-links a {
-      color: var(--cream); text-decoration: none;
-      font-weight: 600; font-size: 0.85rem; letter-spacing: 0.12em;
-      text-transform: uppercase; opacity: 0.85; transition: opacity 0.2s, color 0.2s;
+      color: var(--cream);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.85;
+      transition: opacity 0.2s, color 0.2s;
     }
-    .nav-links a:hover { opacity: 1; color: var(--gold-light); }
+
+    .nav-links a:hover {
+      opacity: 1;
+      color: var(--gold-light);
+    }
+
     .nav-cta {
-      background: var(--gold); color: var(--charcoal);
-      padding: 10px 24px; border-radius: 2px;
-      font-weight: 700; letter-spacing: 0.08em;
-      text-decoration: none; font-size: 0.82rem; text-transform: uppercase;
+      background: var(--gold);
+      color: var(--charcoal);
+      padding: 10px 24px;
+      border-radius: 2px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      font-size: 0.82rem;
+      text-transform: uppercase;
       transition: background 0.2s;
     }
-    .nav-cta:hover { background: var(--gold-light); }
+
+    .nav-cta:hover {
+      background: var(--gold-light);
+    }
 
     /* ── PAGE HEADER ── */
     .page-header {
       padding: 150px 5% 70px;
       background:
-        linear-gradient(to bottom, rgba(26,30,20,0.65) 0%, rgba(26,30,20,0.92) 65%, var(--charcoal) 100%),
+        linear-gradient(to bottom, rgba(26, 30, 20, 0.65) 0%, rgba(26, 30, 20, 0.92) 65%, var(--charcoal) 100%),
         url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1600&q=80') center/cover no-repeat;
       text-align: center;
     }
+
     .page-header .eyebrow {
-      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.3em;
-      text-transform: uppercase; color: var(--gold-light); margin-bottom: 16px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      margin-bottom: 16px;
     }
+
     .page-header h1 {
       font-family: 'Bebas Neue', sans-serif;
       font-size: clamp(3rem, 8vw, 6rem);
-      line-height: 0.95; letter-spacing: 0.04em; color: var(--white);
+      line-height: 0.95;
+      letter-spacing: 0.04em;
+      color: var(--white);
     }
-    .page-header h1 span { color: var(--gold); }
+
+    .page-header h1 span {
+      color: var(--gold);
+    }
+
     .page-header p {
-      max-width: 540px; margin: 22px auto 0;
-      font-size: 1.05rem; font-weight: 300; line-height: 1.75;
-      color: rgba(245,240,232,0.8);
+      max-width: 540px;
+      margin: 22px auto 0;
+      font-size: 1.05rem;
+      font-weight: 300;
+      line-height: 1.75;
+      color: rgba(245, 240, 232, 0.8);
     }
 
     /* ── PROGRESS BAR ── */
     .progress-wrap {
       background: var(--olive-dark);
       padding: 28px 5%;
-      position: sticky; top: 88px; z-index: 50;
-      border-bottom: 1px solid rgba(201,146,26,0.15);
+      position: sticky;
+      top: 88px;
+      z-index: 50;
+      border-bottom: 1px solid rgba(201, 146, 26, 0.15);
     }
+
     .progress-inner {
-      max-width: 760px; margin: 0 auto;
-      display: flex; align-items: center; gap: 0;
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 0;
     }
+
     .prog-step {
-      display: flex; align-items: center; gap: 10px; flex: 1;
-      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; color: rgba(245,240,232,0.35);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(245, 240, 232, 0.35);
       transition: color 0.3s;
     }
-    .prog-step.active { color: var(--gold-light); }
-    .prog-step.done { color: rgba(245,240,232,0.55); }
-    .prog-num {
-      width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
-      border: 1.5px solid rgba(245,240,232,0.2);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.72rem; font-weight: 700;
-      transition: background 0.3s, border-color 0.3s, color 0.3s;
-    }
-    .prog-step.active .prog-num {
-      background: var(--gold); border-color: var(--gold); color: var(--charcoal);
-    }
-    .prog-step.done .prog-num {
-      background: rgba(201,146,26,0.2); border-color: rgba(201,146,26,0.4);
+
+    .prog-step.active {
       color: var(--gold-light);
     }
+
+    .prog-step.done {
+      color: rgba(245, 240, 232, 0.55);
+    }
+
+    .prog-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      border: 1.5px solid rgba(245, 240, 232, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      transition: background 0.3s, border-color 0.3s, color 0.3s;
+    }
+
+    .prog-step.active .prog-num {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--charcoal);
+    }
+
+    .prog-step.done .prog-num {
+      background: rgba(201, 146, 26, 0.2);
+      border-color: rgba(201, 146, 26, 0.4);
+      color: var(--gold-light);
+    }
+
     .prog-line {
-      flex: 1; height: 1px;
-      background: rgba(201,146,26,0.2);
+      flex: 1;
+      height: 1px;
+      background: rgba(201, 146, 26, 0.2);
       margin: 0 10px;
     }
 
     /* ── FORM AREA ── */
-    .form-section { background: var(--charcoal); padding: 64px 5% 90px; }
-    .form-wrap { max-width: 760px; margin: 0 auto; }
+    .form-section {
+      background: var(--charcoal);
+      padding: 64px 5% 90px;
+    }
+
+    .form-wrap {
+      max-width: 760px;
+      margin: 0 auto;
+    }
 
     /* Step panels */
-    .step-panel { display: none; }
-    .step-panel.active { display: block; }
+    .step-panel {
+      display: none;
+    }
+
+    .step-panel.active {
+      display: block;
+    }
 
     .step-heading {
       font-family: 'Bebas Neue', sans-serif;
       font-size: clamp(2rem, 4vw, 3rem);
-      letter-spacing: 0.04em; color: var(--white);
+      letter-spacing: 0.04em;
+      color: var(--white);
       margin-bottom: 6px;
     }
-    .step-heading span { color: var(--gold); }
+
+    .step-heading span {
+      color: var(--gold);
+    }
+
     .step-sub {
-      font-size: 0.95rem; font-weight: 300; line-height: 1.7;
-      color: rgba(245,240,232,0.6); margin-bottom: 36px;
+      font-size: 0.95rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: rgba(245, 240, 232, 0.6);
+      margin-bottom: 36px;
     }
 
     /* Form controls */
-    .form-group { margin-bottom: 22px; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .form-group {
+      margin-bottom: 22px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
 
     label {
       display: block;
-      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; color: rgba(245,240,232,0.6);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(245, 240, 232, 0.6);
       margin-bottom: 7px;
     }
-    label .req { color: var(--gold); margin-left: 3px; }
+
+    label .req {
+      color: var(--gold);
+      margin-left: 3px;
+    }
 
     input[type="text"],
     input[type="email"],
@@ -167,100 +303,191 @@
     select,
     textarea {
       width: 100%;
-      background: rgba(245,240,232,0.05);
-      border: 1.5px solid rgba(201,146,26,0.22);
+      background: rgba(245, 240, 232, 0.05);
+      border: 1.5px solid rgba(201, 146, 26, 0.22);
       border-radius: 3px;
       padding: 13px 15px;
       color: var(--cream);
       font-family: 'Barlow', sans-serif;
-      font-size: 0.97rem; font-weight: 300;
+      font-size: 0.97rem;
+      font-weight: 300;
       transition: border-color 0.2s, background 0.2s;
       outline: none;
     }
-    input:focus, select:focus, textarea:focus {
-      border-color: var(--gold);
-      background: rgba(201,146,26,0.06);
-    }
-    input.error, select.error, textarea.error {
-      border-color: var(--red);
-      background: rgba(192,57,43,0.06);
-    }
-    .field-error {
-      font-size: 0.78rem; color: #e87c6e;
-      margin-top: 5px; display: none;
-    }
-    .field-error.show { display: block; }
 
-    select option { background: #232d1a; color: var(--cream); }
-    textarea { resize: vertical; min-height: 130px; }
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--gold);
+      background: rgba(201, 146, 26, 0.06);
+    }
+
+    input.error,
+    select.error,
+    textarea.error {
+      border-color: var(--red);
+      background: rgba(192, 57, 43, 0.06);
+    }
+
+    .field-error {
+      font-size: 0.78rem;
+      color: #e87c6e;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .field-error.show {
+      display: block;
+    }
+
+    select option {
+      background: #232d1a;
+      color: var(--cream);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 130px;
+    }
 
     /* Checkbox group */
-    .checkbox-group { display: flex; flex-direction: column; gap: 11px; margin-top: 6px; }
-    .cb-label {
-      display: flex; align-items: flex-start; gap: 12px;
-      cursor: pointer; font-size: 0.93rem; font-weight: 300;
-      line-height: 1.55; color: rgba(245,240,232,0.75);
-      text-transform: none; letter-spacing: 0;
-    }
-    input[type="checkbox"] {
-      appearance: none; -webkit-appearance: none;
-      width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px;
-      border: 1.5px solid rgba(201,146,26,0.35); border-radius: 2px;
-      background: rgba(245,240,232,0.04); cursor: pointer;
-      transition: background 0.18s, border-color 0.18s;
-    }
-    input[type="checkbox"]:checked {
-      background: var(--gold); border-color: var(--gold);
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 8l3.5 3.5L13 4.5' stroke='%231a1e14' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-      background-size: 11px; background-repeat: no-repeat; background-position: center;
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      margin-top: 6px;
     }
 
-    .form-divider { height: 1px; background: rgba(201,146,26,0.13); margin: 30px 0; }
+    .cb-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      cursor: pointer;
+      font-size: 0.93rem;
+      font-weight: 300;
+      line-height: 1.55;
+      color: rgba(245, 240, 232, 0.75);
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      border: 1.5px solid rgba(201, 146, 26, 0.35);
+      border-radius: 2px;
+      background: rgba(245, 240, 232, 0.04);
+      cursor: pointer;
+      transition: background 0.18s, border-color 0.18s;
+    }
+
+    input[type="checkbox"]:checked {
+      background: var(--gold);
+      border-color: var(--gold);
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 8l3.5 3.5L13 4.5' stroke='%231a1e14' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-size: 11px;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    .form-divider {
+      height: 1px;
+      background: rgba(201, 146, 26, 0.13);
+      margin: 30px 0;
+    }
 
     /* Navigation buttons */
     .btn-row {
-      display: flex; gap: 14px; align-items: center;
+      display: flex;
+      gap: 14px;
+      align-items: center;
       margin-top: 40px;
     }
-    .btn-next, .btn-submit {
-      background: var(--gold); color: var(--charcoal);
-      padding: 14px 40px; border-radius: 2px;
-      font-family: 'Barlow', sans-serif; font-weight: 700;
-      font-size: 0.9rem; letter-spacing: 0.12em; text-transform: uppercase;
-      border: none; cursor: pointer;
+
+    .btn-next,
+    .btn-submit {
+      background: var(--gold);
+      color: var(--charcoal);
+      padding: 14px 40px;
+      border-radius: 2px;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
       transition: background 0.2s, transform 0.15s;
     }
-    .btn-next:hover, .btn-submit:hover { background: var(--gold-light); transform: translateY(-1px); }
-    .btn-back {
-      background: transparent; color: rgba(245,240,232,0.55);
-      padding: 14px 24px; border-radius: 2px;
-      border: 1.5px solid rgba(245,240,232,0.18);
-      font-family: 'Barlow', sans-serif; font-weight: 600;
-      font-size: 0.88rem; letter-spacing: 0.1em; text-transform: uppercase;
-      cursor: pointer; transition: color 0.2s, border-color 0.2s;
+
+    .btn-next:hover,
+    .btn-submit:hover {
+      background: var(--gold-light);
+      transform: translateY(-1px);
     }
-    .btn-back:hover { color: var(--cream); border-color: rgba(245,240,232,0.35); }
+
+    .btn-back {
+      background: transparent;
+      color: rgba(245, 240, 232, 0.55);
+      padding: 14px 24px;
+      border-radius: 2px;
+      border: 1.5px solid rgba(245, 240, 232, 0.18);
+      font-family: 'Barlow', sans-serif;
+      font-weight: 600;
+      font-size: 0.88rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .btn-back:hover {
+      color: var(--cream);
+      border-color: rgba(245, 240, 232, 0.35);
+    }
 
     /* ── SUBMITTING OVERLAY ── */
     #submitting-overlay {
       display: none;
-      position: fixed; inset: 0; z-index: 200;
-      background: rgba(26,30,20,0.92);
-      align-items: center; justify-content: center;
-      flex-direction: column; gap: 24px; text-align: center;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(26, 30, 20, 0.92);
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 24px;
+      text-align: center;
     }
-    #submitting-overlay.show { display: flex; }
+
+    #submitting-overlay.show {
+      display: flex;
+    }
+
     .spinner {
-      width: 48px; height: 48px;
-      border: 3px solid rgba(201,146,26,0.2);
+      width: 48px;
+      height: 48px;
+      border: 3px solid rgba(201, 146, 26, 0.2);
       border-top-color: var(--gold);
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
     #submitting-overlay p {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.8rem; letter-spacing: 0.08em; color: var(--gold-light);
+      font-size: 1.8rem;
+      letter-spacing: 0.08em;
+      color: var(--gold-light);
     }
 
     /* ── CONFIRMATION SCREEN ── */
@@ -271,153 +498,398 @@
       text-align: center;
       min-height: 100vh;
     }
-    #confirmation.show { display: block; }
-    .confirm-icon {
-      width: 80px; height: 80px; border-radius: 50%;
-      background: rgba(201,146,26,0.12);
-      border: 2px solid var(--gold);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2rem; margin: 0 auto 32px;
+
+    #confirmation.show {
+      display: block;
     }
+
+    .confirm-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(201, 146, 26, 0.12);
+      border: 2px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin: 0 auto 32px;
+    }
+
     #confirmation h2 {
       font-family: 'Bebas Neue', sans-serif;
       font-size: clamp(2.5rem, 6vw, 4.5rem);
-      letter-spacing: 0.04em; color: var(--white); line-height: 1.05;
+      letter-spacing: 0.04em;
+      color: var(--white);
+      line-height: 1.05;
       margin-bottom: 12px;
     }
-    #confirmation h2 span { color: var(--gold); }
+
+    #confirmation h2 span {
+      color: var(--gold);
+    }
+
     #confirmation .confirm-name {
-      font-size: 1rem; font-weight: 600; color: var(--gold-light);
-      letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 24px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--gold-light);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
     }
+
     #confirmation p {
-      max-width: 540px; margin: 0 auto 16px;
-      font-size: 1rem; font-weight: 300; line-height: 1.8;
-      color: rgba(245,240,232,0.72);
+      max-width: 540px;
+      margin: 0 auto 16px;
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(245, 240, 232, 0.72);
     }
+
     .confirm-ref {
       display: inline-block;
-      background: rgba(201,146,26,0.1);
-      border: 1px solid rgba(201,146,26,0.3);
+      background: rgba(201, 146, 26, 0.1);
+      border: 1px solid rgba(201, 146, 26, 0.3);
       border-radius: 3px;
       padding: 12px 28px;
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.4rem; letter-spacing: 0.12em; color: var(--gold-light);
+      font-size: 1.4rem;
+      letter-spacing: 0.12em;
+      color: var(--gold-light);
       margin: 24px 0 36px;
     }
+
     .confirm-next-steps {
-      max-width: 560px; margin: 40px auto 0;
+      max-width: 560px;
+      margin: 40px auto 0;
       text-align: left;
-      background: rgba(245,240,232,0.04);
-      border: 1px solid rgba(201,146,26,0.2);
+      background: rgba(245, 240, 232, 0.04);
+      border: 1px solid rgba(201, 146, 26, 0.2);
       border-radius: 4px;
       padding: 32px 36px;
     }
+
     .confirm-next-steps h4 {
-      font-size: 0.78rem; font-weight: 700; letter-spacing: 0.2em;
-      text-transform: uppercase; color: var(--gold); margin-bottom: 18px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 18px;
     }
-    .confirm-steps-list { display: flex; flex-direction: column; gap: 14px; }
+
+    .confirm-steps-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
     .cs-item {
-      display: flex; gap: 14px; align-items: flex-start;
-      font-size: 0.92rem; font-weight: 300; line-height: 1.6;
-      color: rgba(245,240,232,0.7);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      font-size: 0.92rem;
+      font-weight: 300;
+      line-height: 1.6;
+      color: rgba(245, 240, 232, 0.7);
     }
+
     .cs-num {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.3rem; color: var(--gold); flex-shrink: 0; line-height: 1.1;
+      font-size: 1.3rem;
+      color: var(--gold);
+      flex-shrink: 0;
+      line-height: 1.1;
     }
-    .confirm-actions { margin-top: 44px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+    .confirm-actions {
+      margin-top: 44px;
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
     .btn-primary {
-      background: var(--gold); color: var(--charcoal);
-      padding: 14px 38px; border-radius: 2px;
-      font-family: 'Barlow', sans-serif; font-weight: 700;
-      font-size: 0.88rem; letter-spacing: 0.12em; text-transform: uppercase;
-      text-decoration: none; display: inline-block;
+      background: var(--gold);
+      color: var(--charcoal);
+      padding: 14px 38px;
+      border-radius: 2px;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 700;
+      font-size: 0.88rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      display: inline-block;
       transition: background 0.2s, transform 0.15s;
     }
-    .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+    .btn-primary:hover {
+      background: var(--gold-light);
+      transform: translateY(-1px);
+    }
+
     .btn-outline {
-      background: transparent; color: var(--cream);
-      padding: 14px 38px; border-radius: 2px;
-      border: 1.5px solid rgba(245,240,232,0.3);
-      font-family: 'Barlow', sans-serif; font-weight: 700;
-      font-size: 0.88rem; letter-spacing: 0.12em; text-transform: uppercase;
-      text-decoration: none; display: inline-block;
+      background: transparent;
+      color: var(--cream);
+      padding: 14px 38px;
+      border-radius: 2px;
+      border: 1.5px solid rgba(245, 240, 232, 0.3);
+      font-family: 'Barlow', sans-serif;
+      font-weight: 700;
+      font-size: 0.88rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      display: inline-block;
       transition: border-color 0.2s, color 0.2s;
     }
-    .btn-outline:hover { border-color: var(--gold-light); color: var(--gold-light); }
+
+    .btn-outline:hover {
+      border-color: var(--gold-light);
+      color: var(--gold-light);
+    }
 
     /* ── FOOTER ── */
     footer {
       background: var(--olive-dark);
-      border-top: 1px solid rgba(201,146,26,0.2);
+      border-top: 1px solid rgba(201, 146, 26, 0.2);
       padding: 60px 5% 36px;
     }
+
     .footer-inner {
-      max-width: 1200px; margin: 0 auto;
-      display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 60px;
     }
+
     .footer-brand p {
-      font-size: 0.92rem; font-weight: 300; line-height: 1.75;
-      color: rgba(245,240,232,0.55); margin-top: 14px; max-width: 320px;
+      font-size: 0.92rem;
+      font-weight: 300;
+      line-height: 1.75;
+      color: rgba(245, 240, 232, 0.55);
+      margin-top: 14px;
+      max-width: 320px;
     }
-    .footer-brand img { height: 60px; }
+
+    .footer-brand img {
+      height: 60px;
+    }
+
     .footer-col h4 {
-      font-size: 0.75rem; font-weight: 700; letter-spacing: 0.2em;
-      text-transform: uppercase; color: var(--gold); margin-bottom: 18px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 18px;
     }
-    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
     .footer-col a {
-      color: rgba(245,240,232,0.6); text-decoration: none;
-      font-size: 0.9rem; transition: color 0.2s;
+      color: rgba(245, 240, 232, 0.6);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
     }
-    .footer-col a:hover { color: var(--gold-light); }
+
+    .footer-col a:hover {
+      color: var(--gold-light);
+    }
+
     .footer-bottom {
-      max-width: 1200px; margin: 48px auto 0;
-      padding-top: 24px; border-top: 1px solid rgba(245,240,232,0.1);
-      display: flex; justify-content: space-between; align-items: center;
-      font-size: 0.8rem; color: rgba(245,240,232,0.35);
+      max-width: 1200px;
+      margin: 48px auto 0;
+      padding-top: 24px;
+      border-top: 1px solid rgba(245, 240, 232, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: rgba(245, 240, 232, 0.35);
     }
 
     /* ── RESPONSIVE ── */
-    @media (max-width: 640px) {
-      .form-row { grid-template-columns: 1fr; }
-      .footer-inner { grid-template-columns: 1fr; gap: 36px; }
-      .nav-links { display: none; }
-      .nav-cta { display: none; }
-      .hamburger { display: flex !important; }
-      .prog-step span { display: none; }
-      .page-header { padding: 110px 5% 40px; }
-      .page-header h1 { font-size: 3rem; }
-      .progress-wrap { top: 0; padding: 16px 5%; }
-      .form-section { padding: 32px 5% 60px; }
-      .btn-row { flex-direction: column; }
-      .btn-next, .btn-submit, .btn-back { width: 100%; text-align: center; }
-      #confirmation { padding: 80px 5% 60px; }
-      .confirm-next-steps { padding: 24px 20px; }
+    .hamburger {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      z-index: 200;
     }
-    .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 6px; z-index: 200; }
-    .hamburger span { display: block; width: 24px; height: 2px; background: var(--cream); border-radius: 2px; }
-    .mobile-menu { display: none; position: fixed; top: 0; right: 0; bottom: 0; width: 220px; background: #1a1e14; border-left: 1px solid rgba(201,146,26,0.2); z-index: 150; flex-direction: column; align-items: flex-start; padding: 60px 24px 32px; gap: 16px; box-shadow: -8px 0 32px rgba(0,0,0,0.5); }
-    .mobile-menu.open { display: flex; }
-    .mobile-menu a { color: var(--cream); text-decoration: none; font-family: 'Barlow', sans-serif; font-weight: 600; font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s; }
-    .mobile-menu a:hover { color: var(--gold-light); }
-    .mobile-menu .close-btn { position: absolute; top: 16px; right: 16px; background: none; border: none; color: rgba(245,240,232,0.5); font-size: 1.2rem; cursor: pointer; }
-    .mobile-menu .apply-link { background: var(--gold); color: var(--charcoal) !important; padding: 8px 20px; border-radius: 2px; font-size: 0.82rem !important; margin-top: 8px; }
-    .mobile-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 149; }
-    .mobile-overlay.open { display: block; }
+
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--cream);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    /* Mobile menu — slides in from left */
+    .mobile-menu {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 280px;
+      background: #1a1e14;
+      z-index: 300;
+      padding: 24px;
+      box-shadow: 8px 0 32px rgba(0, 0, 0, 0.5);
+      border-right: 1px solid rgba(201, 146, 26, 0.15);
+      transform: translateX(-100%);
+      transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .mobile-menu.open {
+      transform: translateX(0);
+    }
+
+    .mobile-menu-header {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 28px;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: var(--cream);
+      font-size: 1.5rem;
+      cursor: pointer;
+      line-height: 1;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+    }
+
+    .close-btn:hover {
+      opacity: 1;
+    }
+
+    .mobile-nav-links {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 auto 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .mobile-nav-links a {
+      display: block;
+      color: var(--cream);
+      text-decoration: none;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(245, 240, 232, 0.06);
+      transition: color 0.2s;
+    }
+
+    .mobile-nav-links a:hover {
+      color: var(--gold-light);
+    }
+
+    .mobile-auth {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 32px;
+    }
+
+    .nav-signin {
+      display: block;
+      text-align: center;
+      background: none;
+      border: 1px solid rgba(201, 146, 26, 0.45);
+      color: var(--gold);
+      padding: 10px 20px;
+      border-radius: 2px;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 700;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .nav-signin:hover {
+      background: rgba(201, 146, 26, 0.12);
+    }
+
+    .nav-cta-mobile {
+      display: block;
+      text-align: center;
+      background: var(--gold);
+      color: var(--charcoal);
+      padding: 11px 24px;
+      border-radius: 2px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      transition: background 0.2s;
+    }
+
+    .nav-cta-mobile:hover {
+      background: var(--gold-light);
+    }
+
+    /* Overlay — fades in */
+    .mobile-overlay {
+      display: block;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 149;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.32s ease;
+    }
+
+    .mobile-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
   </style>
 </head>
+
 <body>
 
   <!-- Crisis Bar -->
-  <div id="crisis-bar" style="background:#7a1f1f;color:#fff;text-align:center;padding:9px 48px 9px 16px;font-size:0.8rem;letter-spacing:0.03em;line-height:1.5;position:relative;z-index:2000;">
-    If you're in crisis — <strong style="color:#ffd080;">Call or text 988, then press 1</strong> — Veterans Crisis Line — Available 24/7 — <a href="https://www.veteranscrisisline.net" target="_blank" rel="noopener" style="color:#ffd080;">Chat online</a>
-    <button onclick="dismissCrisisBar()" aria-label="Dismiss" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,0.55);font-size:1rem;cursor:pointer;padding:4px 6px;">✕</button>
+  <div id="crisis-bar"
+    style="background:#7a1f1f;color:#fff;text-align:center;padding:9px 48px 9px 16px;font-size:0.8rem;letter-spacing:0.03em;line-height:1.5;position:relative;z-index:2000;">
+    If you're in crisis — <strong style="color:#ffd080;">Call or text 988, then press 1</strong> — Veterans Crisis Line
+    — Available 24/7 — <a href="https://www.veteranscrisisline.net" target="_blank" rel="noopener"
+      style="color:#ffd080;">Chat online</a>
+    <button onclick="dismissCrisisBar()" aria-label="Dismiss"
+      style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,0.55);font-size:1rem;cursor:pointer;padding:4px 6px;">✕</button>
   </div>
   <script>
-    (function() {
+    (function () {
       if ((performance.getEntriesByType('navigation')[0] || {}).type === 'reload') {
         sessionStorage.removeItem('crisisBarDismissed');
       }
@@ -432,8 +904,11 @@
   </script>
   <!-- NAV -->
   <nav>
+    <button class="hamburger" onclick="toggleMenu()"
+      aria-label="Open menu"><span></span><span></span><span></span></button>
     <a href="index.html" class="nav-logo">
-      <img src="413212FE-ACE0-4643-9C94-3C2A5F1B4848.PNG" alt="Entheos Veteran Project Logo" onerror="this.style.display='none'"/>
+      <img src="413212FE-ACE0-4643-9C94-3C2A5F1B4848.PNG" alt="Entheos Veteran Project Logo"
+        onerror="this.style.display='none'" />
     </a>
     <ul class="nav-links">
       <li><a href="index.html#mission">Mission</a></li>
@@ -442,25 +917,47 @@
       <li><a href="our-team.html">Our Team</a></li>
       <li><a href="donate.html">Donate</a></li>
     </ul>
-    <a href="apply.html" class="nav-cta" style="background:var(--olive);color:var(--cream);">Apply Now</a>
-    <button class="hamburger" onclick="document.getElementById('mob').classList.add('open');document.getElementById('mob-ov').classList.add('open')" aria-label="Open menu"><span></span><span></span><span></span></button>
   </nav>
-  <div class="mobile-overlay" id="mob-ov" onclick="document.getElementById('mob').classList.remove('open');this.classList.remove('open')"></div>
-  <div class="mobile-menu" id="mob">
-    <button class="close-btn" onclick="document.getElementById('mob').classList.remove('open');document.getElementById('mob-ov').classList.remove('open')">✕</button>
-    <a href="index.html">Home</a>
-    <a href="scholarship.html">Scholarships</a>
-    <a href="our-team.html">Our Team</a>
-    <a href="donate.html">Donate</a>
-    <a href="faq.html">FAQ</a>
-    <a href="apply.html" class="apply-link">Apply Now</a>
+
+  <!-- Overlay (click off to close) -->
+  <div class="mobile-overlay" id="mob-ov" onclick="toggleMenu()"></div>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="mobile-menu-header">
+      <button class="close-btn" onclick="toggleMenu()">✕</button>
+    </div>
+
+    <ul class="mobile-nav-links">
+      <li><a href="how-we-help.html" onclick="toggleMobileMenu()">How We Help</a></li>
+      <li><a href="partners.html" onclick="toggleMobileMenu()">Our Partners</a></li>
+      <li><a href="scholarship.html" onclick="toggleMobileMenu()">Scholarships</a></li>
+      <li><a href="our-team.html" onclick="toggleMobileMenu()">Our Team</a></li>
+      <li><a href="donate.html" onclick="toggleMobileMenu()">Donate</a></li>
+      <li><a href="faq.html" onclick="toggleMobileMenu()">FAQ</a></li>
+    </ul>
+
+    <div class="mobile-auth">
+      <a href="account.html" class="nav-signin" onclick="toggleMenu()">Log In</a>
+      <a href="account.html" class="nav-signin" onclick="toggleMenu()" style="background:rgba(201,146,26,0.08);">Sign
+        Up</a>
+      <a href="apply.html" class="nav-cta-mobile" onclick="toggleMenu()">Apply Now</a>
+    </div>
   </div>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById('mobile-menu').classList.toggle('open');
+      document.getElementById('mob-ov').classList.toggle('open');
+    }
+  </script>
 
   <!-- PAGE HEADER -->
   <div class="page-header">
     <p class="eyebrow">Scholarship Application</p>
-    <h1>Apply for<br/><span>Your Scholarship</span></h1>
-    <p>No cost. No deadline. No repayment — ever. Complete the three-step form below and our team will review your application within 7–10 business days.</p>
+    <h1>Apply for<br /><span>Your Scholarship</span></h1>
+    <p>No cost. No deadline. No repayment — ever. Complete the three-step form below and our team will review your
+      application within 7–10 business days.</p>
   </div>
 
   <!-- PROGRESS BAR -->
@@ -495,12 +992,12 @@
         <div class="form-row">
           <div class="form-group">
             <label for="first-name">First Name <span class="req">*</span></label>
-            <input type="text" id="first-name" placeholder="John"/>
+            <input type="text" id="first-name" placeholder="John" />
             <div class="field-error" id="err-first-name">Please enter your first name.</div>
           </div>
           <div class="form-group">
             <label for="last-name">Last Name <span class="req">*</span></label>
-            <input type="text" id="last-name" placeholder="Smith"/>
+            <input type="text" id="last-name" placeholder="Smith" />
             <div class="field-error" id="err-last-name">Please enter your last name.</div>
           </div>
         </div>
@@ -508,12 +1005,12 @@
         <div class="form-row">
           <div class="form-group">
             <label for="email">Email Address <span class="req">*</span></label>
-            <input type="email" id="email" placeholder="john@example.com"/>
+            <input type="email" id="email" placeholder="john@example.com" />
             <div class="field-error" id="err-email">Please enter a valid email address.</div>
           </div>
           <div class="form-group">
             <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" placeholder="(555) 000-0000"/>
+            <input type="tel" id="phone" placeholder="(555) 000-0000" />
           </div>
         </div>
 
@@ -522,29 +1019,62 @@
             <label for="state">State of Residence <span class="req">*</span></label>
             <select id="state">
               <option value="" disabled selected>Select your state…</option>
-              <option>Alabama</option><option>Alaska</option><option>Arizona</option>
-              <option>Arkansas</option><option>California</option><option>Colorado</option>
-              <option>Connecticut</option><option>Delaware</option><option>Florida</option>
-              <option>Georgia</option><option>Hawaii</option><option>Idaho</option>
-              <option>Illinois</option><option>Indiana</option><option>Iowa</option>
-              <option>Kansas</option><option>Kentucky</option><option>Louisiana</option>
-              <option>Maine</option><option>Maryland</option><option>Massachusetts</option>
-              <option>Michigan</option><option>Minnesota</option><option>Mississippi</option>
-              <option>Missouri</option><option>Montana</option><option>Nebraska</option>
-              <option>Nevada</option><option>New Hampshire</option><option>New Jersey</option>
-              <option>New Mexico</option><option>New York</option><option>North Carolina</option>
-              <option>North Dakota</option><option>Ohio</option><option>Oklahoma</option>
-              <option>Oregon</option><option>Pennsylvania</option><option>Rhode Island</option>
-              <option>South Carolina</option><option>South Dakota</option><option>Tennessee</option>
-              <option>Texas</option><option>Utah</option><option>Vermont</option>
-              <option>Virginia</option><option>Washington</option><option>West Virginia</option>
-              <option>Wisconsin</option><option>Wyoming</option>
+              <option>Alabama</option>
+              <option>Alaska</option>
+              <option>Arizona</option>
+              <option>Arkansas</option>
+              <option>California</option>
+              <option>Colorado</option>
+              <option>Connecticut</option>
+              <option>Delaware</option>
+              <option>Florida</option>
+              <option>Georgia</option>
+              <option>Hawaii</option>
+              <option>Idaho</option>
+              <option>Illinois</option>
+              <option>Indiana</option>
+              <option>Iowa</option>
+              <option>Kansas</option>
+              <option>Kentucky</option>
+              <option>Louisiana</option>
+              <option>Maine</option>
+              <option>Maryland</option>
+              <option>Massachusetts</option>
+              <option>Michigan</option>
+              <option>Minnesota</option>
+              <option>Mississippi</option>
+              <option>Missouri</option>
+              <option>Montana</option>
+              <option>Nebraska</option>
+              <option>Nevada</option>
+              <option>New Hampshire</option>
+              <option>New Jersey</option>
+              <option>New Mexico</option>
+              <option>New York</option>
+              <option>North Carolina</option>
+              <option>North Dakota</option>
+              <option>Ohio</option>
+              <option>Oklahoma</option>
+              <option>Oregon</option>
+              <option>Pennsylvania</option>
+              <option>Rhode Island</option>
+              <option>South Carolina</option>
+              <option>South Dakota</option>
+              <option>Tennessee</option>
+              <option>Texas</option>
+              <option>Utah</option>
+              <option>Vermont</option>
+              <option>Virginia</option>
+              <option>Washington</option>
+              <option>West Virginia</option>
+              <option>Wisconsin</option>
+              <option>Wyoming</option>
             </select>
             <div class="field-error" id="err-state">Please select your state.</div>
           </div>
           <div class="form-group">
             <label for="dob">Date of Birth <span class="req">*</span></label>
-            <input type="text" id="dob" placeholder="MM/DD/YYYY"/>
+            <input type="text" id="dob" placeholder="MM/DD/YYYY" />
             <div class="field-error" id="err-dob">Please enter your date of birth.</div>
           </div>
         </div>
@@ -595,11 +1125,11 @@
         <div class="form-row">
           <div class="form-group">
             <label for="years-served">Years of Service</label>
-            <input type="text" id="years-served" placeholder="e.g. 2008 – 2014"/>
+            <input type="text" id="years-served" placeholder="e.g. 2008 – 2014" />
           </div>
           <div class="form-group">
             <label for="deployments">Deployment(s)</label>
-            <input type="text" id="deployments" placeholder="e.g. OIF, OEF, or N/A"/>
+            <input type="text" id="deployments" placeholder="e.g. OIF, OEF, or N/A" />
           </div>
         </div>
 
@@ -608,12 +1138,18 @@
         <div class="form-group">
           <label>Areas of Need <span class="req">*</span></label>
           <div class="checkbox-group" id="needs-group">
-            <label class="cb-label"><input type="checkbox" name="need" value="PTSD"/> PTSD treatment or trauma-focused therapy</label>
-            <label class="cb-label"><input type="checkbox" name="need" value="TBI"/> Traumatic Brain Injury (TBI) rehabilitation</label>
-            <label class="cb-label"><input type="checkbox" name="need" value="Substance Abuse"/> Substance abuse / addiction recovery program</label>
-            <label class="cb-label"><input type="checkbox" name="need" value="Mental Health"/> Mental health counseling (depression, anxiety, moral injury)</label>
-            <label class="cb-label"><input type="checkbox" name="need" value="Education"/> Education or vocational training</label>
-            <label class="cb-label"><input type="checkbox" name="need" value="Family"/> Family / caregiver support services</label>
+            <label class="cb-label"><input type="checkbox" name="need" value="PTSD" /> PTSD treatment or trauma-focused
+              therapy</label>
+            <label class="cb-label"><input type="checkbox" name="need" value="TBI" /> Traumatic Brain Injury (TBI)
+              rehabilitation</label>
+            <label class="cb-label"><input type="checkbox" name="need" value="Substance Abuse" /> Substance abuse /
+              addiction recovery program</label>
+            <label class="cb-label"><input type="checkbox" name="need" value="Mental Health" /> Mental health counseling
+              (depression, anxiety, moral injury)</label>
+            <label class="cb-label"><input type="checkbox" name="need" value="Education" /> Education or vocational
+              training</label>
+            <label class="cb-label"><input type="checkbox" name="need" value="Family" /> Family / caregiver support
+              services</label>
           </div>
           <div class="field-error" id="err-needs">Please select at least one area of need.</div>
         </div>
@@ -621,11 +1157,11 @@
         <div class="form-row">
           <div class="form-group">
             <label for="program">Current or Target Program / Provider</label>
-            <input type="text" id="program" placeholder="Clinic, school, or program name"/>
+            <input type="text" id="program" placeholder="Clinic, school, or program name" />
           </div>
           <div class="form-group">
             <label for="amount">Estimated Amount Needed ($)</label>
-            <input type="number" id="amount" placeholder="e.g. 2500" min="1"/>
+            <input type="number" id="amount" placeholder="e.g. 2500" min="1" />
           </div>
         </div>
 
@@ -638,17 +1174,20 @@
       <!-- STEP 3: Story -->
       <div class="step-panel" id="step3">
         <h2 class="step-heading">Your <span>Story</span></h2>
-        <p class="step-sub">This is the most important part of your application. Be as specific as you feel comfortable — everything you share helps us advocate for you.</p>
+        <p class="step-sub">This is the most important part of your application. Be as specific as you feel comfortable
+          — everything you share helps us advocate for you.</p>
 
         <div class="form-group">
           <label for="situation">Describe Your Situation <span class="req">*</span></label>
-          <textarea id="situation" rows="7" placeholder="Tell us about the challenges you are facing, why you are seeking a scholarship, and how these funds will help your healing or recovery journey."></textarea>
+          <textarea id="situation" rows="7"
+            placeholder="Tell us about the challenges you are facing, why you are seeking a scholarship, and how these funds will help your healing or recovery journey."></textarea>
           <div class="field-error" id="err-situation">Please describe your situation (at least 30 characters).</div>
         </div>
 
         <div class="form-group">
           <label for="goals">What are your goals for treatment or education?</label>
-          <textarea id="goals" rows="4" placeholder="What does success look like for you? What are you hoping to achieve?"></textarea>
+          <textarea id="goals" rows="4"
+            placeholder="What does success look like for you? What are you hoping to achieve?"></textarea>
         </div>
 
         <div class="form-group">
@@ -665,9 +1204,11 @@
         </div>
 
         <div class="form-group">
-          <label class="cb-label" style="text-transform:none;letter-spacing:0;font-size:0.9rem;color:rgba(245,240,232,0.65);">
-            <input type="checkbox" id="consent"/>
-            I confirm that I am a U.S. military veteran and that the information I have provided is accurate and complete to the best of my knowledge.
+          <label class="cb-label"
+            style="text-transform:none;letter-spacing:0;font-size:0.9rem;color:rgba(245,240,232,0.65);">
+            <input type="checkbox" id="consent" />
+            I confirm that I am a U.S. military veteran and that the information I have provided is accurate and
+            complete to the best of my knowledge.
           </label>
           <div class="field-error" id="err-consent">You must confirm this statement to submit your application.</div>
         </div>
@@ -686,51 +1227,84 @@
   </div>
 
   <!-- AUTH GATE MODAL -->
-  <div id="auth-gate" style="display:none;position:fixed;inset:0;z-index:300;background:rgba(26,30,20,0.92);align-items:center;justify-content:center;">
-    <div style="background:#1e2419;border:1px solid rgba(201,146,26,0.3);border-radius:8px;padding:40px;width:100%;max-width:420px;margin:20px;">
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:0.1em;color:var(--gold);margin-bottom:6px;text-align:center;">One Last Step</div>
-      <p style="font-size:0.85rem;color:rgba(245,240,232,0.55);text-align:center;margin-bottom:24px;line-height:1.6;">Create a free account so you can track your application status at any time — no reference code needed.</p>
+  <div id="auth-gate"
+    style="display:none;position:fixed;inset:0;z-index:300;background:rgba(26,30,20,0.92);align-items:center;justify-content:center;">
+    <div
+      style="background:#1e2419;border:1px solid rgba(201,146,26,0.3);border-radius:8px;padding:40px;width:100%;max-width:420px;margin:20px;">
+      <div
+        style="font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:0.1em;color:var(--gold);margin-bottom:6px;text-align:center;">
+        One Last Step</div>
+      <p style="font-size:0.85rem;color:rgba(245,240,232,0.55);text-align:center;margin-bottom:24px;line-height:1.6;">
+        Create a free account so you can track your application status at any time — no reference code needed.</p>
 
-      <div style="display:flex;border:1px solid rgba(201,146,26,0.25);border-radius:4px;overflow:hidden;margin-bottom:24px;">
-        <button id="gate-tab-su" onclick="gateTab('su')" style="flex:1;padding:10px;background:var(--gold);color:var(--charcoal);border:none;font-family:'Barlow',sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">Sign Up</button>
-        <button id="gate-tab-si" onclick="gateTab('si')" style="flex:1;padding:10px;background:transparent;color:rgba(245,240,232,0.45);border:none;font-family:'Barlow',sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">Log In</button>
+      <div
+        style="display:flex;border:1px solid rgba(201,146,26,0.25);border-radius:4px;overflow:hidden;margin-bottom:24px;">
+        <button id="gate-tab-su" onclick="gateTab('su')"
+          style="flex:1;padding:10px;background:var(--gold);color:var(--charcoal);border:none;font-family:'Barlow',sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">Sign
+          Up</button>
+        <button id="gate-tab-si" onclick="gateTab('si')"
+          style="flex:1;padding:10px;background:transparent;color:rgba(245,240,232,0.45);border:none;font-family:'Barlow',sans-serif;font-size:0.8rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">Log
+          In</button>
       </div>
 
       <!-- Sign Up -->
       <div id="gate-su">
         <div style="margin-bottom:14px;">
-          <label style="font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(245,240,232,0.45);display:block;margin-bottom:6px;">Email</label>
-          <input type="email" id="gate-su-email" readonly style="width:100%;background:rgba(245,240,232,0.04);border:1px solid rgba(201,146,26,0.2);border-radius:3px;padding:12px 14px;color:rgba(245,240,232,0.5);font-family:'Barlow',sans-serif;font-size:0.92rem;outline:none;"/>
+          <label
+            style="font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(245,240,232,0.45);display:block;margin-bottom:6px;">Email</label>
+          <input type="email" id="gate-su-email" readonly
+            style="width:100%;background:rgba(245,240,232,0.04);border:1px solid rgba(201,146,26,0.2);border-radius:3px;padding:12px 14px;color:rgba(245,240,232,0.5);font-family:'Barlow',sans-serif;font-size:0.92rem;outline:none;" />
         </div>
         <div style="margin-bottom:18px;">
-          <label style="font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(245,240,232,0.45);display:block;margin-bottom:6px;">Choose a Password</label>
-          <input type="password" id="gate-su-pass" placeholder="At least 6 characters" onkeydown="if(event.key==='Enter')gateSignUp()" style="width:100%;background:rgba(245,240,232,0.06);border:1px solid rgba(201,146,26,0.25);border-radius:3px;padding:12px 14px;color:var(--cream);font-family:'Barlow',sans-serif;font-size:0.92rem;outline:none;"/>
+          <label
+            style="font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(245,240,232,0.45);display:block;margin-bottom:6px;">Choose
+            a Password</label>
+          <input type="password" id="gate-su-pass" placeholder="At least 6 characters"
+            onkeydown="if(event.key==='Enter')gateSignUp()"
+            style="width:100%;background:rgba(245,240,232,0.06);border:1px solid rgba(201,146,26,0.25);border-radius:3px;padding:12px 14px;color:var(--cream);font-family:'Barlow',sans-serif;font-size:0.92rem;outline:none;" />
         </div>
-        <button onclick="gateSignUp()" id="gate-su-btn" style="width:100%;background:var(--gold);color:var(--charcoal);border:none;border-radius:3px;padding:13px;font-family:'Barlow',sans-serif;font-size:0.88rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">Create Account &amp; Submit</button>
-        <div id="gate-su-msg" style="margin-top:10px;font-size:0.8rem;text-align:center;color:#e87c6e;display:none;"></div>
+        <button onclick="gateSignUp()" id="gate-su-btn"
+          style="width:100%;background:var(--gold);color:var(--charcoal);border:none;border-radius:3px;padding:13px;font-family:'Barlow',sans-serif;font-size:0.88rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">Create
+          Account &amp; Submit</button>
+        <div id="gate-su-msg" style="margin-top:10px;font-size:0.8rem;text-align:center;color:#e87c6e;display:none;">
+        </div>
       </div>
 
       <!-- Unverified notice -->
       <div id="gate-unverified" style="display:none;text-align:center;padding:8px 0;">
         <div style="font-size:2.2rem;margin-bottom:14px;">📧</div>
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.08em;color:var(--gold);margin-bottom:10px;">Check Your Inbox</div>
-        <p style="font-size:0.88rem;color:rgba(245,240,232,0.55);line-height:1.7;margin-bottom:6px;">We sent a verification email to <strong id="gate-unverified-email" style="color:var(--gold-light);"></strong>.</p>
-        <p style="font-size:0.85rem;color:rgba(245,240,232,0.4);line-height:1.6;">Once you verify your email, come back and log in to submit your application.</p>
-        <button onclick="document.getElementById('auth-gate').style.display='none'" style="margin-top:20px;background:none;border:1px solid rgba(201,146,26,0.3);color:var(--gold);border-radius:4px;padding:10px 24px;font-family:'Barlow',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;">Got It</button>
+        <div
+          style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.08em;color:var(--gold);margin-bottom:10px;">
+          Check Your Inbox</div>
+        <p style="font-size:0.88rem;color:rgba(245,240,232,0.55);line-height:1.7;margin-bottom:6px;">We sent a
+          verification email to <strong id="gate-unverified-email" style="color:var(--gold-light);"></strong>.</p>
+        <p style="font-size:0.85rem;color:rgba(245,240,232,0.4);line-height:1.6;">Once you verify your email, come back
+          and log in to submit your application.</p>
+        <button onclick="document.getElementById('auth-gate').style.display='none'"
+          style="margin-top:20px;background:none;border:1px solid rgba(201,146,26,0.3);color:var(--gold);border-radius:4px;padding:10px 24px;font-family:'Barlow',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;">Got
+          It</button>
       </div>
 
       <!-- Log In -->
       <div id="gate-si" style="display:none;">
         <div style="margin-bottom:14px;">
-          <label style="font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(245,240,232,0.45);display:block;margin-bottom:6px;">Email</label>
-          <input type="email" id="gate-si-email" placeholder="your@email.com" style="width:100%;background:rgba(245,240,232,0.06);border:1px solid rgba(201,146,26,0.25);border-radius:3px;padding:12px 14px;color:var(--cream);font-family:'Barlow',sans-serif;font-size:0.92rem;outline:none;"/>
+          <label
+            style="font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(245,240,232,0.45);display:block;margin-bottom:6px;">Email</label>
+          <input type="email" id="gate-si-email" placeholder="your@email.com"
+            style="width:100%;background:rgba(245,240,232,0.06);border:1px solid rgba(201,146,26,0.25);border-radius:3px;padding:12px 14px;color:var(--cream);font-family:'Barlow',sans-serif;font-size:0.92rem;outline:none;" />
         </div>
         <div style="margin-bottom:18px;">
-          <label style="font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(245,240,232,0.45);display:block;margin-bottom:6px;">Password</label>
-          <input type="password" id="gate-si-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')gateSignIn()" style="width:100%;background:rgba(245,240,232,0.06);border:1px solid rgba(201,146,26,0.25);border-radius:3px;padding:12px 14px;color:var(--cream);font-family:'Barlow',sans-serif;font-size:0.92rem;outline:none;"/>
+          <label
+            style="font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(245,240,232,0.45);display:block;margin-bottom:6px;">Password</label>
+          <input type="password" id="gate-si-pass" placeholder="••••••••"
+            onkeydown="if(event.key==='Enter')gateSignIn()"
+            style="width:100%;background:rgba(245,240,232,0.06);border:1px solid rgba(201,146,26,0.25);border-radius:3px;padding:12px 14px;color:var(--cream);font-family:'Barlow',sans-serif;font-size:0.92rem;outline:none;" />
         </div>
-        <button onclick="gateSignIn()" id="gate-si-btn" style="width:100%;background:var(--gold);color:var(--charcoal);border:none;border-radius:3px;padding:13px;font-family:'Barlow',sans-serif;font-size:0.88rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">Log In &amp; Submit</button>
-        <div id="gate-si-msg" style="margin-top:10px;font-size:0.8rem;text-align:center;color:#e87c6e;display:none;"></div>
+        <button onclick="gateSignIn()" id="gate-si-btn"
+          style="width:100%;background:var(--gold);color:var(--charcoal);border:none;border-radius:3px;padding:13px;font-family:'Barlow',sans-serif;font-size:0.88rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">Log
+          In &amp; Submit</button>
+        <div id="gate-si-msg" style="margin-top:10px;font-size:0.8rem;text-align:center;color:#e87c6e;display:none;">
+        </div>
       </div>
     </div>
   </div>
@@ -746,15 +1320,21 @@
     <div class="confirm-icon" id="confirm-icon">★</div>
     <h2 id="confirm-heading">Application <span>Received</span></h2>
     <p class="confirm-name" id="confirm-name"></p>
-    <p id="confirm-message">Thank you for taking this step. Your application has been received and will be reviewed by our team within <strong style="color:var(--cream);">7–10 business days</strong>. We'll contact you at the email address you provided.</p>
+    <p id="confirm-message">Thank you for taking this step. Your application has been received and will be reviewed by
+      our team within <strong style="color:var(--cream);">7–10 business days</strong>. We'll contact you at the email
+      address you provided.</p>
     <div class="confirm-ref" id="confirm-ref"></div>
     <div class="confirm-next-steps">
       <h4>What Happens Next</h4>
       <div class="confirm-steps-list">
-        <div class="cs-item"><span class="cs-num">01</span> Our team reviews your submission and verifies service history.</div>
-        <div class="cs-item"><span class="cs-num">02</span> We may reach out with follow-up questions — check your email and phone.</div>
-        <div class="cs-item"><span class="cs-num">03</span> <span id="confirm-step-03">You'll receive an approval decision and, if approved, a formal award letter.</span></div>
-        <div class="cs-item"><span class="cs-num">04</span> Funds are disbursed directly to your provider, school, or program.</div>
+        <div class="cs-item"><span class="cs-num">01</span> Our team reviews your submission and verifies service
+          history.</div>
+        <div class="cs-item"><span class="cs-num">02</span> We may reach out with follow-up questions — check your email
+          and phone.</div>
+        <div class="cs-item"><span class="cs-num">03</span> <span id="confirm-step-03">You'll receive an approval
+            decision and, if approved, a formal award letter.</span></div>
+        <div class="cs-item"><span class="cs-num">04</span> Funds are disbursed directly to your provider, school, or
+          program.</div>
       </div>
     </div>
     <div class="confirm-actions">
@@ -768,8 +1348,10 @@
   <footer id="site-footer">
     <div class="footer-inner">
       <div class="footer-brand">
-        <img src="413212FE-ACE0-4643-9C94-3C2A5F1B4848.PNG" alt="Entheos Veteran Project" onerror="this.style.display='none'"/>
-        <p>The Entheos Veteran Project raises and distributes scholarship funds for veterans battling PTSD, TBI, substance abuse, and the invisible wounds of war.</p>
+        <img src="413212FE-ACE0-4643-9C94-3C2A5F1B4848.PNG" alt="Entheos Veteran Project"
+          onerror="this.style.display='none'" />
+        <p>The Entheos Veteran Project raises and distributes scholarship funds for veterans battling PTSD, TBI,
+          substance abuse, and the invisible wounds of war.</p>
       </div>
       <div class="footer-col">
         <h4>Navigate</h4>
@@ -820,13 +1402,13 @@
 
     function validateStep1() {
       const first = document.getElementById('first-name').value.trim();
-      const last  = document.getElementById('last-name').value.trim();
+      const last = document.getElementById('last-name').value.trim();
       const email = document.getElementById('email').value.trim();
       const state = document.getElementById('state').value;
-      const dob   = document.getElementById('dob').value.trim();
+      const dob = document.getElementById('dob').value.trim();
       let ok = true;
       markError('first-name', 'err-first-name', !first); if (!first) ok = false;
-      markError('last-name',  'err-last-name',  !last);  if (!last)  ok = false;
+      markError('last-name', 'err-last-name', !last); if (!last) ok = false;
       const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
       markError('email', 'err-email', !emailOk); if (!emailOk) ok = false;
       markError('state', 'err-state', !state); if (!state) ok = false;
@@ -835,20 +1417,20 @@
     }
 
     function validateStep2() {
-      const branch    = document.getElementById('branch').value;
+      const branch = document.getElementById('branch').value;
       const discharge = document.getElementById('discharge').value;
-      const checked   = document.querySelectorAll('input[name="need"]:checked').length > 0;
+      const checked = document.querySelectorAll('input[name="need"]:checked').length > 0;
       let ok = true;
-      markError('branch',    'err-branch',    !branch);    if (!branch)    ok = false;
+      markError('branch', 'err-branch', !branch); if (!branch) ok = false;
       markError('discharge', 'err-discharge', !discharge); if (!discharge) ok = false;
       const needErr = document.getElementById('err-needs');
       if (!checked) { needErr.classList.add('show'); ok = false; }
-      else           { needErr.classList.remove('show'); }
+      else { needErr.classList.remove('show'); }
       return ok;
     }
 
     function validateStep3() {
-      const sit     = document.getElementById('situation').value.trim();
+      const sit = document.getElementById('situation').value.trim();
       const consent = document.getElementById('consent').checked;
       let ok = true;
       markError('situation', 'err-situation', sit.length < 30); if (sit.length < 30) ok = false;
@@ -881,9 +1463,9 @@
     function generateRef() {
       const d = new Date();
       const ymd = d.getFullYear().toString() +
-                  String(d.getMonth()+1).padStart(2,'0') +
-                  String(d.getDate()).padStart(2,'0');
-      const rand = Math.random().toString(36).toUpperCase().slice(2,3);
+        String(d.getMonth() + 1).padStart(2, '0') +
+        String(d.getDate()).padStart(2, '0');
+      const rand = Math.random().toString(36).toUpperCase().slice(2, 3);
       return 'EVP-' + ymd + '-' + rand;
     }
 
@@ -902,7 +1484,7 @@
 
       // Check if account is verified
       try {
-        const res  = await fetch(API + '/api/is-verified?email=' + encodeURIComponent(loggedInEmail));
+        const res = await fetch(API + '/api/is-verified?email=' + encodeURIComponent(loggedInEmail));
         const data = await res.json();
         if (!data.verified) {
           document.getElementById('gate-su-email').value = loggedInEmail;
@@ -925,7 +1507,7 @@
       _generatedRef = generateRef();
 
       const needs = Array.from(document.querySelectorAll('input[name="need"]:checked'))
-                        .map(cb => cb.value).join(', ');
+        .map(cb => cb.value).join(', ');
 
       const amountVal = parseFloat(document.getElementById('amount').value) || 0;
       const isUnderReview = amountVal > 5000;
@@ -936,22 +1518,22 @@
         _cc: 'Entheosveteranproject@gmail.com',
         '*** REFERENCE CODE ***': _generatedRef,
         '*** STATUS ***': isUnderReview ? 'UNDER REVIEW (amount exceeds $5,000)' : 'Standard Review',
-        'First Name':         document.getElementById('first-name').value.trim(),
-        'Last Name':          document.getElementById('last-name').value.trim(),
-        'Email':              document.getElementById('email').value.trim(),
-        'Phone':              document.getElementById('phone').value.trim() || '—',
-        'State':              document.getElementById('state').value,
-        'Date of Birth':      document.getElementById('dob').value.trim(),
-        'Branch':             document.getElementById('branch').value,
-        'Discharge Status':   document.getElementById('discharge').value,
-        'Years Served':       document.getElementById('years-served').value.trim() || '—',
-        'Deployments':        document.getElementById('deployments').value.trim() || '—',
-        'Areas of Need':      needs,
+        'First Name': document.getElementById('first-name').value.trim(),
+        'Last Name': document.getElementById('last-name').value.trim(),
+        'Email': document.getElementById('email').value.trim(),
+        'Phone': document.getElementById('phone').value.trim() || '—',
+        'State': document.getElementById('state').value,
+        'Date of Birth': document.getElementById('dob').value.trim(),
+        'Branch': document.getElementById('branch').value,
+        'Discharge Status': document.getElementById('discharge').value,
+        'Years Served': document.getElementById('years-served').value.trim() || '—',
+        'Deployments': document.getElementById('deployments').value.trim() || '—',
+        'Areas of Need': needs,
         'Program / Provider': document.getElementById('program').value.trim() || '—',
-        'Amount Needed':      document.getElementById('amount').value || '—',
-        'Situation':          document.getElementById('situation').value.trim(),
-        'Goals':              document.getElementById('goals').value.trim() || '—',
-        'How They Heard':     document.getElementById('hear').value || '—',
+        'Amount Needed': document.getElementById('amount').value || '—',
+        'Situation': document.getElementById('situation').value.trim(),
+        'Goals': document.getElementById('goals').value.trim() || '—',
+        'How They Heard': document.getElementById('hear').value || '—',
       };
 
       try {
@@ -974,26 +1556,26 @@
               'Prefer': 'return=minimal'
             },
             body: JSON.stringify({
-              reference_code:   _generatedRef,
-              first_name:       document.getElementById('first-name').value.trim(),
-              last_name:        document.getElementById('last-name').value.trim(),
-              email:            document.getElementById('email').value.trim(),
-              phone:            document.getElementById('phone').value.trim() || '—',
-              state:            document.getElementById('state').value,
-              date_of_birth:    document.getElementById('dob').value.trim(),
-              branch:           document.getElementById('branch').value,
+              reference_code: _generatedRef,
+              first_name: document.getElementById('first-name').value.trim(),
+              last_name: document.getElementById('last-name').value.trim(),
+              email: document.getElementById('email').value.trim(),
+              phone: document.getElementById('phone').value.trim() || '—',
+              state: document.getElementById('state').value,
+              date_of_birth: document.getElementById('dob').value.trim(),
+              branch: document.getElementById('branch').value,
               discharge_status: document.getElementById('discharge').value,
-              years_served:     document.getElementById('years-served').value.trim() || '—',
-              deployments:      document.getElementById('deployments').value.trim() || '—',
-              areas_of_need:    needs,
+              years_served: document.getElementById('years-served').value.trim() || '—',
+              deployments: document.getElementById('deployments').value.trim() || '—',
+              areas_of_need: needs,
               program_provider: document.getElementById('program').value.trim() || '—',
-              amount_needed:    document.getElementById('amount').value || '—',
-              situation:        document.getElementById('situation').value.trim(),
-              goals:            document.getElementById('goals').value.trim() || '—',
-              how_they_heard:   document.getElementById('hear').value || '—',
-              status:           isUnderReview ? 'extended_review' : 'received',
+              amount_needed: document.getElementById('amount').value || '—',
+              situation: document.getElementById('situation').value.trim(),
+              goals: document.getElementById('goals').value.trim() || '—',
+              how_they_heard: document.getElementById('hear').value || '—',
+              status: isUnderReview ? 'extended_review' : 'received',
             })
-          }).catch(() => {});
+          }).catch(() => { });
         }
 
         document.getElementById('submitting-overlay').classList.remove('show');
@@ -1003,20 +1585,20 @@
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              email:     document.getElementById('email').value.trim(),
+              email: document.getElementById('email').value.trim(),
               firstName: document.getElementById('first-name').value.trim(),
-              refCode:   _generatedRef
+              refCode: _generatedRef
             })
-          }).catch(() => {});
+          }).catch(() => { });
           if (isUnderReview && EMAILJS_PUBLIC_KEY !== 'PASTE_YOUR_PUBLIC_KEY') {
             emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-              to_email:       document.getElementById('email').value.trim(),
-              first_name:     document.getElementById('first-name').value.trim(),
-              last_name:      document.getElementById('last-name').value.trim(),
+              to_email: document.getElementById('email').value.trim(),
+              first_name: document.getElementById('first-name').value.trim(),
+              last_name: document.getElementById('last-name').value.trim(),
               reference_code: _generatedRef,
-              amount:         '$' + parseFloat(document.getElementById('amount').value).toLocaleString(),
-              message:        'Your application is currently under review. Your requested amount of $' + parseFloat(document.getElementById('amount').value).toLocaleString() + ' exceeds our $5,000 threshold and requires additional review by our team. Someone will be in touch with you shortly.',
-            }).catch(() => {}); // silent — don't block confirmation if email fails
+              amount: '$' + parseFloat(document.getElementById('amount').value).toLocaleString(),
+              message: 'Your application is currently under review. Your requested amount of $' + parseFloat(document.getElementById('amount').value).toLocaleString() + ' exceeds our $5,000 threshold and requires additional review by our team. Someone will be in touch with you shortly.',
+            }).catch(() => { }); // silent — don't block confirmation if email fails
           }
           showConfirmation(isUnderReview);
         } else {
@@ -1041,13 +1623,13 @@
 
     async function gateSignUp() {
       const email = document.getElementById('gate-su-email').value.trim();
-      const pass  = document.getElementById('gate-su-pass').value;
-      const msg   = document.getElementById('gate-su-msg');
-      const btn   = document.getElementById('gate-su-btn');
+      const pass = document.getElementById('gate-su-pass').value;
+      const msg = document.getElementById('gate-su-msg');
+      const btn = document.getElementById('gate-su-btn');
       if (pass.length < 6) { msg.textContent = 'Password must be at least 6 characters.'; msg.style.display = 'block'; return; }
       btn.disabled = true; btn.textContent = 'Creating Account…';
       try {
-        const res  = await fetch(API + '/api/signup', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email, password: pass }) });
+        const res = await fetch(API + '/api/signup', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: pass }) });
         const data = await res.json();
         if (res.ok) {
           localStorage.setItem('ev_user', email);
@@ -1067,13 +1649,13 @@
 
     async function gateSignIn() {
       const email = document.getElementById('gate-si-email').value.trim();
-      const pass  = document.getElementById('gate-si-pass').value;
-      const msg   = document.getElementById('gate-si-msg');
-      const btn   = document.getElementById('gate-si-btn');
+      const pass = document.getElementById('gate-si-pass').value;
+      const msg = document.getElementById('gate-si-msg');
+      const btn = document.getElementById('gate-si-btn');
       if (!email || !pass) { msg.textContent = 'Please enter your email and password.'; msg.style.display = 'block'; return; }
       btn.disabled = true; btn.textContent = 'Signing In…';
       try {
-        const res  = await fetch(API + '/api/signin', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email, password: pass }) });
+        const res = await fetch(API + '/api/signin', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: pass }) });
         const data = await res.json();
         if (res.ok) {
           localStorage.setItem('ev_user', data.email);
@@ -1098,15 +1680,15 @@
       document.getElementById('progress-wrap').style.display = 'none';
 
       const first = document.getElementById('first-name').value.trim();
-      const last  = document.getElementById('last-name').value.trim();
+      const last = document.getElementById('last-name').value.trim();
 
       document.getElementById('confirm-name').textContent = first + ' ' + last;
-      document.getElementById('confirm-ref').textContent  = 'Reference #: ' + _generatedRef;
+      document.getElementById('confirm-ref').textContent = 'Reference #: ' + _generatedRef;
 
       if (underReview) {
-        document.getElementById('confirm-icon').textContent    = '⏳';
-        document.getElementById('confirm-heading').innerHTML   = 'Application <span>Under Review</span>';
-        document.getElementById('confirm-message').innerHTML   = 'Thank you for your application. Because the amount requested exceeds $5,000, your application requires additional review by our team before a decision is made. We will contact you within <strong style="color:var(--cream);">14–21 business days</strong> with an update.';
+        document.getElementById('confirm-icon').textContent = '⏳';
+        document.getElementById('confirm-heading').innerHTML = 'Application <span>Under Review</span>';
+        document.getElementById('confirm-message').innerHTML = 'Thank you for your application. Because the amount requested exceeds $5,000, your application requires additional review by our team before a decision is made. We will contact you within <strong style="color:var(--cream);">14–21 business days</strong> with an update.';
         document.getElementById('confirm-step-03').textContent = 'Your application will go through an extended review. We may request supporting documentation.';
       }
 
@@ -1117,4 +1699,5 @@
   </script>
 
 </body>
+
 </html>
