@@ -595,7 +595,32 @@
 </div>
 
 <script>
-  const API = window.location.protocol === 'file:' ? 'http://localhost:3000' : '';
+  const SUPABASE_URL = 'https://uymvnusvxjyeceuujbvv.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_HLcANcarEFrvpbSi4n4_NA_QauDk0tS';
+  let _sb = null;
+
+  // Initialize Supabase — reuses CDN if already on the page, otherwise loads it
+  (function () {
+    function init() {
+      _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      _sb.auth.getSession().then(({ data: { session } }) => {
+        if (session) {
+          localStorage.setItem('ev_user', session.user.email);
+          setNavUser(session.user.email);
+        } else {
+          localStorage.removeItem('ev_user');
+        }
+      });
+    }
+    if (window.supabase) {
+      init();
+    } else {
+      var s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
+      s.onload = init;
+      document.head.appendChild(s);
+    }
+  })();
 
   (function () {
     if ((performance.getEntriesByType('navigation')[0] || {}).type === 'reload') {
@@ -651,15 +676,26 @@
     const email = document.getElementById('m-si-email').value.trim();
     const pass = document.getElementById('m-si-pass').value;
     if (!email || !pass) { showMMsg('m-si-msg', 'Please enter your email and password.', 'err'); return; }
+    if (!_sb) { showMMsg('m-si-msg', 'Auth not ready, please try again.', 'err'); return; }
+
     const btn = document.getElementById('m-si-btn');
     btn.disabled = true; btn.textContent = 'Signing In…';
-    try {
-      const res = await fetch(API + '/api/signin', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: pass }) });
-      const data = await res.json();
-      btn.disabled = false; btn.textContent = 'Log In';
-      if (!res.ok) { showMMsg('m-si-msg', data.error || 'Sign-in failed.', 'err'); }
-      else { localStorage.setItem('ev_user', data.email); closeModal(); setNavUser(data.email); }
-    } catch { btn.disabled = false; btn.textContent = 'Log In'; showMMsg('m-si-msg', 'Could not reach the server.', 'err'); }
+
+    const { data, error } = await _sb.auth.signInWithPassword({ email, password: pass });
+    btn.disabled = false; btn.textContent = 'Log In';
+
+    if (error) {
+      if (error.message.includes('not confirmed') || error.code === 'email_not_confirmed') {
+        showMMsg('m-si-msg', 'Please verify your email before logging in. Check your inbox.', 'err');
+      } else {
+        showMMsg('m-si-msg', 'Incorrect email or password.', 'err');
+      }
+      return;
+    }
+
+    localStorage.setItem('ev_user', data.user.email);
+    closeModal();
+    setNavUser(data.user.email);
   }
 
   async function mSignUp() {
@@ -669,25 +705,32 @@
     if (!email || !pass) { showMMsg('m-su-msg', 'Please fill in all fields.', 'err'); return; }
     if (pass !== pass2) { showMMsg('m-su-msg', 'Passwords do not match.', 'err'); return; }
     if (pass.length < 6) { showMMsg('m-su-msg', 'Password must be at least 6 characters.', 'err'); return; }
+    if (!_sb) { showMMsg('m-su-msg', 'Auth not ready, please try again.', 'err'); return; }
+
     const btn = document.getElementById('m-su-btn');
     btn.disabled = true; btn.textContent = 'Creating Account…';
-    try {
-      const res = await fetch(API + '/api/signup', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: pass }) });
-      const data = await res.json();
-      btn.disabled = false; btn.textContent = 'Sign Up';
-      if (!res.ok) { showMMsg('m-su-msg', data.error || 'Sign-up failed.', 'err'); }
-      else { showMMsg('m-su-msg', data.message, 'ok'); btn.style.display = 'none'; }
-    } catch { btn.disabled = false; btn.textContent = 'Sign Up'; showMMsg('m-su-msg', 'Could not reach the server.', 'err'); }
+
+    const redirectTo = window.location.origin + window.location.pathname.replace(/[^/]*$/, '') + 'account.html';
+    const { error } = await _sb.auth.signUp({ email, password: pass, options: { emailRedirectTo: redirectTo } });
+    btn.disabled = false; btn.textContent = 'Sign Up';
+
+    if (error && error.message.includes('already registered')) {
+      showMMsg('m-su-msg', 'An account with that email already exists.', 'err');
+      return;
+    }
+
+    showMMsg('m-su-msg', 'Account created! Check your email for a verification link before logging in.', 'ok');
+    btn.style.display = 'none';
   }
 
   async function mForgot() {
     const email = document.getElementById('m-si-email').value.trim();
     if (!email) { showMMsg('m-fp-msg', 'Enter your email in the field above first.', 'err'); return; }
-    try {
-      const res = await fetch(API + '/api/forgot-password', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
-      const data = await res.json();
-      showMMsg('m-fp-msg', res.ok ? 'Reset link sent to ' + email + '. Check your inbox.' : (data.error || 'Failed.'), res.ok ? 'ok' : 'err');
-    } catch { showMMsg('m-fp-msg', 'Could not reach the server.', 'err'); }
+    if (!_sb) { showMMsg('m-fp-msg', 'Auth not ready, please try again.', 'err'); return; }
+
+    const redirectTo = window.location.origin + window.location.pathname.replace(/[^/]*$/, '') + 'reset-password.html';
+    await _sb.auth.resetPasswordForEmail(email, { redirectTo });
+    showMMsg('m-fp-msg', 'If that email has an account, a reset link has been sent.', 'ok');
   }
 
   function setNavUser(email) {
@@ -718,7 +761,8 @@
     if (createDiv) createDiv.style.display = 'none';
   }
 
-  function mSignOut() {
+  async function mSignOut() {
+    if (_sb) await _sb.auth.signOut();
     localStorage.removeItem('ev_user');
     const authArea = document.getElementById('nav-auth-area');
     if (authArea) {
@@ -740,9 +784,4 @@
     if (createBtn) createBtn.style.display = 'block';
     if (createDiv) createDiv.style.display = 'block';
   }
-
-  window.addEventListener('DOMContentLoaded', () => {
-    const user = localStorage.getItem('ev_user');
-    if (user) setNavUser(user);
-  });
 </script>

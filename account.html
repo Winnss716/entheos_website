@@ -7,6 +7,7 @@
   <title>Veteran Account — Entheos Veteran Project</title>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600;700&display=swap"
     rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <style>
     :root {
       --olive: #4a5240;
@@ -363,7 +364,9 @@
   </footer>
 
   <script>
-    const API = window.location.protocol === 'file:' ? 'http://localhost:3000' : '';
+    const SUPABASE_URL = 'https://uymvnusvxjyeceuujbvv.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_HLcANcarEFrvpbSi4n4_NA_QauDk0tS';
+    const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     /* ── Tab toggle ── */
     function switchTab(tab) {
@@ -390,25 +393,22 @@
       const btn = document.getElementById('si-btn');
       btn.disabled = true; btn.textContent = 'Signing In…';
 
-      try {
-        const res = await fetch(API + '/api/signin', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: pass }) });
-        const data = await res.json();
-        btn.disabled = false; btn.textContent = 'Log In';
+      const { data, error } = await _sb.auth.signInWithPassword({ email, password: pass });
+      btn.disabled = false; btn.textContent = 'Log In';
 
-        if (!res.ok) {
-          showMsg('si-msg', data.error || 'Sign-in failed.', 'err');
-          if (res.status === 403) {
-            document.getElementById('resend-wrap').style.display = 'block';
-            document.getElementById('resend-email').value = email;
-          }
+      if (error) {
+        if (error.message.includes('not confirmed') || error.code === 'email_not_confirmed') {
+          showMsg('si-msg', 'Please verify your email before logging in. Check your inbox.', 'err');
+          document.getElementById('resend-wrap').style.display = 'block';
+          document.getElementById('resend-email').value = email;
         } else {
-          localStorage.setItem('ev_user', data.email);
-          window.location.href = 'index.html';
+          showMsg('si-msg', 'Incorrect email or password.', 'err');
         }
-      } catch {
-        btn.disabled = false; btn.textContent = 'Log In';
-        showMsg('si-msg', 'Could not reach the server. Make sure it is running.', 'err');
+        return;
       }
+
+      localStorage.setItem('ev_user', data.user.email);
+      window.location.href = 'index.html';
     }
 
     /* ── Sign Up ── */
@@ -423,21 +423,21 @@
       const btn = document.getElementById('su-btn');
       btn.disabled = true; btn.textContent = 'Creating Account…';
 
-      try {
-        const res = await fetch(API + '/api/signup', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: pass }) });
-        const data = await res.json();
-        btn.disabled = false; btn.textContent = 'Sign Up';
+      const redirectTo = window.location.origin + window.location.pathname.replace(/[^/]*$/, '') + 'account.html';
+      const { error } = await _sb.auth.signUp({
+        email,
+        password: pass,
+        options: { emailRedirectTo: redirectTo }
+      });
+      btn.disabled = false; btn.textContent = 'Sign Up';
 
-        if (!res.ok) {
-          showMsg('su-msg', data.error || 'Sign-up failed.', 'err');
-        } else {
-          showMsg('su-msg', '✓ Account created! You can now log in.', 'ok');
-          btn.style.display = 'none';
-        }
-      } catch {
-        btn.disabled = false; btn.textContent = 'Sign Up';
-        showMsg('su-msg', 'Could not reach the server. Make sure it is running.', 'err');
+      if (error && error.message.includes('already registered')) {
+        showMsg('su-msg', 'An account with that email already exists.', 'err');
+        return;
       }
+
+      showMsg('su-msg', 'Account created! Check your email for a verification link before logging in.', 'ok');
+      btn.style.display = 'none';
     }
 
     /* ── Resend Verification ── */
@@ -445,15 +445,11 @@
       const email = document.getElementById('resend-email').value;
       const btn = document.getElementById('resend-btn');
       btn.disabled = true; btn.textContent = 'Sending…';
-      try {
-        const res = await fetch(API + '/api/resend-verification', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
-        const data = await res.json();
-        btn.disabled = false; btn.textContent = 'Resend Verification Email';
-        showMsg('resend-msg', data.message || data.error, res.ok ? 'ok' : 'err');
-      } catch {
-        btn.disabled = false; btn.textContent = 'Resend Verification Email';
-        showMsg('resend-msg', 'Could not reach the server.', 'err');
-      }
+
+      const redirectTo = window.location.origin + window.location.pathname.replace(/[^/]*$/, '') + 'account.html';
+      const { error } = await _sb.auth.resend({ type: 'signup', email, options: { emailRedirectTo: redirectTo } });
+      btn.disabled = false; btn.textContent = 'Resend Verification Email';
+      showMsg('resend-msg', error ? (error.message || 'Failed to resend.') : 'Verification email sent. Check your inbox.', error ? 'err' : 'ok');
     }
 
     /* ── Forgot Password ── */
@@ -461,61 +457,35 @@
       const email = document.getElementById('si-email').value.trim();
       if (!email) { showMsg('fp-msg', 'Enter your email in the field above first.', 'err'); return; }
 
-      try {
-        const res = await fetch(API + '/api/forgot-password', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
-        const data = await res.json();
-        showMsg('fp-msg', res.ok ? 'Reset link sent to ' + email + '. Check your inbox.' : (data.error || 'Failed.'), res.ok ? 'ok' : 'err');
-      } catch {
-        showMsg('fp-msg', 'Could not reach the server.', 'err');
-      }
-    }
-
-    /* ── Delete Account ── */
-    async function doDelete() {
-      const email = localStorage.getItem('ev_user');
-      const pass = document.getElementById('del-pass').value;
-      if (!pass) { showMsg('del-msg', 'Please enter your password.', 'err'); return; }
-
-      const btn = document.getElementById('del-btn');
-      btn.disabled = true; btn.textContent = 'Deleting…';
-
-      try {
-        const res = await fetch(API + '/api/delete-account', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: pass }) });
-        const data = await res.json();
-        btn.disabled = false; btn.textContent = 'Delete Account';
-
-        if (res.ok) {
-          localStorage.removeItem('ev_user');
-          document.getElementById('logged-in-view').innerHTML = '<div style="text-align:center;padding:20px 0;"><div style="font-size:2rem;margin-bottom:12px;">✓</div><div style="font-family:\'Bebas Neue\',sans-serif;font-size:1.4rem;color:var(--gold);">Account Deleted</div><p style="font-size:0.85rem;color:rgba(245,240,232,0.45);margin-top:8px;">Your account has been permanently removed.</p></div>';
-        } else {
-          showMsg('del-msg', data.error || 'Failed to delete account.', 'err');
-        }
-      } catch {
-        btn.disabled = false; btn.textContent = 'Delete Account';
-        showMsg('del-msg', 'Could not reach the server.', 'err');
-      }
+      const redirectTo = window.location.origin + window.location.pathname.replace(/[^/]*$/, '') + 'reset-password.html';
+      await _sb.auth.resetPasswordForEmail(email, { redirectTo });
+      showMsg('fp-msg', 'If that email has an account, a reset link has been sent.', 'ok');
     }
 
     /* ── Sign Out ── */
-    function signOut() {
+    async function signOut() {
+      await _sb.auth.signOut();
       localStorage.removeItem('ev_user');
       document.getElementById('logged-in-view').style.display = 'none';
       document.getElementById('auth-card').style.display = 'block';
     }
 
     /* ── Check session on load ── */
-    window.addEventListener('DOMContentLoaded', () => {
-      const user = localStorage.getItem('ev_user');
-      if (user) {
+    window.addEventListener('DOMContentLoaded', async () => {
+      const { data: { session } } = await _sb.auth.getSession();
+      if (session) {
+        localStorage.setItem('ev_user', session.user.email);
         document.getElementById('auth-card').style.display = 'none';
         document.getElementById('logged-in-view').style.display = 'block';
-        document.getElementById('user-email-display').textContent = user;
+        document.getElementById('user-email-display').textContent = session.user.email;
+      } else {
+        localStorage.removeItem('ev_user');
       }
 
       const params = new URLSearchParams(window.location.search);
       if (params.get('verified') === '1') {
         switchTab('signin');
-        showMsg('si-msg', '✓ Email verified! You can now log in.', 'ok');
+        showMsg('si-msg', 'Email verified! You can now log in.', 'ok');
       } else if (params.get('verified') === 'error') {
         switchTab('signin');
         showMsg('si-msg', 'Verification link is invalid or already used.', 'err');
