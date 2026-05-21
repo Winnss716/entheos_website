@@ -1,0 +1,748 @@
+<!-- NAV COMPONENT — fetched and injected by pages via loadNav() -->
+<style>
+  :root {
+    --olive: #3b4a2f;
+    --olive-dark: #232d1a;
+    --gold: #c9921a;
+    --gold-light: #e8b84b;
+    --cream: #f5f0e8;
+    --white: #ffffff;
+    --charcoal: #1a1e14;
+    --mid: #5a6645;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 5%;
+    background: rgba(26, 30, 20, 0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(201, 146, 26, 0.25);
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+
+  .nav-logo img {
+    height: 52px;
+    width: auto;
+  }
+
+  .nav-links {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    gap: 32px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-links a {
+    color: var(--cream);
+    text-decoration: none;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.85;
+    transition: opacity 0.2s, color 0.2s;
+  }
+
+  .nav-links a:hover {
+    opacity: 1;
+    color: var(--gold-light);
+  }
+
+  .nav-cta {
+    background: var(--gold);
+    color: var(--charcoal);
+    padding: 10px 24px;
+    border-radius: 2px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    transition: background 0.2s;
+  }
+
+  .nav-cta:hover {
+    background: var(--gold-light);
+  }
+
+  .nav-signin {
+    background: none;
+    border: 1px solid rgba(201, 146, 26, 0.45);
+    color: var(--gold);
+    padding: 9px 20px;
+    border-radius: 2px;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .nav-signin:hover {
+    background: rgba(201, 146, 26, 0.12);
+  }
+
+  .nav-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav-user-name {
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .nav-signout {
+    background: none;
+    border: none;
+    color: rgba(245, 240, 232, 0.4);
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.2s;
+    padding: 0;
+  }
+
+  .nav-signout:hover {
+    color: var(--gold);
+  }
+
+  /* Desktop right side hidden — auth lives in hamburger menu */
+  .nav-right {
+    display: none;
+  }
+
+  /* ── HAMBURGER ── */
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    z-index: 200;
+  }
+
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--cream);
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+
+  /* ── MOBILE MENU ── */
+  .mobile-menu {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    background: #1a1e14;
+    z-index: 300;
+    padding: 24px;
+    box-shadow: 8px 0 32px rgba(0, 0, 0, 0.5);
+    border-right: 1px solid rgba(201, 146, 26, 0.15);
+    transform: translateX(-100%);
+    transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .mobile-menu.open {
+    transform: translateX(0);
+  }
+
+  .mobile-menu-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 28px;
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    color: var(--cream);
+    font-size: 1.5rem;
+    cursor: pointer;
+    line-height: 1;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+  }
+
+  .close-btn:hover {
+    opacity: 1;
+  }
+
+  .mobile-nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 auto 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .mobile-nav-links a {
+    display: block;
+    color: var(--cream);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(245, 240, 232, 0.06);
+    transition: color 0.2s;
+  }
+
+  .mobile-nav-links a:hover {
+    color: var(--gold-light);
+  }
+
+  .mobile-auth {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 32px;
+  }
+
+  .nav-cta-mobile {
+    display: block;
+    background: var(--gold);
+    color: var(--charcoal);
+    padding: 12px 20px;
+    border-radius: 2px;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 700;
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    text-align: center;
+    transition: background 0.2s;
+  }
+
+  .nav-cta-mobile:hover {
+    background: var(--gold-light);
+  }
+
+  /* ── MOBILE OVERLAY ── */
+  .mobile-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 149;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.32s ease;
+  }
+
+  .mobile-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* ── AUTH MODAL ── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.72);
+    z-index: 900;
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 80px 20px 20px;
+  }
+
+  .modal-overlay.open {
+    display: flex;
+  }
+
+  .modal {
+    background: #1e2118;
+    border: 1px solid rgba(201, 146, 26, 0.3);
+    border-radius: 6px;
+    padding: 40px 44px;
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    background: none;
+    border: none;
+    color: rgba(245, 240, 232, 0.35);
+    font-size: 1.2rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+  }
+
+  .modal-close:hover {
+    color: var(--cream);
+  }
+
+  .modal-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+
+  .modal-sub {
+    font-size: 0.8rem;
+    color: rgba(245, 240, 232, 0.4);
+    margin-bottom: 24px;
+  }
+
+  .modal-tabs {
+    display: flex;
+    border: 1px solid rgba(201, 146, 26, 0.25);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+
+  .modal-tab {
+    flex: 1;
+    padding: 9px;
+    text-align: center;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    color: rgba(245, 240, 232, 0.4);
+    transition: all 0.2s;
+  }
+
+  .modal-tab.active {
+    background: var(--gold);
+    color: var(--charcoal);
+  }
+
+  .modal-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 14px;
+  }
+
+  .modal-field-group label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(245, 240, 232, 0.45);
+  }
+
+  .modal-input {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(201, 146, 26, 0.25);
+    border-radius: 3px;
+    padding: 12px 14px;
+    color: var(--cream);
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.92rem;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+
+  .modal-input:focus {
+    border-color: var(--gold);
+  }
+
+  .modal-input::placeholder {
+    color: rgba(245, 240, 232, 0.2);
+  }
+
+  .modal-btn {
+    width: 100%;
+    background: var(--gold);
+    color: var(--charcoal);
+    border: none;
+    border-radius: 3px;
+    padding: 13px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 4px;
+  }
+
+  .modal-btn:hover {
+    background: var(--gold-light);
+  }
+
+  .modal-btn:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  .modal-msg {
+    font-size: 0.8rem;
+    margin-top: 12px;
+    padding: 10px 14px;
+    border-radius: 3px;
+    display: none;
+    text-align: center;
+  }
+
+  .modal-msg.err {
+    background: rgba(224, 112, 112, 0.1);
+    border: 1px solid rgba(224, 112, 112, 0.3);
+    color: #e07070;
+  }
+
+  .modal-msg.ok {
+    background: rgba(90, 170, 110, 0.1);
+    border: 1px solid rgba(90, 170, 110, 0.3);
+    color: #5aaa6e;
+  }
+</style>
+
+<!-- Crisis Bar -->
+<div id="crisis-bar"
+  style="background:#7a1f1f;color:#fff;text-align:center;padding:9px 48px 9px 16px;font-size:0.8rem;letter-spacing:0.03em;line-height:1.5;position:relative;z-index:2000;">
+  If you're in crisis — <strong style="color:#ffd080;">Call or text 988, then press 1</strong> — Veterans Crisis Line
+  — Available 24/7 — <a href="https://www.veteranscrisisline.net" target="_blank" rel="noopener"
+    style="color:#ffd080;">Chat online</a>
+  <button onclick="dismissCrisisBar()" aria-label="Dismiss"
+    style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,0.55);font-size:1rem;cursor:pointer;padding:4px 6px;">✕</button>
+</div>
+
+<!-- NAV -->
+<nav>
+  <button class="hamburger" onclick="toggleMobileMenu()" aria-label="Toggle menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <a href="index.html" class="nav-logo">
+    <img src="413212FE-ACE0-4643-9C94-3C2A5F1B4848.PNG" alt="Entheos Veteran Project Logo"
+      onerror="this.style.display='none'" />
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="how-we-help.html">How We Help</a></li>
+    <li><a href="partners.html">Our Partners</a></li>
+    <li><a href="scholarship.html">Scholarships</a></li>
+    <li><a href="our-team.html">Our Team</a></li>
+    <li><a href="donate.html">Donate</a></li>
+    <li><a href="faq.html">FAQ</a></li>
+  </ul>
+
+  <div class="nav-right">
+    <div id="nav-auth-area" style="display:flex;align-items:center;gap:8px;">
+      <button class="nav-signin" onclick="openModal('si')">Log In</button>
+      <button class="nav-signin" onclick="openModal('su')" style="background:rgba(201,146,26,0.12);">Sign Up</button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile overlay -->
+<div class="mobile-overlay" id="mobile-overlay" onclick="toggleMobileMenu()"></div>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobile-menu">
+  <div class="mobile-menu-header">
+    <button class="close-btn" onclick="toggleMobileMenu()">✕</button>
+  </div>
+
+  <ul class="mobile-nav-links">
+    <li><a href="index.html" onclick="toggleMobileMenu()">Home</a></li>
+    <li><a href="how-we-help.html" onclick="toggleMobileMenu()">How We Help</a></li>
+    <li><a href="partners.html" onclick="toggleMobileMenu()">Our Partners</a></li>
+    <li><a href="scholarship.html" onclick="toggleMobileMenu()">Scholarships</a></li>
+    <li><a href="our-team.html" onclick="toggleMobileMenu()">Our Team</a></li>
+    <li><a href="donate.html" onclick="toggleMobileMenu()">Donate</a></li>
+    <li><a href="faq.html" onclick="toggleMobileMenu()">FAQ</a></li>
+  </ul>
+
+  <div class="mobile-auth" id="mobile-auth-area">
+    <button class="nav-signin" onclick="toggleMobileMenu(); openModal('si')">Log In</button>
+    <button class="nav-signin" onclick="toggleMobileMenu(); openModal('su')"
+      style="background:rgba(201,146,26,0.08);">Sign Up</button>
+    <a href="apply.html" class="nav-cta-mobile" onclick="toggleMobileMenu()">Apply Now</a>
+  </div>
+</div>
+
+<!-- Delete Account Modal -->
+<div class="modal-overlay" id="delete-modal" onclick="if(event.target===this)closeDeleteModal()"
+  style="display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.75);align-items:center;justify-content:center;">
+  <div
+    style="background:#1e2419;border:1px solid rgba(224,112,112,0.3);border-radius:8px;padding:36px;width:100%;max-width:400px;margin:20px;position:relative;">
+    <button onclick="closeDeleteModal()"
+      style="position:absolute;top:14px;right:16px;background:none;border:none;color:rgba(245,240,232,0.35);font-size:1.1rem;cursor:pointer;">✕</button>
+    <div
+      style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.1em;color:#e07070;margin-bottom:6px;">
+      Delete Account</div>
+    <p style="font-size:0.85rem;color:rgba(245,240,232,0.5);margin-bottom:16px;line-height:1.6;">This permanently
+      removes your account and cannot be undone. Enter your password to confirm.</p>
+    <div id="del-app-warning"
+      style="display:none;background:rgba(232,168,75,0.1);border:1px solid rgba(232,168,75,0.4);border-radius:4px;padding:12px 16px;margin-bottom:16px;font-size:0.84rem;color:#e8a84b;line-height:1.6;">
+      ⚠️ <strong>You have an active application.</strong> Deleting your account will withdraw your application from
+      consideration.
+    </div>
+    <div style="margin-bottom:16px;">
+      <label
+        style="font-size:0.68rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(245,240,232,0.4);display:block;margin-bottom:6px;">Password</label>
+      <input type="password" id="del-modal-pass" placeholder="••••••••"
+        onkeydown="if(event.key==='Enter')confirmDelete()"
+        style="width:100%;background:rgba(245,240,232,0.06);border:1px solid rgba(224,112,112,0.3);border-radius:4px;padding:12px 14px;color:var(--cream);font-family:'Barlow',sans-serif;font-size:0.95rem;outline:none;" />
+    </div>
+    <button onclick="confirmDelete()" id="del-modal-btn"
+      style="width:100%;background:#7a1f1f;color:#fff;border:none;border-radius:4px;padding:13px;font-family:'Barlow',sans-serif;font-size:0.88rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;">Delete
+      Account</button>
+    <div id="del-modal-msg" style="margin-top:10px;font-size:0.82rem;text-align:center;color:#e07070;display:none;">
+    </div>
+  </div>
+</div>
+
+<!-- Auth Modal -->
+<div class="modal-overlay" id="auth-modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title">Welcome Back</div>
+    <div class="modal-sub">Sign in to your veteran account or create one below.</div>
+    <div class="modal-tabs">
+      <button class="modal-tab active" id="mtab-si" onclick="mSwitchTab('si')">Log In</button>
+      <button class="modal-tab" id="mtab-su" onclick="mSwitchTab('su')">Sign Up</button>
+    </div>
+
+    <div id="mform-si">
+      <div class="modal-field-group">
+        <label>Email</label>
+        <input type="email" class="modal-input" id="m-si-email" placeholder="your@email.com"
+          onkeydown="if(event.key==='Enter')mSignIn()" />
+      </div>
+      <div class="modal-field-group">
+        <label>Password</label>
+        <input type="password" class="modal-input" id="m-si-pass" placeholder="••••••••"
+          onkeydown="if(event.key==='Enter')mSignIn()" />
+      </div>
+      <button class="modal-btn" id="m-si-btn" onclick="mSignIn()">Log In</button>
+      <div class="modal-msg" id="m-si-msg"></div>
+      <div style="text-align:center;margin-top:12px;font-size:0.78rem;">
+        <a href="#" onclick="mForgot();return false;"
+          style="color:rgba(201,146,26,0.7);text-decoration:none;">Forgot your password?</a>
+      </div>
+      <div class="modal-msg" id="m-fp-msg"></div>
+    </div>
+
+    <div id="mform-su" style="display:none;">
+      <div class="modal-field-group">
+        <label>Email</label>
+        <input type="email" class="modal-input" id="m-su-email" placeholder="your@email.com" />
+      </div>
+      <div class="modal-field-group">
+        <label>Password</label>
+        <input type="password" class="modal-input" id="m-su-pass" placeholder="At least 6 characters" />
+      </div>
+      <div class="modal-field-group">
+        <label>Confirm Password</label>
+        <input type="password" class="modal-input" id="m-su-pass2" placeholder="Repeat password"
+          onkeydown="if(event.key==='Enter')mSignUp()" />
+      </div>
+      <button class="modal-btn" id="m-su-btn" onclick="mSignUp()">Sign Up</button>
+      <div class="modal-msg" id="m-su-msg"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const API = window.location.protocol === 'file:' ? 'http://localhost:3000' : '';
+
+  (function () {
+    if ((performance.getEntriesByType('navigation')[0] || {}).type === 'reload') {
+      sessionStorage.removeItem('crisisBarDismissed');
+    }
+    if (sessionStorage.getItem('crisisBarDismissed')) {
+      const bar = document.getElementById('crisis-bar');
+      if (bar) bar.style.display = 'none';
+    }
+  })();
+
+  function dismissCrisisBar() {
+    const bar = document.getElementById('crisis-bar');
+    if (bar) bar.style.display = 'none';
+    sessionStorage.setItem('crisisBarDismissed', '1');
+  }
+
+  function openModal(tab) {
+    document.getElementById('auth-modal').classList.add('open');
+    if (tab) mSwitchTab(tab);
+  }
+
+  function closeModal() {
+    document.getElementById('auth-modal').classList.remove('open');
+  }
+
+  function closeDeleteModal() {
+    const m = document.getElementById('delete-modal');
+    if (m) m.style.display = 'none';
+  }
+
+  function mSwitchTab(tab) {
+    document.getElementById('mform-si').style.display = tab === 'si' ? 'block' : 'none';
+    document.getElementById('mform-su').style.display = tab === 'su' ? 'block' : 'none';
+    document.getElementById('mtab-si').className = 'modal-tab' + (tab === 'si' ? ' active' : '');
+    document.getElementById('mtab-su').className = 'modal-tab' + (tab === 'su' ? ' active' : '');
+    document.querySelector('.modal-title').textContent = tab === 'su' ? 'Welcome!' : 'Welcome Back';
+  }
+
+  function showMMsg(id, text, type) {
+    const el = document.getElementById(id);
+    el.textContent = text;
+    el.className = 'modal-msg ' + type;
+    el.style.display = 'block';
+  }
+
+  function toggleMobileMenu() {
+    document.getElementById('mobile-menu').classList.toggle('open');
+    document.getElementById('mobile-overlay').classList.toggle('open');
+  }
+
+  async function mSignIn() {
+    const email = document.getElementById('m-si-email').value.trim();
+    const pass = document.getElementById('m-si-pass').value;
+    if (!email || !pass) { showMMsg('m-si-msg', 'Please enter your email and password.', 'err'); return; }
+    const btn = document.getElementById('m-si-btn');
+    btn.disabled = true; btn.textContent = 'Signing In…';
+    try {
+      const res = await fetch(API + '/api/signin', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: pass }) });
+      const data = await res.json();
+      btn.disabled = false; btn.textContent = 'Log In';
+      if (!res.ok) { showMMsg('m-si-msg', data.error || 'Sign-in failed.', 'err'); }
+      else { localStorage.setItem('ev_user', data.email); closeModal(); setNavUser(data.email); }
+    } catch { btn.disabled = false; btn.textContent = 'Log In'; showMMsg('m-si-msg', 'Could not reach the server.', 'err'); }
+  }
+
+  async function mSignUp() {
+    const email = document.getElementById('m-su-email').value.trim();
+    const pass = document.getElementById('m-su-pass').value;
+    const pass2 = document.getElementById('m-su-pass2').value;
+    if (!email || !pass) { showMMsg('m-su-msg', 'Please fill in all fields.', 'err'); return; }
+    if (pass !== pass2) { showMMsg('m-su-msg', 'Passwords do not match.', 'err'); return; }
+    if (pass.length < 6) { showMMsg('m-su-msg', 'Password must be at least 6 characters.', 'err'); return; }
+    const btn = document.getElementById('m-su-btn');
+    btn.disabled = true; btn.textContent = 'Creating Account…';
+    try {
+      const res = await fetch(API + '/api/signup', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: pass }) });
+      const data = await res.json();
+      btn.disabled = false; btn.textContent = 'Sign Up';
+      if (!res.ok) { showMMsg('m-su-msg', data.error || 'Sign-up failed.', 'err'); }
+      else { showMMsg('m-su-msg', data.message, 'ok'); btn.style.display = 'none'; }
+    } catch { btn.disabled = false; btn.textContent = 'Sign Up'; showMMsg('m-su-msg', 'Could not reach the server.', 'err'); }
+  }
+
+  async function mForgot() {
+    const email = document.getElementById('m-si-email').value.trim();
+    if (!email) { showMMsg('m-fp-msg', 'Enter your email in the field above first.', 'err'); return; }
+    try {
+      const res = await fetch(API + '/api/forgot-password', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
+      const data = await res.json();
+      showMMsg('m-fp-msg', res.ok ? 'Reset link sent to ' + email + '. Check your inbox.' : (data.error || 'Failed.'), res.ok ? 'ok' : 'err');
+    } catch { showMMsg('m-fp-msg', 'Could not reach the server.', 'err'); }
+  }
+
+  function setNavUser(email) {
+    const name = email.split('@')[0];
+    const authArea = document.getElementById('nav-auth-area');
+    if (authArea) {
+      authArea.innerHTML = `
+        <div class="nav-user">
+          <span class="nav-user-name">${name}</span>
+          <a href="status.html" style="color:var(--gold);font-size:0.78rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;margin:0 10px;">My Status</a>
+          <button class="nav-signout" onclick="mSignOut()">Sign Out</button>
+        </div>`;
+    }
+    const mobileAuth = document.getElementById('mobile-auth-area');
+    if (mobileAuth) {
+      mobileAuth.innerHTML = `
+        <span class="nav-user-name" style="padding:10px 0;">${name}</span>
+        <a href="status.html" class="nav-cta-mobile" onclick="toggleMobileMenu()">My Status</a>
+        <button class="nav-signin" onclick="toggleMobileMenu(); mSignOut()">Sign Out</button>`;
+    }
+    const delBtn = document.getElementById('delete-acct-btn');
+    const delDiv = document.getElementById('delete-acct-divider');
+    const createBtn = document.getElementById('create-acct-btn');
+    const createDiv = document.getElementById('create-acct-divider');
+    if (delBtn) delBtn.style.display = 'block';
+    if (delDiv) delDiv.style.display = 'block';
+    if (createBtn) createBtn.style.display = 'none';
+    if (createDiv) createDiv.style.display = 'none';
+  }
+
+  function mSignOut() {
+    localStorage.removeItem('ev_user');
+    const authArea = document.getElementById('nav-auth-area');
+    if (authArea) {
+      authArea.innerHTML = `<button class="nav-signin" onclick="openModal('si')">Log In</button>`;
+    }
+    const mobileAuth = document.getElementById('mobile-auth-area');
+    if (mobileAuth) {
+      mobileAuth.innerHTML = `
+        <button class="nav-signin" onclick="toggleMobileMenu(); openModal('si')">Log In</button>
+        <button class="nav-signin" onclick="toggleMobileMenu(); openModal('su')" style="background:rgba(201,146,26,0.08);">Sign Up</button>
+        <a href="apply.html" class="nav-cta-mobile" onclick="toggleMobileMenu()">Apply Now</a>`;
+    }
+    const delBtn = document.getElementById('delete-acct-btn');
+    const delDiv = document.getElementById('delete-acct-divider');
+    const createBtn = document.getElementById('create-acct-btn');
+    const createDiv = document.getElementById('create-acct-divider');
+    if (delBtn) delBtn.style.display = 'none';
+    if (delDiv) delDiv.style.display = 'none';
+    if (createBtn) createBtn.style.display = 'block';
+    if (createDiv) createDiv.style.display = 'block';
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const user = localStorage.getItem('ev_user');
+    if (user) setNavUser(user);
+  });
+</script>
