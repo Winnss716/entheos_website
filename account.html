@@ -466,8 +466,7 @@
     async function signOut() {
       await _sb.auth.signOut();
       localStorage.removeItem('ev_user');
-      document.getElementById('logged-in-view').style.display = 'none';
-      document.getElementById('auth-card').style.display = 'block';
+      window.location.href = 'index.html';
     }
 
     /* ── Check session on load ── */

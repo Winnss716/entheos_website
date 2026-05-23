@@ -595,152 +595,66 @@
 </div>
 
 <script>
-  const SUPABASE_URL = 'https://uymvnusvxjyeceuujbvv.supabase.co';
-  const SUPABASE_ANON_KEY = 'sb_publishable_bD-H-TSO2-Mafd0YbStXbw_xmtygePG';
+(function () {
+  // All variables scoped inside this IIFE to avoid conflicts with page-level
+  // const/let declarations on pages that also use Supabase.
+  const _NAV_SB_URL  = 'https://uymvnusvxjyeceuujbvv.supabase.co';
+  const _NAV_SB_KEY  = 'sb_publishable_bD-H-TSO2-Mafd0YbStXbw_xmtygePG';
   let _sb = null;
 
-  // Initialize Supabase — reuses CDN if already on the page, otherwise loads it
-  (function () {
-    function init() {
-      _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-      _sb.auth.getSession().then(({ data: { session } }) => {
-        if (session) {
-          localStorage.setItem('ev_user', session.user.email);
-          setNavUser(session.user.email);
-        } else {
-          localStorage.removeItem('ev_user');
-        }
-      });
-    }
-    if (window.supabase) {
-      init();
-    } else {
-      var s = document.createElement('script');
-      s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
-      s.onload = init;
-      document.head.appendChild(s);
-    }
-  })();
-
-  (function () {
-    if ((performance.getEntriesByType('navigation')[0] || {}).type === 'reload') {
-      sessionStorage.removeItem('crisisBarDismissed');
-    }
-    if (sessionStorage.getItem('crisisBarDismissed')) {
-      const bar = document.getElementById('crisis-bar');
-      if (bar) bar.style.display = 'none';
-    }
-  })();
-
-  function dismissCrisisBar() {
+  // ── Crisis bar ──
+  if ((performance.getEntriesByType('navigation')[0] || {}).type === 'reload') {
+    sessionStorage.removeItem('crisisBarDismissed');
+  }
+  if (sessionStorage.getItem('crisisBarDismissed')) {
     const bar = document.getElementById('crisis-bar');
     if (bar) bar.style.display = 'none';
-    sessionStorage.setItem('crisisBarDismissed', '1');
   }
 
-  function openModal(tab) {
-    document.getElementById('auth-modal').classList.add('open');
-    if (tab) mSwitchTab(tab);
-  }
-
-  function closeModal() {
-    document.getElementById('auth-modal').classList.remove('open');
-  }
-
-  function closeDeleteModal() {
-    const m = document.getElementById('delete-modal');
-    if (m) m.style.display = 'none';
-  }
-
-  function mSwitchTab(tab) {
-    document.getElementById('mform-si').style.display = tab === 'si' ? 'block' : 'none';
-    document.getElementById('mform-su').style.display = tab === 'su' ? 'block' : 'none';
-    document.getElementById('mtab-si').className = 'modal-tab' + (tab === 'si' ? ' active' : '');
-    document.getElementById('mtab-su').className = 'modal-tab' + (tab === 'su' ? ' active' : '');
-    document.querySelector('.modal-title').textContent = tab === 'su' ? 'Welcome!' : 'Welcome Back';
-  }
-
-  function showMMsg(id, text, type) {
-    const el = document.getElementById(id);
-    el.textContent = text;
-    el.className = 'modal-msg ' + type;
-    el.style.display = 'block';
-  }
-
-  function toggleMobileMenu() {
-    document.getElementById('mobile-menu').classList.toggle('open');
-    document.getElementById('mobile-overlay').classList.toggle('open');
-  }
-
-  async function mSignIn() {
-    const email = document.getElementById('m-si-email').value.trim();
-    const pass = document.getElementById('m-si-pass').value;
-    if (!email || !pass) { showMMsg('m-si-msg', 'Please enter your email and password.', 'err'); return; }
-    if (!_sb) { showMMsg('m-si-msg', 'Auth not ready, please try again.', 'err'); return; }
-
-    const btn = document.getElementById('m-si-btn');
-    btn.disabled = true; btn.textContent = 'Signing In…';
-
-    const { data, error } = await _sb.auth.signInWithPassword({ email, password: pass });
-    btn.disabled = false; btn.textContent = 'Log In';
-
-    if (error) {
-      if (error.message.includes('not confirmed') || error.code === 'email_not_confirmed') {
-        showMMsg('m-si-msg', 'Please verify your email before logging in. Check your inbox.', 'err');
+  // ── Supabase init ──
+  function initSB() {
+    _sb = window.supabase.createClient(_NAV_SB_URL, _NAV_SB_KEY);
+    _sb.auth.getSession().then(async ({ data: { session } }) => {
+      if (session) {
+        localStorage.setItem('ev_user', session.user.email);
+        const isAdmin = await fetchAccountType(session.user.id);
+        setNavUser(session.user.email, isAdmin);
       } else {
-        showMMsg('m-si-msg', 'Incorrect email or password.', 'err');
+        localStorage.removeItem('ev_user');
       }
-      return;
-    }
-
-    localStorage.setItem('ev_user', data.user.email);
-    closeModal();
-    setNavUser(data.user.email);
+    });
+  }
+  if (window.supabase) {
+    initSB();
+  } else {
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
+    s.onload = initSB;
+    document.head.appendChild(s);
   }
 
-  async function mSignUp() {
-    const email = document.getElementById('m-su-email').value.trim();
-    const pass = document.getElementById('m-su-pass').value;
-    const pass2 = document.getElementById('m-su-pass2').value;
-    if (!email || !pass) { showMMsg('m-su-msg', 'Please fill in all fields.', 'err'); return; }
-    if (pass !== pass2) { showMMsg('m-su-msg', 'Passwords do not match.', 'err'); return; }
-    if (pass.length < 6) { showMMsg('m-su-msg', 'Password must be at least 6 characters.', 'err'); return; }
-    if (!_sb) { showMMsg('m-su-msg', 'Auth not ready, please try again.', 'err'); return; }
-
-    const btn = document.getElementById('m-su-btn');
-    btn.disabled = true; btn.textContent = 'Creating Account…';
-
-    const redirectTo = window.location.origin + window.location.pathname.replace(/[^/]*$/, '') + 'account.html';
-    const { error } = await _sb.auth.signUp({ email, password: pass, options: { emailRedirectTo: redirectTo } });
-    btn.disabled = false; btn.textContent = 'Sign Up';
-
-    if (error && error.message.includes('already registered')) {
-      showMMsg('m-su-msg', 'An account with that email already exists.', 'err');
-      return;
-    }
-
-    showMMsg('m-su-msg', 'Account created! Check your email for a verification link before logging in.', 'ok');
-    btn.style.display = 'none';
+  async function fetchAccountType(userId) {
+    try {
+      const { data } = await _sb.from('profiles').select('account_type').eq('user_id', userId).maybeSingle();
+      return data && data.account_type === 'admin';
+    } catch { return false; }
   }
 
-  async function mForgot() {
-    const email = document.getElementById('m-si-email').value.trim();
-    if (!email) { showMMsg('m-fp-msg', 'Enter your email in the field above first.', 'err'); return; }
-    if (!_sb) { showMMsg('m-fp-msg', 'Auth not ready, please try again.', 'err'); return; }
-
-    const redirectTo = window.location.origin + window.location.pathname.replace(/[^/]*$/, '') + 'reset-password.html';
-    await _sb.auth.resetPasswordForEmail(email, { redirectTo });
-    showMMsg('m-fp-msg', 'If that email has an account, a reset link has been sent.', 'ok');
-  }
-
-  function setNavUser(email) {
+  function setNavUser(email, isAdmin) {
     const name = email.split('@')[0];
+    const adminDesktop = isAdmin
+      ? `<a href="applications.html" style="color:var(--gold);font-size:0.78rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;margin:0 10px;">Applications</a>`
+      : '';
+    const adminMobile = isAdmin
+      ? `<a href="applications.html" class="nav-cta-mobile" onclick="toggleMobileMenu()" style="background:rgba(201,146,26,0.15);">Applications</a>`
+      : '';
     const authArea = document.getElementById('nav-auth-area');
     if (authArea) {
       authArea.innerHTML = `
         <div class="nav-user">
           <span class="nav-user-name">${name}</span>
           <a href="status.html" style="color:var(--gold);font-size:0.78rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;margin:0 10px;">My Status</a>
+          ${adminDesktop}
           <button class="nav-signout" onclick="mSignOut()">Sign Out</button>
         </div>`;
     }
@@ -749,6 +663,7 @@
       mobileAuth.innerHTML = `
         <span class="nav-user-name" style="padding:10px 0;">${name}</span>
         <a href="status.html" class="nav-cta-mobile" onclick="toggleMobileMenu()">My Status</a>
+        ${adminMobile}
         <button class="nav-signin" onclick="toggleMobileMenu(); mSignOut()">Sign Out</button>`;
     }
     const delBtn = document.getElementById('delete-acct-btn');
@@ -761,27 +676,101 @@
     if (createDiv) createDiv.style.display = 'none';
   }
 
-  async function mSignOut() {
+  function showMMsg(id, text, type) {
+    const el = document.getElementById(id);
+    el.textContent = text;
+    el.className = 'modal-msg ' + type;
+    el.style.display = 'block';
+  }
+
+  // ── Expose onclick functions on window ──
+  window.dismissCrisisBar = function () {
+    const bar = document.getElementById('crisis-bar');
+    if (bar) bar.style.display = 'none';
+    sessionStorage.setItem('crisisBarDismissed', '1');
+  };
+
+  window.toggleMobileMenu = function () {
+    document.getElementById('mobile-menu').classList.toggle('open');
+    document.getElementById('mobile-overlay').classList.toggle('open');
+  };
+
+  window.openModal = function (tab) {
+    document.getElementById('auth-modal').classList.add('open');
+    if (tab) window.mSwitchTab(tab);
+  };
+
+  window.closeModal = function () {
+    document.getElementById('auth-modal').classList.remove('open');
+  };
+
+  window.closeDeleteModal = function () {
+    const m = document.getElementById('delete-modal');
+    if (m) m.style.display = 'none';
+  };
+
+  window.mSwitchTab = function (tab) {
+    document.getElementById('mform-si').style.display = tab === 'si' ? 'block' : 'none';
+    document.getElementById('mform-su').style.display = tab === 'su' ? 'block' : 'none';
+    document.getElementById('mtab-si').className = 'modal-tab' + (tab === 'si' ? ' active' : '');
+    document.getElementById('mtab-su').className = 'modal-tab' + (tab === 'su' ? ' active' : '');
+    document.querySelector('.modal-title').textContent = tab === 'su' ? 'Welcome!' : 'Welcome Back';
+  };
+
+  window.mSignIn = async function () {
+    const email = document.getElementById('m-si-email').value.trim();
+    const pass  = document.getElementById('m-si-pass').value;
+    if (!email || !pass) { showMMsg('m-si-msg', 'Please enter your email and password.', 'err'); return; }
+    if (!_sb) { showMMsg('m-si-msg', 'Auth not ready, please try again.', 'err'); return; }
+    const btn = document.getElementById('m-si-btn');
+    btn.disabled = true; btn.textContent = 'Signing In…';
+    const { data, error } = await _sb.auth.signInWithPassword({ email, password: pass });
+    btn.disabled = false; btn.textContent = 'Log In';
+    if (error) {
+      showMMsg('m-si-msg', (error.message.includes('not confirmed') || error.code === 'email_not_confirmed')
+        ? 'Please verify your email before logging in. Check your inbox.'
+        : 'Incorrect email or password.', 'err');
+      return;
+    }
+    localStorage.setItem('ev_user', data.user.email);
+    const isAdmin = await fetchAccountType(data.user.id);
+    window.closeModal();
+    setNavUser(data.user.email, isAdmin);
+  };
+
+  window.mSignUp = async function () {
+    const email = document.getElementById('m-su-email').value.trim();
+    const pass  = document.getElementById('m-su-pass').value;
+    const pass2 = document.getElementById('m-su-pass2').value;
+    if (!email || !pass) { showMMsg('m-su-msg', 'Please fill in all fields.', 'err'); return; }
+    if (pass !== pass2)  { showMMsg('m-su-msg', 'Passwords do not match.', 'err'); return; }
+    if (pass.length < 6) { showMMsg('m-su-msg', 'Password must be at least 6 characters.', 'err'); return; }
+    if (!_sb) { showMMsg('m-su-msg', 'Auth not ready, please try again.', 'err'); return; }
+    const btn = document.getElementById('m-su-btn');
+    btn.disabled = true; btn.textContent = 'Creating Account…';
+    const redirectTo = window.location.origin + window.location.pathname.replace(/[^/]*$/, '') + 'account.html';
+    const { error } = await _sb.auth.signUp({ email, password: pass, options: { emailRedirectTo: redirectTo } });
+    btn.disabled = false; btn.textContent = 'Sign Up';
+    if (error && error.message.includes('already registered')) {
+      showMMsg('m-su-msg', 'An account with that email already exists.', 'err'); return;
+    }
+    showMMsg('m-su-msg', 'Account created! Check your email for a verification link before logging in.', 'ok');
+    btn.style.display = 'none';
+  };
+
+  window.mForgot = async function () {
+    const email = document.getElementById('m-si-email').value.trim();
+    if (!email) { showMMsg('m-fp-msg', 'Enter your email in the field above first.', 'err'); return; }
+    if (!_sb)   { showMMsg('m-fp-msg', 'Auth not ready, please try again.', 'err'); return; }
+    const redirectTo = window.location.origin + window.location.pathname.replace(/[^/]*$/, '') + 'reset-password.html';
+    await _sb.auth.resetPasswordForEmail(email, { redirectTo });
+    showMMsg('m-fp-msg', 'If that email has an account, a reset link has been sent.', 'ok');
+  };
+
+  window.mSignOut = async function () {
     if (_sb) await _sb.auth.signOut();
     localStorage.removeItem('ev_user');
-    const authArea = document.getElementById('nav-auth-area');
-    if (authArea) {
-      authArea.innerHTML = `<button class="nav-signin" onclick="openModal('si')">Log In</button>`;
-    }
-    const mobileAuth = document.getElementById('mobile-auth-area');
-    if (mobileAuth) {
-      mobileAuth.innerHTML = `
-        <button class="nav-signin" onclick="toggleMobileMenu(); openModal('si')">Log In</button>
-        <button class="nav-signin" onclick="toggleMobileMenu(); openModal('su')" style="background:rgba(201,146,26,0.08);">Sign Up</button>
-        <a href="apply.html" class="nav-cta-mobile" onclick="toggleMobileMenu()">Apply Now</a>`;
-    }
-    const delBtn = document.getElementById('delete-acct-btn');
-    const delDiv = document.getElementById('delete-acct-divider');
-    const createBtn = document.getElementById('create-acct-btn');
-    const createDiv = document.getElementById('create-acct-divider');
-    if (delBtn) delBtn.style.display = 'none';
-    if (delDiv) delDiv.style.display = 'none';
-    if (createBtn) createBtn.style.display = 'block';
-    if (createDiv) createDiv.style.display = 'block';
-  }
+    window.location.href = 'index.html';
+  };
+})();
 </script>

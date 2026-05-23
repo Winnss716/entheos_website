@@ -8,6 +8,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300&display=swap"
     rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
     // ── EmailJS config ──
@@ -16,9 +17,11 @@
     const EMAILJS_TEMPLATE_ID = 'PASTE_YOUR_TEMPLATE_ID';
     (function () { emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY }); })();
 
-    // ── Supabase config — paste after setup at supabase.com ──
-    const SB_URL = 'https://afdybbbeukqnqlxlojmu.supabase.co';
-    const SB_ANON = 'sb_publishable_5YQFAeRNG64IYbPTRwtZCg_1BZooKWx';
+    // ── Supabase ──
+    const _applySb = window.supabase.createClient(
+      'https://uymvnusvxjyeceuujbvv.supabase.co',
+      'sb_publishable_bD-H-TSO2-Mafd0YbStXbw_xmtygePG'
+    );
   </script>
   <style>
     :root {
@@ -1179,36 +1182,33 @@
     async function submitApplication() {
       if (!validateStep3()) return;
 
-      const loggedInEmail = localStorage.getItem('ev_user');
+      const { data: { session } } = await _applySb.auth.getSession();
 
-      if (!loggedInEmail) {
+      if (!session) {
+        // Not signed in — show auth gate pre-filled with form email
         const email = document.getElementById('email').value.trim();
         document.getElementById('gate-su-email').value = email;
+        document.getElementById('gate-si-email').value = email;
         document.getElementById('auth-gate').style.display = 'flex';
         setTimeout(() => document.getElementById('gate-su-pass').focus(), 100);
         return;
       }
 
-      // Check if account is verified
-      try {
-        const res = await fetch(API + '/api/is-verified?email=' + encodeURIComponent(loggedInEmail));
-        const data = await res.json();
-        if (!data.verified) {
-          document.getElementById('gate-su-email').value = loggedInEmail;
-          document.getElementById('auth-gate').style.display = 'flex';
-          document.getElementById('gate-su').style.display = 'none';
-          document.getElementById('gate-si').style.display = 'none';
-          document.getElementById('gate-unverified').style.display = 'block';
-          return;
-        }
-      } catch (_) {
-        // If server unreachable, allow submission to not block the user
+      // Signed in — check email is confirmed
+      if (!session.user.email_confirmed_at) {
+        document.getElementById('gate-su-email').value = session.user.email;
+        document.getElementById('auth-gate').style.display = 'flex';
+        document.getElementById('gate-su').style.display = 'none';
+        document.getElementById('gate-si').style.display = 'none';
+        document.getElementById('gate-unverified').style.display = 'block';
+        document.getElementById('gate-unverified-email').textContent = session.user.email;
+        return;
       }
 
-      runSubmit();
+      runSubmit(session.user.id);
     }
 
-    async function runSubmit() {
+    async function runSubmit(userId) {
       document.getElementById('submitting-overlay').classList.add('show');
 
       _generatedRef = generateRef();
@@ -1252,38 +1252,30 @@
         });
         const json = await res.json();
 
-        // Save to Supabase database
-        if (SB_URL !== 'PASTE_YOUR_SUPABASE_URL') {
-          fetch(SB_URL + '/rest/v1/applications', {
-            method: 'POST',
-            headers: {
-              'apikey': SB_ANON,
-              'Authorization': 'Bearer ' + SB_ANON,
-              'Content-Type': 'application/json',
-              'Prefer': 'return=minimal'
-            },
-            body: JSON.stringify({
-              reference_code: _generatedRef,
-              first_name: document.getElementById('first-name').value.trim(),
-              last_name: document.getElementById('last-name').value.trim(),
-              email: document.getElementById('email').value.trim(),
-              phone: document.getElementById('phone').value.trim() || '—',
-              state: document.getElementById('state').value,
-              date_of_birth: document.getElementById('dob').value.trim(),
-              branch: document.getElementById('branch').value,
-              discharge_status: document.getElementById('discharge').value,
-              years_served: document.getElementById('years-served').value.trim() || '—',
-              deployments: document.getElementById('deployments').value.trim() || '—',
-              areas_of_need: needs,
-              program_provider: document.getElementById('program').value.trim() || '—',
-              amount_needed: document.getElementById('amount').value || '—',
-              situation: document.getElementById('situation').value.trim(),
-              goals: document.getElementById('goals').value.trim() || '—',
-              how_they_heard: document.getElementById('hear').value || '—',
-              status: isUnderReview ? 'extended_review' : 'received',
-            })
-          }).catch(() => { });
-        }
+        // Save to Supabase scholarships table
+        _applySb.from('scholarships').insert({
+          user_id:          userId,
+          reference_code:   _generatedRef,
+          first_name:       document.getElementById('first-name').value.trim(),
+          last_name:        document.getElementById('last-name').value.trim(),
+          email:            document.getElementById('email').value.trim(),
+          phone:            document.getElementById('phone').value.trim() || null,
+          state:            document.getElementById('state').value,
+          date_of_birth:    document.getElementById('dob').value.trim() || null,
+          branch:           document.getElementById('branch').value,
+          discharge_status: document.getElementById('discharge').value,
+          years_served:     document.getElementById('years-served').value.trim() || null,
+          deployments:      document.getElementById('deployments').value.trim() || null,
+          areas_of_need:    needs || null,
+          program_provider: document.getElementById('program').value.trim() || null,
+          amount_needed:    parseFloat(document.getElementById('amount').value) || null,
+          situation:        document.getElementById('situation').value.trim(),
+          goals:            document.getElementById('goals').value.trim() || null,
+          how_they_heard:   document.getElementById('hear').value || null,
+          status:           isUnderReview ? 'under_review' : 'received',
+        }).then(({ error }) => {
+          if (error) console.error('Supabase insert error:', error.message);
+        });
 
         document.getElementById('submitting-overlay').classList.remove('show');
         if (res.ok) {
@@ -1330,56 +1322,53 @@
 
     async function gateSignUp() {
       const email = document.getElementById('gate-su-email').value.trim();
-      const pass = document.getElementById('gate-su-pass').value;
-      const msg = document.getElementById('gate-su-msg');
-      const btn = document.getElementById('gate-su-btn');
+      const pass  = document.getElementById('gate-su-pass').value;
+      const msg   = document.getElementById('gate-su-msg');
+      const btn   = document.getElementById('gate-su-btn');
       if (pass.length < 6) { msg.textContent = 'Password must be at least 6 characters.'; msg.style.display = 'block'; return; }
       btn.disabled = true; btn.textContent = 'Creating Account…';
-      try {
-        const res = await fetch(API + '/api/signup', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: pass }) });
-        const data = await res.json();
-        if (res.ok) {
-          localStorage.setItem('ev_user', email);
-          // Show verify prompt — must verify before submitting
-          document.getElementById('gate-su').style.display = 'none';
-          document.getElementById('gate-unverified').style.display = 'block';
-          document.getElementById('gate-unverified-email').textContent = email;
-        } else {
-          btn.disabled = false; btn.textContent = 'Create Account & Submit';
-          msg.textContent = data.error || 'Sign-up failed.'; msg.style.display = 'block';
-        }
-      } catch {
-        btn.disabled = false; btn.textContent = 'Create Account & Submit';
-        msg.textContent = 'Could not reach the server.'; msg.style.display = 'block';
-      }
+
+      const redirectTo = window.location.href;
+      const { data, error } = await _applySb.auth.signUp({ email, password: pass, options: { emailRedirectTo: redirectTo } });
+      btn.disabled = false; btn.textContent = 'Create Account & Submit';
+
+      if (error) { msg.textContent = error.message; msg.style.display = 'block'; return; }
+      if (data.user?.identities?.length === 0) { msg.textContent = 'An account with this email already exists. Please log in instead.'; msg.style.display = 'block'; return; }
+
+      localStorage.setItem('ev_user', email);
+      document.getElementById('gate-su').style.display = 'none';
+      document.getElementById('gate-unverified').style.display = 'block';
+      document.getElementById('gate-unverified-email').textContent = email;
     }
 
     async function gateSignIn() {
       const email = document.getElementById('gate-si-email').value.trim();
-      const pass = document.getElementById('gate-si-pass').value;
-      const msg = document.getElementById('gate-si-msg');
-      const btn = document.getElementById('gate-si-btn');
+      const pass  = document.getElementById('gate-si-pass').value;
+      const msg   = document.getElementById('gate-si-msg');
+      const btn   = document.getElementById('gate-si-btn');
       if (!email || !pass) { msg.textContent = 'Please enter your email and password.'; msg.style.display = 'block'; return; }
       btn.disabled = true; btn.textContent = 'Signing In…';
-      try {
-        const res = await fetch(API + '/api/signin', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: pass }) });
-        const data = await res.json();
-        if (res.ok) {
-          localStorage.setItem('ev_user', data.email);
-          closeGateAndSubmit();
+
+      const { data, error } = await _applySb.auth.signInWithPassword({ email, password: pass });
+      btn.disabled = false; btn.textContent = 'Log In & Submit';
+
+      if (error) {
+        if (error.message.includes('not confirmed') || error.code === 'email_not_confirmed') {
+          msg.textContent = 'Please verify your email before submitting.'; msg.style.display = 'block';
         } else {
-          btn.disabled = false; btn.textContent = 'Log In & Submit';
-          msg.textContent = data.error || 'Sign-in failed.'; msg.style.display = 'block';
+          msg.textContent = 'Incorrect email or password.'; msg.style.display = 'block';
         }
-      } catch {
-        btn.disabled = false; btn.textContent = 'Log In & Submit';
-        msg.textContent = 'Could not reach the server.'; msg.style.display = 'block';
+        return;
       }
+
+      localStorage.setItem('ev_user', data.user.email);
+      closeGateAndSubmit();
     }
 
-    function closeGateAndSubmit() {
+    async function closeGateAndSubmit() {
       document.getElementById('auth-gate').style.display = 'none';
-      runSubmit();
+      const { data: { session } } = await _applySb.auth.getSession();
+      runSubmit(session?.user?.id || null);
     }
 
     function showConfirmation(underReview) {

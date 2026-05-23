@@ -8,6 +8,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700;1,300&display=swap"
     rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <style>
     :root {
       --olive: #3b4a2f;
@@ -670,6 +671,92 @@
       color: rgba(245, 240, 232, 0.35);
     }
 
+    /* ── SCHOLARSHIP APPLICATION FORM ── */
+    .sch-apply {
+      background: var(--olive-dark);
+      padding: 90px 5%;
+    }
+    .sch-apply-inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .sch-apply-inner .section-title { margin-bottom: 10px; }
+    .sch-apply-inner .section-body {
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.75;
+      color: rgba(245, 240, 232, 0.65);
+      margin-bottom: 40px;
+    }
+    .sch-user-banner {
+      background: rgba(201, 146, 26, 0.08);
+      border: 1px solid rgba(201, 146, 26, 0.3);
+      border-radius: 4px;
+      padding: 14px 20px;
+      font-size: 0.85rem;
+      color: var(--gold-light);
+      margin-bottom: 28px;
+      display: none;
+    }
+    .sch-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+    .sch-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .sch-group label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(245, 240, 232, 0.5);
+    }
+    .sch-field {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(201, 146, 26, 0.25);
+      border-radius: 3px;
+      padding: 13px 16px;
+      color: var(--cream);
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+    .sch-field:focus { border-color: var(--gold); }
+    .sch-field::placeholder { color: rgba(245, 240, 232, 0.2); }
+    textarea.sch-field { resize: vertical; min-height: 110px; }
+    .sch-divider {
+      border: none;
+      border-top: 1px solid rgba(201, 146, 26, 0.15);
+      margin: 32px 0;
+    }
+    .sch-auth-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+      display: block;
+    }
+    .sch-msg {
+      font-size: 0.85rem;
+      padding: 14px 18px;
+      border-radius: 4px;
+      margin-top: 16px;
+      display: none;
+      line-height: 1.6;
+    }
+    .sch-msg.err { background: rgba(224,112,112,0.1); border: 1px solid rgba(224,112,112,0.3); color: #e07070; }
+    .sch-msg.ok  { background: rgba(90,170,110,0.1);  border: 1px solid rgba(90,170,110,0.3);  color: #5aaa6e; }
+    .sch-msg.info { background: rgba(201,146,26,0.08); border: 1px solid rgba(201,146,26,0.25); color: var(--gold-light); }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 820px) {
       .award-strip-inner {
@@ -1052,6 +1139,83 @@
     </div>
   </div>
 
+  <!-- SCHOLARSHIP APPLICATION FORM -->
+  <div class="sch-apply" id="apply-form-section">
+    <div class="sch-apply-inner">
+      <p class="section-label">Apply Now</p>
+      <h2 class="section-title">Start Your Application</h2>
+      <p class="section-body">Fill out the form below. No cost, no deadline, no repayment — ever. Our team reviews every submission within 7–10 business days.</p>
+
+      <div class="sch-user-banner" id="sch-user-banner"></div>
+
+      <div id="sch-success" style="display:none; text-align:center; padding:48px 0;">
+        <div style="font-size:2.5rem; margin-bottom:16px;">✓</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:0.08em;color:var(--gold);margin-bottom:10px;">Application Submitted</div>
+        <p style="font-size:0.95rem;font-weight:300;color:rgba(245,240,232,0.65);line-height:1.75;max-width:480px;margin:0 auto;">Our team will review your application within 7–10 business days and contact you at the email provided.</p>
+      </div>
+
+      <div id="sch-form">
+        <div class="sch-row">
+          <div class="sch-group">
+            <label for="sch-name">Full Name</label>
+            <input type="text" class="sch-field" id="sch-name" placeholder="John Smith" />
+          </div>
+          <div class="sch-group">
+            <label for="sch-phone">Phone Number</label>
+            <input type="tel" class="sch-field" id="sch-phone" placeholder="(555) 000-0000" />
+          </div>
+        </div>
+
+        <div class="sch-group">
+          <label for="sch-email">Email Address</label>
+          <input type="email" class="sch-field" id="sch-email" placeholder="your@email.com" />
+        </div>
+
+        <div class="sch-group">
+          <label for="sch-service">Service History</label>
+          <textarea class="sch-field" id="sch-service" placeholder="Branch, years served, discharge status, any deployments…"></textarea>
+        </div>
+
+        <div class="sch-group">
+          <label for="sch-needs">Current Needs</label>
+          <textarea class="sch-field" id="sch-needs" placeholder="Describe what you're currently facing and what type of care or program you're seeking…"></textarea>
+        </div>
+
+        <div class="sch-group">
+          <label for="sch-goals">Treatment Goals</label>
+          <textarea class="sch-field" id="sch-goals" placeholder="What do you hope to achieve through this treatment or program?"></textarea>
+        </div>
+
+        <div class="sch-group">
+          <label for="sch-cost">Estimated Cost ($)</label>
+          <input type="number" class="sch-field" id="sch-cost" placeholder="e.g. 3500" min="0" step="100" />
+        </div>
+
+        <!-- Shown only when user is NOT signed in -->
+        <div id="sch-auth-section">
+          <hr class="sch-divider" />
+          <span class="sch-auth-label">Account</span>
+          <p style="font-size:0.85rem;font-weight:300;color:rgba(245,240,232,0.55);margin-bottom:20px;line-height:1.65;">
+            We'll create an account for you so you can track your application. Already have an account? Enter your password below to sign in automatically.
+          </p>
+          <div class="sch-row">
+            <div class="sch-group">
+              <label for="sch-pass">Password</label>
+              <input type="password" class="sch-field" id="sch-pass" placeholder="At least 6 characters" />
+            </div>
+            <div class="sch-group">
+              <label for="sch-pass2">Confirm Password</label>
+              <input type="password" class="sch-field" id="sch-pass2" placeholder="Repeat password" />
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-primary" id="sch-submit-btn" onclick="submitScholarship()" style="width:100%;text-align:center;margin-top:8px;">Submit Application</button>
+        <div class="sch-msg" id="sch-msg"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- CTA BANNER -->
   <div class="cta-banner">
     <h2>Ready to Take<br />the <span>Next Step?</span></h2>
@@ -1111,6 +1275,143 @@
         answer.classList.add('open');
       }
     }
+  </script>
+
+  <script>
+    const SUPABASE_URL      = 'https://uymvnusvxjyeceuujbvv.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_bD-H-TSO2-Mafd0YbStXbw_xmtygePG';
+    const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const PENDING_KEY = 'pending_scholarship';
+
+    function schMsg(text, type) {
+      const el = document.getElementById('sch-msg');
+      el.textContent = text;
+      el.className = 'sch-msg ' + type;
+      el.style.display = 'block';
+      el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function collectFormData() {
+      return {
+        applicant_name:  document.getElementById('sch-name').value.trim(),
+        email:           document.getElementById('sch-email').value.trim().toLowerCase(),
+        phone:           document.getElementById('sch-phone').value.trim(),
+        service_history: document.getElementById('sch-service').value.trim(),
+        current_needs:   document.getElementById('sch-needs').value.trim(),
+        treatment_goals: document.getElementById('sch-goals').value.trim(),
+        estimated_cost:  parseFloat(document.getElementById('sch-cost').value) || null,
+      };
+    }
+
+    function validateForm(data) {
+      if (!data.applicant_name) { schMsg('Please enter your full name.', 'err'); return false; }
+      if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) { schMsg('Please enter a valid email address.', 'err'); return false; }
+      if (!data.service_history) { schMsg('Please describe your service history.', 'err'); return false; }
+      if (!data.current_needs) { schMsg('Please describe your current needs.', 'err'); return false; }
+      return true;
+    }
+
+    async function insertScholarship(userId, data) {
+      const { error } = await _sb.from('scholarships').insert({ user_id: userId, ...data });
+      if (error) {
+        schMsg('Submission error: ' + error.message, 'err');
+        return false;
+      }
+      localStorage.removeItem(PENDING_KEY);
+      document.getElementById('sch-form').style.display = 'none';
+      document.getElementById('sch-success').style.display = 'block';
+      document.getElementById('sch-user-banner').style.display = 'none';
+      return true;
+    }
+
+    async function submitScholarship() {
+      const data = collectFormData();
+      if (!validateForm(data)) return;
+
+      const btn = document.getElementById('sch-submit-btn');
+      btn.disabled = true; btn.textContent = 'Submitting…';
+
+      const { data: { session } } = await _sb.auth.getSession();
+
+      // ── Scenario 1: Already signed in ──
+      if (session) {
+        data.email = session.user.email;
+        await insertScholarship(session.user.id, data);
+        btn.disabled = false; btn.textContent = 'Submit Application';
+        return;
+      }
+
+      // ── Scenarios 2 & 3: Not signed in — need password ──
+      const pass  = document.getElementById('sch-pass').value;
+      const pass2 = document.getElementById('sch-pass2').value;
+      if (!pass) { schMsg('Please enter a password to create or sign in to your account.', 'err'); btn.disabled = false; btn.textContent = 'Submit Application'; return; }
+
+      // Try sign in first (Scenario 3 — existing account)
+      const { data: signInData, error: signInError } = await _sb.auth.signInWithPassword({ email: data.email, password: pass });
+
+      if (signInData?.session) {
+        // Existing account, correct password — insert directly
+        await insertScholarship(signInData.session.user.id, data);
+        btn.disabled = false; btn.textContent = 'Submit Application';
+        return;
+      }
+
+      if (signInError?.message.includes('not confirmed') || signInError?.code === 'email_not_confirmed') {
+        localStorage.setItem(PENDING_KEY, JSON.stringify(data));
+        schMsg('Your email is not yet verified. Please check your inbox, verify your email, then log in — your application will be submitted automatically.', 'info');
+        btn.disabled = false; btn.textContent = 'Submit Application';
+        return;
+      }
+
+      // Sign in failed — try sign up (Scenario 2 — new account)
+      if (pass !== pass2) { schMsg('Passwords do not match.', 'err'); btn.disabled = false; btn.textContent = 'Submit Application'; return; }
+      if (pass.length < 6) { schMsg('Password must be at least 6 characters.', 'err'); btn.disabled = false; btn.textContent = 'Submit Application'; return; }
+
+      const redirectTo = window.location.origin + window.location.pathname.replace(/[^/]*$/, '') + 'scholarship.html';
+      const { data: signUpData, error: signUpError } = await _sb.auth.signUp({ email: data.email, password: pass, options: { emailRedirectTo: redirectTo } });
+
+      if (signUpError) {
+        schMsg(signUpError.message || 'Could not create account.', 'err');
+        btn.disabled = false; btn.textContent = 'Submit Application';
+        return;
+      }
+
+      // Empty identities = email already registered but wrong password
+      if (signUpData?.user?.identities?.length === 0) {
+        schMsg('An account with this email already exists. Please check your password and try again.', 'err');
+        btn.disabled = false; btn.textContent = 'Submit Application';
+        return;
+      }
+
+      // New account created — store form and wait for email verification
+      localStorage.setItem(PENDING_KEY, JSON.stringify(data));
+      schMsg('Account created! Please check your email for a verification link. Once verified, log in and your application will be submitted automatically.', 'info');
+      btn.disabled = false; btn.textContent = 'Submit Application';
+    }
+
+    window.addEventListener('DOMContentLoaded', async () => {
+      const { data: { session } } = await _sb.auth.getSession();
+
+      if (session) {
+        // Hide password fields — user is signed in
+        document.getElementById('sch-auth-section').style.display = 'none';
+        document.getElementById('sch-email').value = session.user.email;
+        document.getElementById('sch-email').readOnly = true;
+        const banner = document.getElementById('sch-user-banner');
+        banner.textContent = 'Submitting as ' + session.user.email;
+        banner.style.display = 'block';
+
+        // Auto-submit any pending scholarship stored from a previous visit
+        const pending = localStorage.getItem(PENDING_KEY);
+        if (pending) {
+          try {
+            const data = JSON.parse(pending);
+            schMsg('We found a saved application from your last visit — submitting it now…', 'info');
+            await insertScholarship(session.user.id, data);
+          } catch { localStorage.removeItem(PENDING_KEY); }
+        }
+      }
+    });
   </script>
 
 </body>

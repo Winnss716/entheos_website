@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Application Lookup — Entheos Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600;700&display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style>
+    :root {
+      --olive: #4a5240;
+      --olive-dark: #2e3328;
+      --gold: #c8aa5a;
+      --gold-light: #e2c97e;
+      --cream: #f5f0e8;
+      --charcoal: #1c1e1a;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--charcoal);
+      color: var(--cream);
+      font-family: 'Barlow', sans-serif;
+      min-height: 100vh;
+    }
+
+    #login-gate {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    .brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.4rem;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      margin-bottom: 6px;
+    }
+
+    .brand-sub {
+      font-size: 0.75rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(245, 240, 232, 0.35);
+      margin-bottom: 40px;
+    }
+
+    .box {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(200, 170, 90, 0.25);
+      border-radius: 6px;
+      padding: 40px 44px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .box h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.9rem;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+    }
+
+    .box p {
+      font-size: 0.82rem;
+      color: rgba(245, 240, 232, 0.45);
+      margin-bottom: 26px;
+    }
+
+    .field {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(200, 170, 90, 0.25);
+      border-radius: 4px;
+      padding: 13px 16px;
+      color: var(--cream);
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+      margin-bottom: 12px;
+    }
+
+    .field:focus {
+      border-color: var(--gold);
+    }
+
+    .btn {
+      width: 100%;
+      background: var(--gold);
+      color: var(--charcoal);
+      border: none;
+      border-radius: 4px;
+      padding: 13px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn:hover {
+      background: var(--gold-light);
+    }
+
+    .login-err {
+      color: #e07070;
+      font-size: 0.8rem;
+      margin-top: 10px;
+      display: none;
+    }
+
+    #app {
+      display: none;
+    }
+
+    .topbar {
+      background: rgba(28, 30, 26, 0.97);
+      border-bottom: 1px solid rgba(200, 170, 90, 0.18);
+      padding: 14px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .t-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.35rem;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+    }
+
+    .t-tag {
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: rgba(200, 170, 90, 0.1);
+      border: 1px solid rgba(200, 170, 90, 0.25);
+      padding: 4px 10px;
+      border-radius: 3px;
+    }
+
+    .signout {
+      background: none;
+      border: 1px solid rgba(245, 240, 232, 0.18);
+      color: rgba(245, 240, 232, 0.45);
+      border-radius: 3px;
+      padding: 5px 14px;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-family: 'Barlow', sans-serif;
+      transition: all 0.2s;
+    }
+
+    .signout:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .main {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 52px 24px 80px;
+    }
+
+    .page-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.8rem;
+      letter-spacing: 0.08em;
+      color: var(--cream);
+      margin-bottom: 6px;
+    }
+
+    .page-sub {
+      font-size: 0.85rem;
+      color: rgba(245, 240, 232, 0.45);
+      margin-bottom: 32px;
+    }
+
+    .setup-box {
+      background: rgba(200, 170, 90, 0.08);
+      border: 1px solid rgba(200, 170, 90, 0.3);
+      border-radius: 5px;
+      padding: 24px 26px;
+      margin-bottom: 28px;
+    }
+
+    .setup-box h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      color: var(--gold);
+      margin-bottom: 8px;
+      letter-spacing: 0.08em;
+    }
+
+    .setup-box p {
+      font-size: 0.82rem;
+      color: rgba(245, 240, 232, 0.6);
+      line-height: 1.7;
+      margin-bottom: 14px;
+    }
+
+    .setup-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .setup-input {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(200, 170, 90, 0.25);
+      border-radius: 4px;
+      padding: 10px 14px;
+      color: var(--cream);
+      font-family: monospace;
+      font-size: 0.78rem;
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+
+    .setup-input:focus {
+      border-color: var(--gold);
+    }
+
+    .setup-save {
+      background: var(--gold);
+      color: var(--charcoal);
+      border: none;
+      border-radius: 4px;
+      padding: 10px 24px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .setup-save:hover {
+      background: var(--gold-light);
+    }
+
+    .setup-clear {
+      background: none;
+      border: 1px solid rgba(245, 240, 232, 0.15);
+      color: rgba(245, 240, 232, 0.4);
+      border-radius: 4px;
+      padding: 10px 16px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-left: 8px;
+    }
+
+    .setup-clear:hover {
+      border-color: rgba(245, 240, 232, 0.35);
+      color: rgba(245, 240, 232, 0.7);
+    }
+
+    .search-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .search-row input {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(200, 170, 90, 0.25);
+      border-radius: 4px;
+      padding: 15px 18px;
+      color: var(--cream);
+      font-family: 'Barlow', sans-serif;
+      font-size: 1.05rem;
+      letter-spacing: 0.06em;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-row input:focus {
+      border-color: var(--gold);
+    }
+
+    .search-row input::placeholder {
+      color: rgba(245, 240, 232, 0.25);
+    }
+
+    .search-row button {
+      background: var(--gold);
+      color: var(--charcoal);
+      border: none;
+      border-radius: 4px;
+      padding: 15px 30px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .search-row button:hover {
+      background: var(--gold-light);
+    }
+
+    .search-row button:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+
+    .msg {
+      text-align: center;
+      padding: 52px 20px;
+      font-size: 0.88rem;
+      color: rgba(245, 240, 232, 0.4);
+    }
+
+    .msg.err {
+      color: #e07070;
+    }
+
+    .msg-icon {
+      font-size: 2.4rem;
+      display: block;
+      margin-bottom: 14px;
+    }
+
+    .result-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(200, 170, 90, 0.22);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .rc-head {
+      background: rgba(200, 170, 90, 0.1);
+      border-bottom: 1px solid rgba(200, 170, 90, 0.2);
+      padding: 20px 26px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .rc-ref {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.7rem;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+    }
+
+    .rc-date {
+      font-size: 0.76rem;
+      color: rgba(245, 240, 232, 0.4);
+    }
+
+    .rc-body {
+      padding: 28px 26px;
+    }
+
+    .rc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    .rc-field {
+      padding: 11px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .rc-field.full {
+      grid-column: 1/-1;
+    }
+
+    .rc-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+
+    .rc-val {
+      font-size: 0.9rem;
+      color: var(--cream);
+      line-height: 1.55;
+    }
+
+    .s-badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .s-received,
+    .s-under_review {
+      background: rgba(200, 170, 90, 0.1);
+      border: 1px solid rgba(200, 170, 90, 0.3);
+      color: var(--gold);
+    }
+
+    .s-extended_review,
+    .s-awaiting_docs {
+      background: rgba(232, 168, 75, 0.1);
+      border: 1px solid rgba(232, 168, 75, 0.3);
+      color: #e8a84b;
+    }
+
+    .s-approved {
+      background: rgba(90, 170, 110, 0.1);
+      border: 1px solid rgba(90, 170, 110, 0.3);
+      color: #5aaa6e;
+    }
+
+    .s-denied {
+      background: rgba(224, 112, 112, 0.1);
+      border: 1px solid rgba(224, 112, 112, 0.3);
+      color: #e07070;
+    }
+
+    .update-panel {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(200, 170, 90, 0.15);
+      border-radius: 6px;
+      padding: 24px 26px;
+    }
+
+    .update-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .update-row {
+      display: flex;
+      gap: 12px;
+      align-items: flex-end;
+      flex-wrap: wrap;
+    }
+
+    .update-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+      min-width: 160px;
+    }
+
+    .update-group label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(245, 240, 232, 0.5);
+    }
+
+    .update-select,
+    .update-note {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(200, 170, 90, 0.25);
+      border-radius: 4px;
+      padding: 10px 14px;
+      color: var(--cream);
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.88rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .update-select:focus,
+    .update-note:focus {
+      border-color: var(--gold);
+    }
+
+    .update-select option {
+      background: #2a2d27;
+    }
+
+    .update-note {
+      flex: 2;
+      min-width: 220px;
+    }
+
+    .update-btn {
+      background: var(--gold);
+      color: var(--charcoal);
+      border: none;
+      border-radius: 4px;
+      padding: 10px 24px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+      align-self: flex-end;
+    }
+
+    .update-btn:hover {
+      background: var(--gold-light);
+    }
+
+    .update-btn:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+
+    .update-ok {
+      color: #5aaa6e;
+      font-size: 0.82rem;
+      margin-top: 10px;
+      display: none;
+    }
+
+    .section-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(245, 240, 232, 0.3);
+      margin-top: 52px;
+      margin-bottom: 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.84rem;
+    }
+
+    th {
+      text-align: left;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      padding: 8px 12px;
+      border-bottom: 1px solid rgba(200, 170, 90, 0.2);
+    }
+
+    td {
+      padding: 11px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: rgba(245, 240, 232, 0.75);
+    }
+
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.025);
+      cursor: pointer;
+    }
+
+    .ref-link {
+      color: var(--gold);
+      font-family: monospace;
+      font-size: 0.8rem;
+    }
+
+    .s-pill {
+      font-size: 0.63rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 10px;
+    }
+
+    .search-type-select {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(200, 170, 90, 0.25);
+      border-radius: 4px;
+      padding: 15px 18px;
+      color: var(--cream);
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.88rem;
+      outline: none;
+      transition: border-color 0.2s;
+      min-width: 200px;
+    }
+
+    .search-type-select:focus {
+      border-color: var(--gold);
+    }
+
+    .search-type-select option {
+      background: #2a2d27;
+    }
+
+    .provider-grid {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .provider-grid input,
+    .provider-grid select {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(200, 170, 90, 0.2);
+      border-radius: 4px;
+      padding: 9px 12px;
+      color: var(--cream);
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.85rem;
+      outline: none;
+    }
+
+    .provider-grid input:focus,
+    .provider-grid select:focus {
+      border-color: var(--gold);
+    }
+
+    .provider-grid input::placeholder {
+      color: rgba(245, 240, 232, 0.2);
+    }
+
+    .provider-grid select option {
+      background: #2a2d27;
+    }
+
+    .provider-grid-3 {
+      grid-template-columns: 2fr 1fr 1fr;
+    }
+
+    .provider-grid-4 {
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+    }
+
+    .provider-section-label {
+      font-size: 0.63rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(245, 240, 232, 0.4);
+      margin: 14px 0 6px;
+    }
+
+    .disburse-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      margin-top: 10px;
+    }
+
+    .disburse-table th {
+      text-align: left;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      padding: 7px 10px;
+      border-bottom: 1px solid rgba(200, 170, 90, 0.2);
+    }
+
+    .disburse-table td {
+      padding: 9px 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: rgba(245, 240, 232, 0.75);
+    }
+
+    .disburse-table .del-btn {
+      background: none;
+      border: none;
+      color: rgba(224, 112, 112, 0.5);
+      cursor: pointer;
+      font-size: 0.85rem;
+      padding: 0 4px;
+    }
+
+    .disburse-table .del-btn:hover {
+      color: #e07070;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="nav-placeholder"></div>
+  <script src="component/nav-loader.js"></script>
+
+  <div id="loading-gate"
+    style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 20px;">
+    <div class="brand">ENTHEOS</div>
+    <div class="brand-sub">Veteran Project — Admin</div>
+    <div style="color:rgba(245,240,232,0.4);font-size:0.85rem;letter-spacing:0.08em;">Verifying access…</div>
+  </div>
+
+  <div id="app">
+    <div class="main" style="padding-top:110px;">
+      <div class="page-title">Scholarship Applications</div>
+      <div class="page-sub">View and manage all scholarship submissions.</div>
+
+      <div class="search-row">
+        <select class="search-type-select" id="search-type" onchange="onSearchTypeChange()">
+          <option value="all">View All Applications</option>
+          <option value="name">Search by Name</option>
+          <option value="email">Search by Email</option>
+          <option value="status">Filter by Status</option>
+        </select>
+        <input type="text" id="search-term" placeholder="Enter search term…" style="display:none;"
+          onkeydown="if(event.key==='Enter')doSearch()" />
+        <select class="search-type-select" id="search-status" style="display:none;">
+          <option value="pending">Pending</option>
+          <option value="under_review">Under Review</option>
+          <option value="approved">Approved</option>
+          <option value="denied">Denied</option>
+          <option value="disbursed">Disbursed</option>
+          <option value="completed">Completed</option>
+        </select>
+        <button id="search-btn" onclick="doSearch()">Search</button>
+      </div>
+
+      <div id="result"></div>
+
+      <div id="list-section" style="display:none;">
+        <div class="section-label" id="list-label">All Applications</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Est. Cost</th>
+              <th>Status</th>
+              <th>Submitted</th>
+            </tr>
+          </thead>
+          <tbody id="list-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://uymvnusvxjyeceuujbvv.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_bD-H-TSO2-Mafd0YbStXbw_xmtygePG';
+    let _currentApp = null;
+    let _sb = null;
+
+    const STATUS_LABELS = {
+      pending: 'Pending', under_review: 'Under Review', approved: 'Approved',
+      denied: 'Denied', disbursed: 'Disbursed', completed: 'Completed'
+    };
+
+    const fmt = v => (v !== null && v !== undefined && v !== '') ? v : '—';
+    const fmtMoney = v => v != null ? '$' + Number(v).toLocaleString('en-US', { minimumFractionDigits: 2 }) : '—';
+    const fmtDate = v => v ? new Date(v).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—';
+    const fmtTS = v => v ? new Date(v).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' }) : '—';
+
+    function setResult(html) { document.getElementById('result').innerHTML = html; }
+
+    /* ── Search type toggle ── */
+    function onSearchTypeChange() {
+      const type = document.getElementById('search-type').value;
+      document.getElementById('search-term').style.display = (type === 'name' || type === 'email') ? 'flex' : 'none';
+      document.getElementById('search-status').style.display = type === 'status' ? 'flex' : 'none';
+      if (type === 'all') doSearch();
+    }
+
+    /* ── Search / load ── */
+    async function doSearch() {
+      const type = document.getElementById('search-type').value;
+      const term = document.getElementById('search-term').value.trim();
+      const btn = document.getElementById('search-btn');
+      btn.disabled = true; btn.textContent = 'Loading…';
+      setResult('');
+      document.getElementById('list-section').style.display = 'none';
+
+      let query = _sb.from('scholarships').select('*').order('created_at', { ascending: false });
+
+      if (type === 'name' && term) query = query.ilike('applicant_name', `%${term}%`);
+      if (type === 'email' && term) query = query.ilike('email', `%${term}%`);
+      if (type === 'status') query = query.eq('status', document.getElementById('search-status').value);
+
+      const { data: rows, error } = await query;
+      btn.disabled = false; btn.textContent = 'Search';
+
+      if (error) { setResult(`<div class="msg err"><span class="msg-icon">⚠️</span>${error.message}</div>`); return; }
+      if (!rows || rows.length === 0) { setResult('<div class="msg"><span class="msg-icon">🔍</span>No applications found.</div>'); return; }
+
+      renderList(rows, type === 'all' ? 'All Applications' : `Results (${rows.length})`);
+    }
+
+    /* ── Render list table ── */
+    function renderList(rows, label) {
+      document.getElementById('list-label').textContent = label;
+      const tbody = document.getElementById('list-body');
+      tbody.innerHTML = '';
+      rows.forEach(r => {
+        const s = r.status || 'pending';
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+        <td>${fmt(r.applicant_name)}</td>
+        <td>${fmt(r.email)}</td>
+        <td>${fmtMoney(r.estimated_cost)}</td>
+        <td><span class="s-pill s-${s}">${STATUS_LABELS[s] || s}</span></td>
+        <td>${fmtDate(r.created_at)}</td>
+      `;
+        tr.onclick = () => { renderCard(r); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+        tbody.appendChild(tr);
+      });
+      document.getElementById('list-section').style.display = 'block';
+    }
+
+    /* ── Render detail card ── */
+    function renderCard(app) {
+      _currentApp = app;
+      const s = app.status || 'pending';
+      const f = (label, val, full) =>
+        `<div class="rc-field${full ? ' full' : ''}"><div class="rc-label">${label}</div><div class="rc-val">${val}</div></div>`;
+      const v = id => `${fmt(app[id]) === '—' ? '' : fmt(app[id])}`;
+
+      setResult(`
+      <button onclick="setResult('');document.getElementById('list-section').style.display='block';window.scrollTo({top:0,behavior:'smooth'})"
+        style="background:none;border:none;color:var(--gold);font-family:'Barlow',sans-serif;font-size:0.82rem;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;margin-bottom:20px;padding:0;">← Back to List</button>
+
+      <div class="result-card">
+        <div class="rc-head">
+          <div>
+            <div class="rc-ref">${fmt(app.first_name)} ${fmt(app.last_name)}</div>
+            <div class="rc-date">${fmt(app.reference_code)} &nbsp;·&nbsp; Submitted ${fmtTS(app.created_at)}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="s-badge s-${s}">${STATUS_LABELS[s] || s}</div>
+            <button onclick="refreshCurrent()" style="background:none;border:1px solid rgba(200,170,90,0.3);color:var(--gold);border-radius:4px;padding:5px 12px;font-family:'Barlow',sans-serif;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;">↻ Refresh</button>
+          </div>
+        </div>
+        <div class="rc-body">
+
+          <div class="rc-grid">
+            ${f('First Name', fmt(app.first_name))}
+            ${f('Last Name', fmt(app.last_name))}
+            ${f('Email', fmt(app.email))}
+            ${f('Phone', fmt(app.phone))}
+            ${f('State', fmt(app.state))}
+            ${f('Date of Birth', fmt(app.date_of_birth))}
+            ${f('Branch', fmt(app.branch))}
+            ${f('Discharge Status', fmt(app.discharge_status))}
+            ${f('Years Served', fmt(app.years_served))}
+            ${f('Deployments', fmt(app.deployments))}
+            ${f('Amount Requested', fmtMoney(app.amount_needed))}
+            ${f('Total Award', fmtMoney(app.total_award_amount))}
+            ${f('Areas of Need', fmt(app.areas_of_need), true)}
+            ${f('Program / Provider', fmt(app.program_provider), true)}
+            ${f('Situation', fmt(app.situation), true)}
+            ${f('Goals', fmt(app.goals), true)}
+            ${f('How They Heard', fmt(app.how_they_heard))}
+            ${f('Review Notes', fmt(app.review_notes))}
+          </div>
+
+          <div style="margin-top:24px;border-top:1px solid rgba(255,255,255,0.06);padding-top:20px;">
+            <div class="rc-label" style="margin-bottom:12px;">Approved Care Plan</div>
+            <div class="rc-grid">
+              ${f('Preparation Coach', fmt(app.preparation_coach))}
+              ${f('Sessions Approved', fmt(app.preparation_coach_sessions))}
+              ${f('Prep Price', fmtMoney(app.preparation_coach_price))}
+              ${f('', '')}
+              ${f('Clinic / Treatment Center', fmt(app.clinic_provider))}
+              ${f('Start Date', fmtDate(app.clinic_start_date || app.clinic_provider_date))}
+              ${f('End Date', fmtDate(app.clinic_end_date))}
+              ${f('Clinic Price', fmtMoney(app.clinic_provider_price))}
+              ${f('Aftercare Clinic', fmt(app.aftercare_clinic))}
+              ${f('Start Date', fmtDate(app.aftercare_clinic_start_date || app.aftercare_clinic_date))}
+              ${f('End Date', fmtDate(app.aftercare_clinic_end_date))}
+              ${f('Aftercare Price', fmtMoney(app.aftercare_clinic_price))}
+              ${f('Integration Coach', fmt(app.integration_coach))}
+              ${f('Sessions Approved', fmt(app.integration_coach_sessions))}
+              ${f('Integration Price', fmtMoney(app.integration_coach_price))}
+              ${f('', '')}
+            </div>
+          </div>
+
+          <div style="margin-top:24px;border-top:1px solid rgba(255,255,255,0.06);padding-top:20px;">
+            <div class="rc-label" style="margin-bottom:4px;">Disbursements</div>
+            <div id="disbursements-display"><div style="color:rgba(245,240,232,0.3);font-size:0.82rem;padding:12px 0;">Loading…</div></div>
+          </div>
+
+          <div style="margin-top:24px;border-top:1px solid rgba(255,255,255,0.06);padding-top:20px;">
+            <div class="rc-label" style="margin-bottom:12px;">Timestamps</div>
+            <div class="rc-grid">
+              ${f('Submitted', fmtTS(app.created_at))}
+              ${f('Last Updated', fmtTS(app.updated_at))}
+              ${f('Approved', fmtTS(app.approved_at))}
+              ${f('Disbursed', fmtTS(app.disbursed_at))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="update-panel">
+        <div class="update-title">Status & Review</div>
+        <div class="update-row" style="margin-bottom:16px;">
+          <div class="update-group">
+            <label>Status</label>
+            <select class="update-select" id="new-status">
+              ${Object.entries(STATUS_LABELS).map(([v, l]) => `<option value="${v}" ${s === v ? 'selected' : ''}>${l}</option>`).join('')}
+            </select>
+          </div>
+          <div class="update-group" style="flex:3">
+            <label>Review Notes (visible to veteran)</label>
+            <input type="text" class="update-note" id="status-note" value="${(app.review_notes || '').replace(/"/g, '&quot;')}" placeholder="e.g. Please email your DD-214 to continue."/>
+          </div>
+        </div>
+
+        <div class="update-title" style="margin-top:20px;">Care Plan</div>
+
+        <div class="provider-section-label">Preparation Coach</div>
+        <div class="provider-grid provider-grid-3">
+          <input type="text"   id="u-prep-name"     placeholder="Coach name"        value="${v('preparation_coach')}"/>
+          <input type="number" id="u-prep-sessions" placeholder="Sessions approved" value="${app.preparation_coach_sessions || ''}"/>
+          <input type="number" id="u-prep-price"    placeholder="Total price ($)"   value="${app.preparation_coach_price || ''}"/>
+        </div>
+
+        <div class="provider-section-label">Clinic / Treatment Center</div>
+        <div class="provider-grid provider-grid-4">
+          <input type="text" id="u-clinic-name"  placeholder="Clinic name"  value="${v('clinic_provider')}"/>
+          <input type="date" id="u-clinic-start" value="${app.clinic_start_date || app.clinic_provider_date || ''}"/>
+          <input type="date" id="u-clinic-end"   value="${app.clinic_end_date || ''}"/>
+          <input type="number" id="u-clinic-price" placeholder="Total price ($)" value="${app.clinic_provider_price || ''}"/>
+        </div>
+
+        <div class="provider-section-label">Aftercare Clinic</div>
+        <div class="provider-grid provider-grid-4">
+          <input type="text" id="u-after-name"  placeholder="Clinic name"  value="${v('aftercare_clinic')}"/>
+          <input type="date" id="u-after-start" value="${app.aftercare_clinic_start_date || app.aftercare_clinic_date || ''}"/>
+          <input type="date" id="u-after-end"   value="${app.aftercare_clinic_end_date || ''}"/>
+          <input type="number" id="u-after-price" placeholder="Total price ($)" value="${app.aftercare_clinic_price || ''}"/>
+        </div>
+
+        <div class="provider-section-label">Integration Coach</div>
+        <div class="provider-grid provider-grid-3">
+          <input type="text"   id="u-integ-name"     placeholder="Coach name"        value="${v('integration_coach')}"/>
+          <input type="number" id="u-integ-sessions" placeholder="Sessions approved" value="${app.integration_coach_sessions || ''}"/>
+          <input type="number" id="u-integ-price"    placeholder="Total price ($)"   value="${app.integration_coach_price || ''}"/>
+        </div>
+
+        <div style="margin-top:18px;">
+          <button class="update-btn" id="update-btn" onclick="saveUpdate()">Save Care Plan & Status</button>
+          <div class="update-ok" id="update-ok"></div>
+        </div>
+      </div>
+
+      <div class="update-panel" style="margin-top:16px; padding:20px 24px;">
+  <div class="update-title" style="margin-bottom:16px; font-size:1.05rem;">Record a Disbursement</div>
+
+  <!-- Payment Type (Always Visible) -->
+  <div style="margin-bottom:12px;">
+    <div class="provider-section-label" style="margin-bottom:6px;">Payment Type</div>
+    <select id="d-type" class="update-select" style="width:100%; font-size:0.95rem; padding:11px 14px;" onchange="toggleDisbursementFields()">
+      <option value="">-- Select Payment Type --</option>
+      <option value="preparation_coach">Preparation Coach</option>
+      <option value="clinic_provider">Clinic / Treatment Center</option>
+      <option value="aftercare_clinic">Aftercare Clinic</option>
+      <option value="integration_coach">Integration Coach</option>
+    </select>
+  </div>
+
+  <!-- Expandable Fields (Hidden by default) -->
+  <div id="disbursement-fields" style="display:none; padding-top:12px; border-top:1px solid rgba(201,146,26,0.15);">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px;">
+      
+      <!-- Amount -->
+      <div>
+        <div class="provider-section-label" style="margin-bottom:5px;">Amount ($)</div>
+        <input type="number" id="d-amount" class="update-note" placeholder="0.00" style="width:100%; font-size:0.95rem; padding:11px 14px;" />
+      </div>
+      
+      <!-- Date -->
+      <div>
+        <div class="provider-section-label" style="margin-bottom:5px;">Payment Date</div>
+        <input type="date" id="d-date" class="update-note" style="width:100%; font-size:0.95rem; padding:11px 14px;" />
+      </div>
+    </div>
+
+    <!-- Notes -->
+    <div style="margin-bottom:16px;">
+      <div class="provider-section-label" style="margin-bottom:5px;">Notes</div>
+      <input type="text" id="d-notes" class="update-note" placeholder="e.g. Session 1 of 3" style="width:100%; font-size:0.95rem; padding:11px 14px;" />
+    </div>
+
+    <!-- Add Button -->
+    <button class="update-btn" onclick="addDisbursement()" style="width:100%; padding:12px 20px; font-size:0.9rem;">
+      + Add Disbursement
+    </button>
+    
+    <div id="d-ok" style="display:none; font-size:0.82rem; margin-top:10px; color:#5aaa6e;"></div>
+  </div>
+</div>
+    `);
+
+      loadDisbursements();
+    }
+
+    const PROVIDER_LABELS = {
+      preparation_coach: 'Preparation Coach',
+      clinic_provider: 'Clinic / Treatment Center',
+      aftercare_clinic: 'Aftercare Clinic',
+      integration_coach: 'Integration Coach',
+    };
+
+    /* ── Load disbursements from JSONB column ── */
+    function loadDisbursements() {
+      const container = document.getElementById('disbursements-display');
+      if (!container) return;
+
+      const list = _currentApp.disbursements || [];
+      if (!list.length) {
+        container.innerHTML = '<div style="color:rgba(245,240,232,0.3);font-size:0.82rem;padding:10px 0;">No disbursements recorded yet.</div>';
+        return;
+      }
+
+      const sorted = [...list].sort((a, b) => (a.payment_date > b.payment_date ? 1 : -1));
+      const total = sorted.reduce((sum, d) => sum + (parseFloat(d.amount) || 0), 0);
+
+      let html = `<table class="disburse-table"><thead><tr><th>Provider</th><th>Amount</th><th>Date</th><th>Notes</th><th></th></tr></thead><tbody>`;
+      sorted.forEach(d => {
+        html += `<tr>
+          <td>${PROVIDER_LABELS[d.provider_type] || d.provider_type}</td>
+          <td>${fmtMoney(d.amount)}</td>
+          <td>${fmtDate(d.payment_date)}</td>
+          <td style="color:rgba(245,240,232,0.45)">${d.notes || '—'}</td>
+          <td><button class="del-btn" onclick="deleteDisbursement('${d.id}')" title="Delete">✕</button></td>
+        </tr>`;
+      });
+      html += `</tbody><tfoot><tr>
+        <td colspan="3" style="padding:10px;font-size:0.68rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);">Total Disbursed</td>
+        <td colspan="2" style="padding:10px;font-weight:700;color:var(--gold);">${fmtMoney(total)}</td>
+      </tr></tfoot></table>`;
+      container.innerHTML = html;
+    }
+
+    function toggleDisbursementFields() {
+      const typeSelect = document.getElementById('d-type');
+      const fieldsDiv = document.getElementById('disbursement-fields');
+
+      if (typeSelect.value) {
+        fieldsDiv.style.display = 'block';
+      } else {
+        fieldsDiv.style.display = 'none';
+      }
+    }
+
+    /* ── Persist disbursements array to row ── */
+    async function saveDisbursements(updated) {
+      const { error } = await _sb.from('scholarships')
+        .update({ disbursements: updated, updated_at: new Date().toISOString() })
+        .eq('id', _currentApp.id);
+      if (!error) _currentApp.disbursements = updated;
+      return error;
+    }
+
+    /* ── Add disbursement ── */
+    async function addDisbursement() {
+      const amount = parseFloat(document.getElementById('d-amount').value);
+      const date = document.getElementById('d-date').value;
+      const okEl = document.getElementById('d-ok');
+      if (!amount || !date) {
+        okEl.textContent = 'Amount and date are required.';
+        okEl.style.color = '#e07070'; okEl.style.display = 'block'; return;
+      }
+
+      const newEntry = {
+        id: crypto.randomUUID(),
+        provider_type: document.getElementById('d-type').value,
+        amount,
+        payment_date: date,
+        notes: document.getElementById('d-notes').value.trim() || null,
+        created_at: new Date().toISOString(),
+      };
+
+      const error = await saveDisbursements([...(_currentApp.disbursements || []), newEntry]);
+      if (error) {
+        okEl.textContent = 'Error: ' + error.message;
+        okEl.style.color = '#e07070';
+      } else {
+        okEl.textContent = '✓ Disbursement recorded.';
+        okEl.style.color = '#5aaa6e';
+        document.getElementById('d-amount').value = '';
+        document.getElementById('d-date').value = '';
+        document.getElementById('d-notes').value = '';
+        loadDisbursements();
+      }
+      okEl.style.display = 'block';
+    }
+
+    /* ── Delete disbursement ── */
+    async function deleteDisbursement(id) {
+      if (!confirm('Delete this disbursement?')) return;
+      const updated = (_currentApp.disbursements || []).filter(d => d.id !== id);
+      const error = await saveDisbursements(updated);
+      if (!error) loadDisbursements();
+    }
+
+    /* ── Save update ── */
+    async function saveUpdate() {
+      if (!_currentApp) return;
+      const btn = document.getElementById('update-btn');
+      btn.disabled = true; btn.textContent = 'Saving…';
+
+      const newStatus = document.getElementById('new-status').value;
+      const updates = {
+        status: newStatus,
+        review_notes: document.getElementById('status-note').value.trim() || null,
+        preparation_coach: document.getElementById('u-prep-name').value.trim() || null,
+        preparation_coach_sessions: parseInt(document.getElementById('u-prep-sessions').value) || null,
+        preparation_coach_price: parseFloat(document.getElementById('u-prep-price').value) || null,
+        clinic_provider: document.getElementById('u-clinic-name').value.trim() || null,
+        clinic_start_date: document.getElementById('u-clinic-start').value || null,
+        clinic_end_date: document.getElementById('u-clinic-end').value || null,
+        clinic_provider_price: parseFloat(document.getElementById('u-clinic-price').value) || null,
+        aftercare_clinic: document.getElementById('u-after-name').value.trim() || null,
+        aftercare_clinic_start_date: document.getElementById('u-after-start').value || null,
+        aftercare_clinic_end_date: document.getElementById('u-after-end').value || null,
+        aftercare_clinic_price: parseFloat(document.getElementById('u-after-price').value) || null,
+        integration_coach: document.getElementById('u-integ-name').value.trim() || null,
+        integration_coach_sessions: parseInt(document.getElementById('u-integ-sessions').value) || null,
+        integration_coach_price: parseFloat(document.getElementById('u-integ-price').value) || null,
+        updated_at: new Date().toISOString(),
+      };
+      if (newStatus === 'approved' && !_currentApp.approved_at) updates.approved_at = new Date().toISOString();
+      if (newStatus === 'disbursed' && !_currentApp.disbursed_at) updates.disbursed_at = new Date().toISOString();
+
+      const { error } = await _sb.from('scholarships').update(updates).eq('id', _currentApp.id);
+      btn.disabled = false; btn.textContent = 'Save Care Plan & Status';
+
+      const okEl = document.getElementById('update-ok');
+      if (error) {
+        okEl.textContent = 'Error: ' + error.message; okEl.style.color = '#e07070';
+      } else {
+        okEl.textContent = '✓ Saved.'; okEl.style.color = '#5aaa6e';
+        _currentApp = { ..._currentApp, ...updates };
+      }
+      okEl.style.display = 'block';
+    }
+
+    async function refreshCurrent() {
+      if (!_currentApp) return;
+      const { data, error } = await _sb.from('scholarships').select('*').eq('id', _currentApp.id).maybeSingle();
+      if (!error && data) renderCard(data);
+    }
+
+    function showApp() {
+      document.getElementById('loading-gate').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      doSearch();
+    }
+
+    window.addEventListener('DOMContentLoaded', async () => {
+      _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+      const { data: { session } } = await _sb.auth.getSession();
+      if (!session) { window.location.href = 'account.html'; return; }
+
+      const { data: profile } = await _sb.from('profiles').select('account_type').eq('user_id', session.user.id).maybeSingle();
+      if (!profile || profile.account_type !== 'admin') { window.location.href = 'index.html'; return; }
+
+      showApp();
+    });
+  </script>
+</body>
+
+</html>
