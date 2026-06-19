@@ -226,6 +226,51 @@
       transform: translateY(-2px);
     }
 
+    /* DONATE SECTION */
+    .donate-section {
+      background: var(--charcoal);
+      padding: 60px 5% 80px;
+      text-align: center;
+      border-top: 1px solid rgba(201, 146, 26, 0.15);
+    }
+
+    .donate-section .section-label {
+      margin-bottom: 12px;
+    }
+
+    .donate-section .section-title {
+      margin-bottom: 16px;
+    }
+
+    .donate-section p {
+      font-size: 1.05rem;
+      font-weight: 300;
+      line-height: 1.75;
+      color: rgba(245, 240, 232, 0.75);
+      max-width: 520px;
+      margin: 0 auto 36px;
+    }
+
+    .btn-donate {
+      background: var(--gold);
+      color: var(--charcoal);
+      padding: 20px 64px;
+      border-radius: 2px;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .btn-donate:hover {
+      background: var(--gold-light);
+      transform: translateY(-2px);
+    }
+
     /* WHY IT MATTERS */
     .why {
       background: var(--olive-dark);
@@ -359,10 +404,10 @@
 
   <!-- PAGE HEADER -->
   <div class="page-header">
-    <p class="eyebrow">Building Our Foundation</p>
+    <p class="eyebrow">Support Our Mission</p>
     <h1>Join Us in<br /><span>Healing Veterans</span></h1>
-    <p>Entheos Veterans Project is currently finalizing its 501(c)(3) status while actively building partnerships.
-      Individual donations will be accepted soon.</p>
+    <p>Entheos Veterans Project is a recognized 501(c)(3) nonprofit. Every donation goes directly toward
+      helping veterans heal.</p>
   </div>
 
   <!-- IMPACT STRIP -->
@@ -377,19 +422,27 @@
         <div class="lbl">Building new partnerships</div>
       </div>
       <div class="impact-item">
-        <div class="num">Coming Soon</div>
-        <div class="lbl">Individual donations</div>
+        <div class="num">Tax-Deductible</div>
+        <div class="lbl">Every donation</div>
       </div>
     </div>
   </div>
 
-  <!-- GET INVOLVED / INTEREST FORM -->
+  <!-- DONATE BUTTON SECTION -->
+  <div class="donate-section">
+    <p class="section-label">Support Our Mission</p>
+    <h2 class="section-title">Make a Donation</h2>
+    <p>Ready to make a difference? Every contribution goes directly toward healing veterans and their families.</p>
+    <a href="https://www.zeffy.com/en-US/donation-form/entheos-veteran-project" target="_blank" rel="noopener noreferrer" class="btn-donate">Donate Now</a>
+  </div>
+
+  <!-- PARTNER INTEREST FORM -->
   <div class="get-involved">
     <div class="get-involved-inner">
-      <p class="section-label">Get Involved Early</p>
-      <h2 class="section-title">Express Your Interest</h2>
-      <p>Fill out the form below. We’ll receive your details and follow up with you soon as we continue building
-        partnerships.</p>
+      <p class="section-label">Partner With Us</p>
+      <h2 class="section-title">Express Your Interest in Partnering</h2>
+      <p>Interested in partnering with Entheos Veterans Project? Fill out the form below and our team will follow up
+        to explore how we can work together.</p>
 
       <form id="interest-form">
         <div class="form-group">
@@ -414,11 +467,11 @@
         </div>
 
         <div class="form-group">
-          <label for="remarks">Remarks / How would you like to support?</label>
-          <textarea id="remarks" name="remarks" placeholder="Tell us a bit about your interest..."></textarea>
+          <label for="remarks">How would you like to partner with us?</label>
+          <textarea id="remarks" name="remarks" placeholder="Tell us a bit about your organization and partnership interest..."></textarea>
         </div>
 
-        <button type="submit" class="btn-primary">Email My Interest</button>
+        <button type="submit" class="btn-primary">Submit Partnership Interest</button>
       </form>
 
     </div>
@@ -432,9 +485,8 @@
           style="font-size:0.75rem;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;">
           Why It Matters</p>
         <h2>Your Support Will<br /><span>Directly</span> Fund Care</h2>
-        <p>Once operational, every dollar donated to the Entheos Veterans Project will go directly to veterans — with
-          zero administrative overhead. We are building the foundation now so we can deliver real treatment, real
-          scholarships, and real healing soon.</p>
+        <p>Every dollar donated to the Entheos Veterans Project goes directly to veterans — with zero administrative
+          overhead. Your support funds real treatment, real scholarships, and real healing.</p>
       </div>
       <div>
         <p style="font-size: 1rem; font-weight: 300; line-height: 1.8; color: rgba(245,240,232,0.72);">
@@ -480,7 +532,7 @@
     </div>
     <div class="footer-bottom">
       <span>© 2025 Entheos Veterans Project. All rights reserved.</span>
-      <span>Pending 501(c)(3) • South Boston, Virginia</span>
+      <span>501(c)(3) Nonprofit • South Boston, Virginia</span>
     </div>
   </footer>
 
@@ -542,7 +594,7 @@
         <div style="text-align:center; padding: 40px 20px;">
             <h2 style="color:#c9921a; margin-bottom:16px;">Thank You!</h2>
             <p style="font-size:1.1rem; max-width:420px; margin:0 auto;">
-                Your interest has been received. We'll follow up with you soon as we continue building partnerships.
+                Your partnership interest has been received. Our team will follow up with you soon.
             </p>
         </div>
     `;
